@@ -609,30 +609,67 @@ async function login(){
 async function adminLogin(){
     const email=document.getElementById('adminEmail').value.trim();
     const password=document.getElementById('adminPassword').value;
-    if(!email||!password){showMessage('Please fill all fields');return}
+    
+    if(!email||!password){
+        showMessage('Please fill all fields');
+        return;
+    }
+    
     showLoading();
     try{
-        const{data,error}=await _supabase.auth.signInWithPassword({email:email,password:password});
-        if(error)throw error;
-        const{data:userDoc,error:userError}=await _supabase.from('users').select('is_admin').eq('id',data.user.id).single();
-        if(userError)throw userError;
-        if(userDoc && userDoc.is_admin===true){
-            await checkUserSession(); // Use our new robust function
+        // Pehle logout karein (clean state)
+        await _supabase.auth.signOut();
+        
+        // Login karein
+        const{data, error}=await _supabase.auth.signInWithPassword({
+            email:email,
+            password:password
+        });
+        
+        if(error) throw error;
+        
+        // Database se directly check karein (bina RLS ke problem)
+        const{data:userDoc, error:userError}=await _supabase
+            .from('users')
+            .select('is_admin, name, email, phone, student_class, purchased_courses')
+            .eq('id', data.user.id)
+            .single();
+        
+        if(userError){
+            console.error('User fetch error:', userError);
+            throw new Error('Could not verify admin status');
+        }
+        
+        if(userDoc && userDoc.is_admin === true){
+            // Manually set user
+            currentUser = {
+                uid: data.user.id,
+                email: data.user.email,
+                ...userDoc
+            };
+            isAdmin = true;
+            updateAuthState();
+            renderCourses();
+            
             closeModal();
-            showMessage('Admin login successful');
+            showMessage('Admin login successful! Welcome ' + userDoc.name);
+            
+            // Admin panel load karein
+            loadStudentList();
+            loadPendingPayments();
+            loadQuizDraft();
         }
         else{
             await _supabase.auth.signOut();
             showMessage('No admin privileges for this account');
         }
     }catch(error){
-        console.error(error);
-        showMessage('Admin login failed');
+        console.error('Admin login error:', error);
+        showMessage('Admin login failed: ' + error.message);
     }finally{
         hideLoading();
     }
 }
-
 function logout(){
     if(confirm('Are you sure you want to logout?')){
         _supabase.auth.signOut();
