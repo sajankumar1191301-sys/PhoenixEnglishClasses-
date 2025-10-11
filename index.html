@@ -392,23 +392,20 @@ button:active {
 <div id="paymentModal" class="modal">
 <div class="modal-content" style="max-width:380px;">
 <button class="close-modal" onclick="closePaymentModal()">&times;</button>
-<div id="paymentModal" class="modal">
-   <div class="modal-content" style="max-width:380px;">
-   <button class="close-modal" onclick="closePaymentModal()">&times;</button>
-   <div class="qr-payment">
-       <!-- Header with Back Button -->
-       <div style="display:flex; align-items:center; margin-bottom:15px; position:relative;">
-           <button onclick="closePaymentModal()" 
-                   style="position:absolute; left:0; background:#f0f0f0; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; color:#333; display:flex; align-items:center; gap:5px; transition:all 0.2s;"
-                   onmouseover="this.style.background='#e0e0e0'"
-                   onmouseout="this.style.background='#f0f0f0'">
-               ← Back
-           </button>
-           <div style="flex:1; text-align:center;">
-               <h3 id="paymentTitle" style="color:#333; margin:0; font-size:18px;">Complete Payment</h3>
-               <p style="font-size:13px; color:#666; margin:5px 0 0 0;">Secure & Instant Access</p>
-           </div>
-       </div>
+<div class="qr-payment">
+    <!-- Header with Back Button -->
+    <div style="display:flex; align-items:center; margin-bottom:15px; position:relative;">
+        <button onclick="closePaymentModal()" 
+                style="position:absolute; left:0; background:#f0f0f0; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; color:#333; display:flex; align-items:center; gap:5px; transition:all 0.2s;"
+                onmouseover="this.style.background='#e0e0e0'"
+                onmouseout="this.style.background='#f0f0f0'">
+            &larr; Back
+        </button>
+        <div style="flex:1; text-align:center;">
+            <h3 id="paymentTitle" style="color:#333; margin:0; font-size:18px;">Complete Payment</h3>
+            <p style="font-size:13px; color:#666; margin:5px 0 0 0;">Secure &amp; Instant Access</p>
+        </div>
+    </div>
     
     <!-- QR Code -->
     <div class="qr-code" style="margin-bottom:15px;">
@@ -422,15 +419,15 @@ button:active {
     <!-- Payment Details Card -->
     <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:15px;border-radius:10px;margin-bottom:15px;color:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span style="font-size:13px;opacity:0.9;">💳 UPI ID</span>
+            <span style="font-size:13px;opacity:0.9;">&#128179; UPI ID</span>
             <span style="font-weight:600;font-size:14px;" id="upiIdText">7992300522@ybl</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-            <span style="font-size:13px;opacity:0.9;">👤 Name</span>
+            <span style="font-size:13px;opacity:0.9;">&#128100; Name</span>
             <span style="font-weight:600;font-size:14px;">Sajan Sir</span>
         </div>
         <div style="display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-size:13px;opacity:0.9;">💬 WhatsApp</span>
+            <span style="font-size:13px;opacity:0.9;">&#128172; WhatsApp</span>
             <span style="font-weight:600;font-size:14px;">6299891191</span>
         </div>
     </div>
@@ -438,7 +435,7 @@ button:active {
     <!-- Amount Display -->
     <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:20px;border-radius:10px;text-align:center;margin-bottom:15px;">
         <p style="color:#fff;font-size:14px;opacity:0.9;margin-bottom:5px;">Total Amount</p>
-        <p style="color:#fff;font-size:32px;font-weight:700;margin:0;" id="paymentAmount">₹99</p>
+        <p style="color:#fff;font-size:32px;font-weight:700;margin:0;" id="paymentAmount">&#8377;99</p>
     </div>
 
     <!-- Action Buttons -->
@@ -447,29 +444,29 @@ button:active {
                 style="padding:14px;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:#fff;border:none;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(17,153,142,0.3);transition:transform 0.2s;"
                 onmouseover="this.style.transform='translateY(-2px)'"
                 onmouseout="this.style.transform='translateY(0)'">
-            📥 Download QR
+            &#128293; Download QR
         </button>
         <button onclick="openUPI()" 
                 style="padding:14px;background:linear-gradient(135deg,#7b5cff 0%,#4ca0ff 100%);color:#fff;border:none;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(123,92,255,0.3);transition:transform 0.2s;"
                 onmouseover="this.style.transform='translateY(-2px)'"
                 onmouseout="this.style.transform='translateY(0)'">
-            📲 Pay Now
+            &#128242; Pay Now
         </button>
     </div>
     
     <button onclick="copyUPI()" 
             style="width:100%;padding:12px;background:#f8f9fa;color:#333;border:1px solid #ddd;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;margin-bottom:15px;">
-        📋 Copy UPI ID
+        &#128203; Copy UPI ID
     </button>
 
     <!-- Instructions -->
     <div style="background:#fff3cd;border-left:4px solid #ffc107;padding:12px;border-radius:6px;font-size:12px;color:#856404;margin-bottom:15px;">
-        <strong>📝 Payment Steps:</strong><br>
+        <strong>&#128221; Payment Steps:</strong><br>
         <div style="margin-top:8px;line-height:1.8;">
-        1️⃣ Pay via QR code or UPI app<br>
-        2️⃣ Take screenshot of payment<br>
-        3️⃣ Send screenshot to WhatsApp<br>
-        4️⃣ Click "Request Access" button
+        1&#65039;&#8419; Pay via QR code or UPI app<br>
+        2&#65039;&#8419; Take screenshot of payment<br>
+        3&#65039;&#8419; Send screenshot to WhatsApp<br>
+        4&#65039;&#8419; Click "Request Access" button
         </div>
     </div>
 
@@ -477,17 +474,17 @@ button:active {
     <a href="https://wa.me/916299891191?text=Hello%20Sajan%20Sir,%20I%20have%20completed%20the%20payment.%20Please%20verify." 
        target="_blank"
        style="display:block;padding:12px;background:#25d366;color:#fff;text-align:center;border-radius:10px;text-decoration:none;font-weight:600;margin-bottom:15px;font-size:13px;">
-        💬 Send Screenshot on WhatsApp
+        &#128172; Send Screenshot on WhatsApp
     </a>
 
     <!-- Confirm Payment Button -->
     <button onclick="confirmPayment()" 
             style="width:100%;padding:15px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(102,126,234,0.4);">
-        ✅ I have paid, Request Access
+        &#9989; I have paid, Request Access
     </button>
     
     <p style="text-align:center;font-size:11px;color:#999;margin-top:15px;">
-        🔒 Secure Payment • ⚡ Instant Access
+        &#128274; Secure Payment &bull; &#9889; Instant Access
     </p>
 </div>
 </div>
