@@ -393,19 +393,16 @@ button:active {
 <div class="modal-content" style="max-width:380px; max-height:90vh; overflow-y:auto;">
 <button class="close-modal" onclick="closePaymentModal()">&times;</button>
 <div class="qr-payment" style="position:relative;">
-    <!-- Header with Back Button -->
-    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:15px;">
-    <button onclick="closePaymentModal()" 
-            style="background:#f0f0f0; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; color:#333; display:flex; align-items:center; gap:5px; transition:all 0.2s;"
-            onmouseover="this.style.background='#e0e0e0'"
-            onmouseout="this.style.background='#f0f0f0'">
-        ← Back
-    </button>
-    <div style="text-align:center; flex:1;">
-        <h3 id="paymentTitle" style="color:#333; margin:0; font-size:18px;">Complete Payment</h3>
-        <p style="font-size:13px; color:#666; margin:5px 0 0 0;">Secure & Instant Access</p>
-    </div>
-    <div style="width:50px;"></div> <!-- for balancing the back button space -->
+    <!-- Simplified Header without Back Button -->
+<div style="text-align:center; margin-bottom:20px;">
+    <h3 id="paymentTitle" 
+        style="color:#333; margin:0; font-size:24px; font-weight:700; line-height:1.2;">
+        Class 11th English
+    </h3>
+    <p style="font-size:14px; color:#666; margin-top:6px;">
+        Secure & Instant Access
+    </p>
+</div>
 </div>
     
     <!-- QR Code -->
