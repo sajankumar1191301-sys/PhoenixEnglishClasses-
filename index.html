@@ -1,0 +1,1230 @@
+<!doctype html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Sajan English Classes - Complete Chapter-wise Learning for Class 11th & 12th">
+<title>Sajan English Classes - Learning Platform</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Noto Sans',sans-serif}
+body {
+    background: linear-gradient(135deg,#f06 0,#c64 45%,#9b4 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0; /* <- यह बदलाव है */
+}
+.phone{width:360px;max-width:95vw;background:linear-gradient(180deg,#fff,#fafafa);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.25);overflow:hidden;position:relative}
+header {
+    background: linear-gradient(90deg, #ff6bb5, #7b5cff);
+    color: #fff;
+    padding: 22px 18px;
+    border-bottom-left-radius: 22px;
+    border-bottom-right-radius: 22px;
+    display: flex; /* यह लाइन जोड़ें */
+    justify-content: space-between; /* यह लाइन जोड़ें */
+    align-items: center; /* यह लाइन जोड़ें */
+}
+
+header .title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+/* बटन से absolute positioning हटा दें */
+.auth-toggle {
+    background: rgba(255, 255, 255, .2);
+    border: none;
+    color: #fff;
+    padding: 8px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 11px;
+    flex-shrink: 0; /* यह लाइन जोड़ें ताकि बटन छोटा न हो */
+}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
+.modal-content{background:#fff;border-radius:12px;padding:24px;width:320px;max-width:90vw;position:relative}
+.modal h3{margin-bottom:16px;color:#333}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;margin-bottom:4px;font-size:14px;color:#555}
+.form-group input,.form-group select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px}
+.btn-primary{width:100%;padding:12px;background:linear-gradient(90deg,#7b5cff,#4ca0ff);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px}
+.btn-secondary{background:#f8f9fa;color:#666;margin-top:8px}
+.close-modal{position:absolute;top:10px;right:10px;background:#f0f0f0;color:#333;border:none;font-size:28px;cursor:pointer;width:32px;height:32px;border-radius:50%;line-height:32px;text-align:center;transition:all .2s ease}
+.close-modal:hover{background:#e0e0e0;transform:rotate(90deg)}
+.loading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:3000;align-items:center;justify-content:center;flex-direction:column;color:#fff}
+.spinner{border:4px solid #f3f3f3;border-top:4px solid #7b5cff;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}
+@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}
+.contact{padding:16px;background:#0dbb67;color:#fff;margin:14px;border-radius:12px;box-shadow:0 6px 18px rgba(13,187,103,.18)}
+.contact .line{display:flex;justify-content:space-between;align-items:center}
+.contact small{opacity:.95}
+.contact>div{display:flex;gap:10px;margin-top:10px}
+.nav-tabs{display:flex;background:#f8f9fa;margin:14px;border-radius:12px;overflow:hidden}
+.nav-tab{flex:1;padding:12px 8px;text-align:center;background:0 0;border:none;cursor:pointer;font-size:12px;color:#666}
+.nav-tab.active{background:linear-gradient(90deg,#7b5cff,#4ca0ff);color:#fff}
+.card-wrap{padding:18px}
+.course-card{background:#fff;border-radius:14px;padding:16px;margin-bottom:16px;box-shadow:0 10px 20px rgba(12,20,40,.06);border:1px solid rgba(15,20,30,.02)}
+.course-card .head{display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.course-card h2{font-size:16px}
+.chip{font-size:12px;padding:6px 10px;border-radius:20px;background:linear-gradient(90deg,#7b5cff,#4ca0ff);color:#fff}
+.summary{margin-top:10px;font-size:13px;color:#666}
+.course-content{display:none;margin-top:12px}
+.course-content.show{display:block}
+.cat{margin-top:12px}
+.category-title{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:#f7f8fb;border:1px dashed rgba(0,0,0,.03);cursor:pointer}
+.chapters{padding:8px 10px;display:none}
+.chapter-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin-top:8px;background:linear-gradient(180deg,#fff,#f9fbff);border:1px solid rgba(15,20,30,.02);flex-direction:column;align-items:flex-start}
+.chapter-title{font-size:14px;margin-bottom:6px;width:100%}
+.chapter-actions{display:flex;gap:8px;flex-wrap:wrap;width:100%}
+.btn{padding:8px 10px;border-radius:8px;border:none;cursor:pointer;font-size:11px}
+.btn.explain{background:#e6f6ff;color:#333}
+.btn.qa{background:#fff1e6;color:#333}
+.btn.quiz{background:#f3e9ff;color:#333}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}
+.price{color:#ff2f6d;font-weight:700}
+.enroll{padding:8px 12px;border-radius:18px;background:linear-gradient(90deg,#6b7bff,#a758ff);color:#fff;border:none;cursor:pointer;font-size:12px}
+.admin-panel{display:none;padding:20px}
+.admin-section{margin-bottom:20px;padding:15px;background:#f8f9fa;border-radius:10px}
+.admin-section h3{margin-bottom:10px;color:#333}
+.file-upload{margin-bottom:10px}
+.file-upload input{margin-bottom:5px;width:100%;font-size:12px}
+.quiz-builder{margin-top:10px}
+.option-input{margin-bottom:5px}
+.content-list{margin-top:15px;max-height:300px;overflow-y:auto}
+.content-item{background:#fff;padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid #ddd;display:flex;justify-content:space-between;align-items:center}
+.content-item-info{flex:1}
+.content-item-actions{display:flex;gap:5px}
+.btn-delete{background:#dc3545;color:#fff;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-size:11px}
+.btn-delete:hover{background:#c82333}
+.btn-approve{background:#28a745;color:#fff;padding:6px 10px;border:none;border-radius:6px;cursor:pointer;font-size:11px}
+.btn-approve:hover{background:#218838}
+.content-viewer{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;overflow-y:auto}
+.content-header{background:linear-gradient(90deg,#ff6bb5,#7b5cff);color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}
+.content-body{padding:20px}
+.pdf-viewer{width:100%;height:600px;border:1px solid #ddd;border-radius:8px}
+.quiz-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;overflow-y:auto}
+.quiz-question{margin-bottom:20px;padding:15px;background:#f8f9fa;border-radius:10px}
+.quiz-options{margin-top:10px}
+.quiz-option{display:block;margin-bottom:8px;padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;cursor:pointer}
+.quiz-option:hover{background:#e6f6ff}
+.quiz-option.selected{background:#7b5cff;color:#fff}
+.quiz-score{text-align:center;padding:20px;font-size:18px;font-weight:700}
+.qr-payment{text-align:center;padding:20px}
+.qr-code{width:200px;height:200px;background:#f0f0f0;margin:20px auto;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#666;overflow:hidden}
+.payment-info{margin-top:15px;font-size:13px;color:#666}
+@media (max-width:420px){.phone{width:94vw}}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.upload-progress{margin-top:10px;padding:10px;background:#e6f6ff;border-radius:8px;font-size:13px}
+select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px}
+.error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}
+.error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}
+</style>
+</head>
+<body>
+
+<div id="errorBanner" class="error-banner"></div>
+
+<div id="loadingSpinner" class="loading">
+<div class="spinner"></div>
+<p style="margin-top:15px">Loading...</p>
+</div>
+
+<div class="phone">
+<div id="authModal" class="modal">
+<div class="modal-content">
+<button class="close-modal" onclick="closeModal()">&times;</button>
+<div id="loginForm">
+<h3>Student Login</h3>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="loginEmail" placeholder="Enter your email">
+<div class="error-msg" id="loginEmailError">Please enter valid email</div>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="loginPassword" placeholder="Password">
+<div class="error-msg" id="loginPasswordError">Password is required</div>
+</div>
+<button class="btn-primary" onclick="login()">Login</button>
+<button class="btn-primary btn-secondary" onclick="showSignup()">New Student? Register</button>
+<button class="btn-primary btn-secondary" onclick="showAdminLogin()">Admin Login</button>
+</div>
+<div id="signupForm" style="display:none">
+<h3>Student Registration</h3>
+<div class="form-group">
+<label>Full Name</label>
+<input type="text" id="signupName" placeholder="Full name">
+<div class="error-msg" id="signupNameError">Name is required</div>
+</div>
+<div class="form-group">
+<label>Phone Number</label>
+<input type="tel" id="signupPhone" placeholder="10-digit phone" maxlength="10">
+<div class="error-msg" id="signupPhoneError">Valid 10-digit phone required</div>
+</div>
+<div class="form-group">
+<label>Email</label>
+<input type="email" id="signupEmail" placeholder="Email" required>
+<div class="error-msg" id="signupEmailError">Valid email required</div>
+</div>
+<div class="form-group">
+<label>Class</label>
+<select id="signupClass">
+<option value="">Select Class</option>
+<option value="11">Class 11th</option>
+<option value="12">Class 12th</option>
+</select>
+<div class="error-msg" id="signupClassError">Please select class</div>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="signupPassword" placeholder="Min 6 characters">
+<div class="error-msg" id="signupPasswordError">Password must be at least 6 characters</div>
+</div>
+<button class="btn-primary" onclick="signup()">Register</button>
+<button class="btn-primary btn-secondary" onclick="showLogin()">Already registered? Login</button>
+</div>
+<div id="adminLoginForm" style="display:none">
+<h3>Admin Login</h3>
+<div class="form-group">
+<label>Admin Email</label>
+<input type="email" id="adminEmail" placeholder="Admin email">
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="adminPassword" placeholder="Admin password">
+</div>
+<button class="btn-primary" onclick="adminLogin()">Admin Login</button>
+<button class="btn-primary btn-secondary" onclick="showLogin()">Back to Student Login</button>
+</div>
+</div>
+</div>
+<header>
+<div class="title">
+<div style="width:44px;height:44px;border-radius:10px;background:rgba(255,255,255,.18);display:flex;align-items:center;justify-content:center">📚</div>
+<div>
+<h1>Sajan English Classes</h1>
+<p>Complete Chapter-wise Learning</p>
+</div>
+</div>
+<button class="auth-toggle" onclick="showAuthModal()" id="authButton">🔒 Login</button>
+</header>
+<div class="contact">
+<div class="line"><small>📞 Contact: Sajan Sir</small><small>Professional Teacher</small></div>
+<div>
+<div style="flex:1;background:rgba(255,255,255,.08);padding:10px;border-radius:8px;text-align:center">📱<br><small>Mobile<br>6299891191</small></div>
+<div style="flex:1;background:rgba(255,255,255,.08);padding:10px;border-radius:8px;text-align:center">💬<br><small>WhatsApp<br>6299891191</small></div>
+</div>
+</div>
+<div class="nav-tabs">
+<button class="nav-tab active" onclick='showTab("courses")'>Courses</button>
+<button class="nav-tab" id="adminTab" onclick='showTab("admin")' style="display:none">Admin</button>
+</div>
+<div id="courses" class="tab-content active">
+<div class="card-wrap" id="coursesContainer"></div>
+</div>
+<div id="admin" class="tab-content admin-panel">
+<div class="admin-section">
+<h3>Payment Approvals</h3>
+<button class="btn-primary" onclick="loadPendingPayments()" style="margin-bottom:10px">Refresh List</button>
+<div id="paymentApprovalList" class="content-list">
+<p style="padding:10px;text-align:center;color:#666">Click Refresh to see pending requests.</p>
+</div>
+</div>
+<div class="admin-section">
+<h3>Upload Content</h3>
+<select id="adminCourse" onchange="loadChapters()">
+<option value="">Select Course</option>
+<option value="11en">Class 11th English</option>
+<option value="12en">Class 12th English</option>
+<option value="11hi">Class 11th Hindi</option>
+<option value="12hi">Class 12th Hindi</option>
+</select>
+<select id="adminChapter">
+<option value="">Select Chapter</option>
+</select>
+<div class="file-upload" style="margin-top:15px">
+<h4>Explanation PDF</h4>
+<input type="file" id="explanationPdf" accept=".pdf">
+<button class="btn-primary" onclick='uploadContent("explanation")'>Upload</button>
+<div id="explanationProgress" class="upload-progress" style="display:none"></div>
+</div>
+<div class="file-upload">
+<h4>Q&A PDF</h4>
+<input type="file" id="qaPdf" accept=".pdf">
+<button class="btn-primary" onclick='uploadContent("qa")'>Upload</button>
+<div id="qaProgress" class="upload-progress" style="display:none"></div>
+</div>
+</div>
+<div class="admin-section">
+<h3>Manage Content</h3>
+<select id="manageContentCourse" onchange="loadUploadedContent()">
+<option value="">Select Course</option>
+<option value="11en">Class 11th English</option>
+<option value="12en">Class 12th English</option>
+<option value="11hi">Class 11th Hindi</option>
+<option value="12hi">Class 12th Hindi</option>
+</select>
+<div id="uploadedContentList" class="content-list"></div>
+</div>
+<div class="admin-section">
+<h3>Quiz Builder</h3>
+<input type="text" id="quizQuestion" placeholder="Question" style="width:100%;margin-bottom:10px;padding:8px;border:1px solid #ddd;border-radius:4px">
+<input type="text" class="option-input" placeholder="Option A" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
+<input type="text" class="option-input" placeholder="Option B" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
+<input type="text" class="option-input" placeholder="Option C" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
+<input type="text" class="option-input" placeholder="Option D" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
+<select id="correctAnswer" style="width:100%;margin-bottom:10px;padding:6px">
+<option value="">Correct Answer</option>
+<option value="0">Option A</option>
+<option value="1">Option B</option>
+<option value="2">Option C</option>
+<option value="3">Option D</option>
+</select>
+<button class="btn-primary" onclick="addQuizQuestion()">Add Question</button>
+<div id="quizPreview" style="margin-top:15px"><p>No questions added. Your draft will be auto-saved.</p></div>
+<button class="btn-primary" onclick="saveQuiz()" style="margin-top:10px">Save Quiz to Chapter</button>
+</div>
+<div class="admin-section">
+<h3>Manage Quizzes</h3>
+<select id="manageQuizCourse" onchange="loadUploadedQuizzes()">
+<option value="">Select Course</option>
+<option value="11en">Class 11th English</option>
+<option value="12en">Class 12th English</option>
+<option value="11hi">Class 11th Hindi</option>
+<option value="12hi">Class 12th Hindi</option>
+</select>
+<div id="uploadedQuizList" class="content-list"></div>
+</div>
+<div class="admin-section">
+<h3>Student Management</h3>
+<button class="btn-primary" onclick="loadStudentList()" style="margin-bottom:10px">Refresh Student List</button>
+<div id="studentList">
+    <p>Click Refresh to see registered students.</p>
+</div>
+</div>
+</div>
+<div id="contentViewer" class="content-viewer">
+<div class="content-header">
+<h3 id="contentTitle">Content</h3>
+<button onclick="closeContentViewer()" style="background:0 0;border:none;color:#fff;font-size:18px;cursor:pointer">&times;</button>
+</div>
+<div class="content-body"><iframe id="pdfViewer" class="pdf-viewer"></iframe></div>
+</div>
+<div id="quizContainer" class="quiz-container">
+<div class="content-header">
+<h3 id="quizTitle">Quiz</h3>
+<button onclick="closeQuiz()" style="background:0 0;border:none;color:#fff;font-size:18px;cursor:pointer">&times;</button>
+</div>
+<div class="content-body">
+<div id="quizContent"></div>
+<button id="submitQuiz" class="btn-primary" onclick="submitQuiz()" style="display:none;margin-top:20px">Submit</button>
+<div id="quizResult" class="quiz-score"></div>
+</div>
+</div>
+<div id="paymentModal" class="modal">
+<div class="modal-content">
+<button class="close-modal" onclick="closePaymentModal()">&times;</button>
+<div class="qr-payment">
+    <h3 id="paymentTitle">Payment</h3>
+    <div class="qr-code">
+        <img id="qrImage" src="https://bzblrchnazyybplhguzj.supabase.co/storage/v1/object/public/content-pdfs/WhatsApp%20Image%202025-10-07%20at%2023.00.57.jpeg" style="width:100%;height:100%;object-fit:contain;" alt="QR" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23999%22%3EQR Code%3C/text%3E%3C/svg%3E'">
+    </div>
+    <div class="payment-info">
+        <p><strong>Pay to:</strong> Sajan Sir</p>
+        <p><strong>UPI:</strong> 7992300522@ybl</p>
+        <p><strong>Phone:</strong> 6299891191</p>
+        <p><strong>Amount:</strong> <span id="paymentAmount">₹99</span></p>
+
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <a href="https://bzblrchnazyybplhguzj.supabase.co/storage/v1/object/public/content-pdfs/WhatsApp%20Image%202025-10-07%20at%2023.00.57.jpeg" 
+               download="sajan-sir-payment-qr.jpeg" 
+               style="flex:1; text-decoration: none; display:block; padding:10px; background:#f0f0f0; color:#333; border-radius:8px; font-size:12px; text-align:center;">
+               📥 Download QR
+            </a>
+            <a href="upi://pay?pa=7992300522@ybl&pn=Sajan%20Sir&am=99&cu=INR"
+               id="upiPayLink"
+               style="flex:1; text-decoration: none; display:block; padding:10px; background:#7b5cff; color:#fff; border-radius:8px; font-size:12px; text-align:center;">
+               📲 Pay with UPI
+            </a>
+        </div>
+
+        <p style="margin-top:15px;font-size:12px">Send screenshot to WhatsApp: <strong>6299891191</strong></p>
+        <button class="btn-primary" onclick="confirmPayment()" style="margin-top:15px">I have paid, Request Access ✓</button>
+    </div>
+</div>
+</div>
+</div>
+
+<script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+        onerror="handleScriptError('Supabase')"></script>
+<script>
+// Global error handler
+window.addEventListener('error', function(e) {
+    console.error('Global error:', e);
+    if (e.message === 'Script error.') {
+        showErrorBanner('Failed to load required scripts. Please check your internet connection and refresh the page.');
+    }
+});
+
+// Unhandled promise rejection handler
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled promise rejection:', e.reason);
+    showErrorBanner('An error occurred: ' + (e.reason?.message || 'Unknown error'));
+});
+
+function showErrorBanner(message) {
+    const banner = document.getElementById('errorBanner');
+    banner.textContent = '⚠️ ' + message;
+    banner.style.display = 'block';
+    setTimeout(() => {
+        banner.style.display = 'none';
+    }, 5000);
+}
+
+function handleScriptError(scriptName) {
+    showErrorBanner(scriptName + ' library failed to load. Please refresh the page.');
+}
+
+// Wait for Supabase to load
+// ✅ NAYA AUR FINAL CODE YAHAN SE COPY KAREIN
+
+function initializeApp() {
+    try {
+        if (typeof supabase === 'undefined') {
+            console.warn('Supabase still loading... retrying in 500ms');
+            setTimeout(initializeApp, 500);
+            return;
+        }
+
+        // Configuration
+        const CONFIG = {
+            SUPABASE_URL: 'https://dviuwzzjkzodadgbotei.supabase.co',
+            SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'
+        };
+
+        if (!CONFIG.SUPABASE_URL || CONFIG.SUPABASE_URL === 'YOUR_SUPABASE_URL_HERE') {
+            throw new Error('Please configure your Supabase credentials');
+        }
+
+        const { createClient } = supabase;
+        window._supabase = createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+
+        // Global variables
+        window.currentUser = null;
+        window.isAdmin = false;
+        window.currentQuizData = [];
+        window.currentQuizAnswers = {};
+
+        // Course data
+        window.courses = [
+            {id:'11en',name:'Class 11th English',price:99,originalPrice:199,summary:'Complete chapter-wise English course for Class 11th with all sections',categories:[
+                {title:'Prose',chapters:['Animals in Prison','Nalanda: Ancient Seat of Learning','A Snake in the Grass','The Rule of the Road','The Scientific Point of View','I Pass the Delhi Test','The Leader of Men','Mother India','National Unity, Nation and Nationalism','Dolly at the Dentist','The Three Vows','Exceptional Role of Newspapers in Development']},
+                {title:'Poetry',chapters:['Where the Mind is without Fear','The Marriage of True Minds','The Chimney Sweeper','Stopping by Woods on a Snowy Evening','The Lamentation of the Old Pensioner','Three Years She Grew','Village Song','Follower','Voice of the Unwanted Girl','South Delhi Murder']},
+                {title:'Story of English',chapters:['How English Began','English Down the Ages','Global English','Future of English','Story of English Poetry']},
+                {title:'Grammar',chapters:['Parts of speech','Noun','Pronoun','Adjective','Verb','Adverb','Preposition','Conjunction','Interjection','Determiners','Question tags']},
+                {title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}
+            ]},
+            {id:'12en',name:'Class 12th English',price:199,originalPrice:299,summary:'Board exam focused complete English preparation for Class 12th',categories:[
+                {title:'Prose',chapters:['Indian Civilisation and Culture','Bharat is My Home','A Pinch of Snuff','I Have a Dream','Ideas that have Helped Mankind','The Artist','A Child Born','How Free is the Press','The Earth','India Through a Traveller\'s Eyes','A Marriage Proposal']},
+                {title:'Poetry',chapters:['Sweetest Love I do not Goe','Song of Myself','Now the Leaves are Falling Fast','Ode to Autumn','An Epitaph','The Soldier','Macavity: The Mystery Cat','Fire-Hymn','Snake','My Grandmother\'s House']},
+                {title:'Story of English',chapters:['Old English','Middle English','Modern English','English as a World Language','Story of English Drama','Story of the Novel in English']},
+                {title:'Grammar',chapters:['Voice','Time and Tense','Modal verb','Combination','Transformation','Preposition','Correction of sentences','Article','Spelling test','Subject - verb agreement','Narration','Phrases','Antonyms','Synonyms','Miscellaneous']},
+                {title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}
+            ]},
+            {id:'11hi',name:'Class 11th Hindi',price:99,originalPrice:199,summary:'संपूर्ण हिंदी पाठ्यक्रम कक्षा 11 के लिए सभी sections के साथ',categories:[
+                {title:'गद्य खंड',chapters:['पूस की रात','कविता की परख','आंखो देखा गदर','बेजोड़ गायिका : लता मंगेशकर','चलचित्र','मेरी वियतनाम यात्रा','सिक्का बदल गया','उत्तरी स्वप्न परी : हरी क्रांति','एक दीक्षांत भाषण','सूर्य','भोगे हुए दिन','गांव के बच्चों की शिक्षा']},
+                {title:'पद्य खंड',chapters:['विद्यापति के पद','कबीर के पद','मीराबाई के पद','सहजोबाई के पद','भारत-दुर्दशा','अंकार','तोड़ती पत्थर','बहुत दिनों के बाद','गालिब','जगरनाथ','पृथ्वी','मातृभूमि']},
+                {title:'व्याकरण',chapters:['संज्ञा','सर्वनाम','विशेषण','क्रिया','क्रिया विशेषण','समुच्चयबोधक (संयोजक)','विस्मयादिबोधक','अव्यय (निपात)']},
+                {title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}
+            ]},
+            {id:'12hi',name:'Class 12th Hindi',price:199,originalPrice:299,summary:'उन्नत स्तर की परीक्षा तैयारी कक्षा 12 हिंदी सभी chapters के साथ',categories:[
+                {title:'गद्य खण्ड',chapters:['बातचीत','उसने कहा था','संपूर्ण क्रांति','अर्धनारीश्वर','रोज','एक लेख और एक पत्र','ओ सदानीरा','सिपाही की मां','प्रगीत और समाज','जूठन','हंसते हुए मेरा अकेलापन','तिरिछ','शिक्षा']},
+                {title:'काव्य खण्ड',chapters:['कड़बक','सूरदास के पद','तुलसीदास के पद','छप्पय','कवित्त','तुम्हें कोलाहल कलह में','पुत्र वियोग','उषा','जन-जन का चेहरा एक','अधिनायक','प्यारे नन्हें बेटे को','हार-जीत','गांव का घर']},
+                {title:'व्याकरण',chapters:['उच्चारण स्थान','संज्ञा','सर्वनाम','विशेषण','मुहावरे','विलोम शब्द','पर्यायवाची शब्द','अनेक शब्दों के लिए एक शब्द','समास','लिंग निर्णय','संधि विच्छेद','उपसर्ग','प्रत्यय','शब्द शुद्धिकरण','वाक्य शुद्धिकरण','कारक','वचन','काल','शब्द','पदबंध']},
+                {title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}
+            ]},
+            {id:'complete',name:'Complete Package (All 4 Courses)',price:499,originalPrice:896,summary:'सभी 4 courses एक साथ - Class 11th & 12th English + Hindi with maximum discount',categories:[]}
+        ];
+
+        // Sirf LOGOUT ko handle karne ke liye listener
+        _supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
+                currentUser = null;
+                isAdmin = false;
+                updateAuthState();
+                renderCourses();
+                showTab('courses');
+            }
+        });
+        
+        // App start karne ke liye manual check
+        checkUserSession();
+
+    } catch (error) {
+        console.error('Initialization error:', error);
+        showErrorBanner('Failed to initialize app: ' + error.message);
+        hideLoading();
+    }
+}
+
+// Session check karne ke liye naya function
+async function checkUserSession() {
+    showLoading();
+    try {
+        const { data: { session }, error: sessionError } = await _supabase.auth.getSession();
+        if (sessionError) throw sessionError;
+
+        if (session) {
+            const { data: u, error: userError } = await _supabase.from('users').select('*').eq('id', session.user.id).single();
+            // This is a critical check. If a user exists in auth but not in our public users table, it's a problem.
+            if (userError) throw userError;
+
+            if (u) {
+                currentUser = { uid: session.user.id, email: session.user.email, ...u };
+                isAdmin = u.is_admin || false;
+                updateAuthState();
+                renderCourses();
+                if (isAdmin) {
+                    loadStudentList();
+                    loadPendingPayments();
+                    loadQuizDraft();
+                }
+            } else {
+                 // This case should ideally not happen if signup is robust.
+                 throw new Error('User profile not found in database.');
+            }
+        } else {
+            // Agar koi session nahi hai to normal page dikhayein
+            renderCourses();
+        }
+    } catch (e) {
+        console.error('Error loading user session, session might be corrupt:', e);
+        // अगर सेशन है लेकिन प्रोफाइल नहीं मिली, तो यह एक खराब स्टेट है।
+        // यूजर को लॉगआउट करके UI को साफ करें।
+        const { data: { session } } = await _supabase.auth.getSession();
+        if (session) {
+            await _supabase.auth.signOut();
+        }
+        // UI को रीसेट करें और एक साफ मैसेज दिखाएं
+        currentUser = null;
+        isAdmin = false;
+        updateAuthState();
+        renderCourses();
+        showMessage('Your session was cleared due to an error. Please log in again.');
+    } finally {
+        hideLoading();
+    }
+}
+
+// Helper functions
+function showLoading(){document.getElementById('loadingSpinner').style.display='flex'}
+function hideLoading(){document.getElementById('loadingSpinner').style.display='none'}
+function showMessage(m){alert(m)}
+function hideError(id){const el=document.getElementById(id);if(el)el.style.display='none'}
+function showError(id,msg){const el=document.getElementById(id);if(el){el.textContent=msg;el.style.display='block'}}
+function validatePhone(phone){return /^\d{10}$/.test(phone)}
+function validateEmail(email){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
+
+function showAuthModal(){document.getElementById('authModal').style.display='flex';showLogin()}
+function closeModal(){document.getElementById('authModal').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
+function showLogin(){document.getElementById('loginForm').style.display='block';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
+function showSignup(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block';document.getElementById('adminLoginForm').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
+function showAdminLogin(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='block';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
+
+async function signup(){
+    document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none');
+    const name=document.getElementById('signupName').value.trim();
+    const phone=document.getElementById('signupPhone').value.trim();
+    const email=document.getElementById('signupEmail').value.trim();
+    const studentClass=document.getElementById('signupClass').value;
+    const password=document.getElementById('signupPassword').value;
+    let hasError=false;
+    if(!name){showError('signupNameError','Name is required');hasError=true}
+    if(!validatePhone(phone)){showError('signupPhoneError','Valid 10-digit phone required');hasError=true}
+    if(!validateEmail(email)){showError('signupEmailError','Valid email required');hasError=true}
+    if(!studentClass){showError('signupClassError','Please select class');hasError=true}
+    if(password.length<6){showError('signupPasswordError','Password must be at least 6 characters');hasError=true}
+    if(hasError)return;
+    showLoading();
+    try{
+        const{data:authData,error:authError}=await _supabase.auth.signUp({email:email,password:password});
+        if(authError)throw authError;
+        
+        const{error:dbError}=await _supabase.from('users').insert({id:authData.user.id,name:name,phone:phone,email:email,student_class:studentClass,purchased_courses:[],is_admin:false});
+        if(dbError)throw dbError;
+
+        // Manually setting user after signup, as onAuthStateChange might have a delay.
+        currentUser = {uid: authData.user.id, email: authData.user.email, name: name, phone: phone, student_class: studentClass, purchased_courses: []};
+        isAdmin = false;
+        updateAuthState();
+        renderCourses();
+        
+        closeModal();
+        showMessage('Registration successful! Welcome '+name)
+    }catch(error){
+        console.error(error);
+        if(error.message.includes('duplicate')||error.message.includes('unique')){showMessage('This phone or email is already registered')}
+        else{showMessage('Registration failed: '+error.message)}
+    }finally{hideLoading()}
+}
+async function login(){
+    document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none');
+    const email=document.getElementById('loginEmail').value.trim();
+    const password=document.getElementById('loginPassword').value;
+    
+    let hasError=false;
+    if(!validateEmail(email)){
+        showError('loginEmailError','Valid email required');
+        hasError=true;
+    }
+    if(!password){
+        showError('loginPasswordError','Password is required');
+        hasError=true;
+    }
+    if(hasError)return;
+    
+    showLoading();
+    try{
+        const{data, error}=await _supabase.auth.signInWithPassword({
+            email:email,
+            password:password
+        });
+        if(error)throw error;
+        
+        // After successful login, manually fetch data to immediately update UI
+        await checkUserSession(); // Use our new robust function
+        closeModal();
+
+    }catch(error){
+        console.error(error);
+        showMessage('Invalid email or password');
+        hideLoading(); // Ensure loading is hidden on login failure
+    }
+}
+
+async function adminLogin(){
+    const email=document.getElementById('adminEmail').value.trim();
+    const password=document.getElementById('adminPassword').value;
+    if(!email||!password){showMessage('Please fill all fields');return}
+    showLoading();
+    try{
+        const{data,error}=await _supabase.auth.signInWithPassword({email:email,password:password});
+        if(error)throw error;
+        const{data:userDoc,error:userError}=await _supabase.from('users').select('is_admin').eq('id',data.user.id).single();
+        if(userError)throw userError;
+        if(userDoc && userDoc.is_admin===true){
+            await checkUserSession(); // Use our new robust function
+            closeModal();
+            showMessage('Admin login successful');
+        }
+        else{
+            await _supabase.auth.signOut();
+            showMessage('No admin privileges for this account');
+        }
+    }catch(error){
+        console.error(error);
+        showMessage('Admin login failed');
+    }finally{
+        hideLoading();
+    }
+}
+
+function logout(){
+    if(confirm('Are you sure you want to logout?')){
+        _supabase.auth.signOut();
+    }
+}
+
+function updateAuthState(){
+    const authButton=document.getElementById('authButton');
+    const adminTab=document.getElementById('adminTab');
+    if(currentUser){
+        authButton.textContent=isAdmin?'👨‍💼 Admin':'👋 '+currentUser.name.split(' ')[0];
+        authButton.onclick=logout;
+        if(isAdmin)adminTab.style.display='block'
+    }else{
+        authButton.textContent='🔒 Login';
+        authButton.onclick=showAuthModal;
+        adminTab.style.display='none'
+    }
+}
+
+function showTab(tabName){
+    document.querySelectorAll('.nav-tab').forEach(tab=>tab.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content=>content.classList.remove('active'));
+    const tabButton=document.querySelector(`[onclick="showTab('${tabName}')"]`);
+    if(tabButton)tabButton.classList.add('active');
+    const tabContent=document.getElementById(tabName);
+    if(tabContent)tabContent.classList.add('active')
+}
+
+function toggleCourseContent(courseId){
+    const contentDiv=document.getElementById('content_'+courseId);
+    if(contentDiv){contentDiv.classList.toggle('show')}
+}
+
+function createChapterHTML(courseId,cat,ch,isEnrolled){
+    const btnDisabled=!isEnrolled?'disabled':'';
+    const explainBtn=`<button class="btn explain" ${btnDisabled} onclick="openContent('${courseId}','${cat.title}','${ch}','explanation')">📖 Explanation</button>`;
+    const qaBtn=`<button class="btn qa" ${btnDisabled} onclick="openContent('${courseId}','${cat.title}','${ch}','qa')">❓ Q&A</button>`;
+    const isWritingSection=cat.title.toLowerCase().includes('writing')||cat.title.includes('लेखन');
+    const quizBtn=isWritingSection?'':`<button class="btn quiz" ${btnDisabled} onclick="openQuiz('${courseId}','${cat.title}','${ch}')">🎯 Quiz</button>`;
+    const chapterDiv=document.createElement('div');
+    chapterDiv.className='chapter-item';
+    chapterDiv.innerHTML=`<div class="chapter-title">${ch}</div><div class="chapter-actions">${explainBtn}${qaBtn}${quizBtn}</div>`;
+    return chapterDiv
+}
+
+function renderCourses(){
+    const container=document.getElementById('coursesContainer');
+    if(!container)return;
+    container.innerHTML='';
+    courses.forEach(course=>{
+        const card=document.createElement('div');
+        card.className='course-card';
+        const isEnrolled=currentUser&&currentUser.purchased_courses&&currentUser.purchased_courses.includes(course.id);
+        let totalChapters=0,totalSections=0;
+        if(course.id==='complete'){
+            ['11en','12en','11hi','12hi'].forEach(cId=>{
+                let c=courses.find(x=>x.id===cId);
+                if(c){
+                    totalSections+=c.categories.length;
+                    c.categories.forEach(cat=>{totalChapters+=cat.chapters.length})
+                }
+            })
+        }else{
+            totalSections=course.categories.length;
+            course.categories.forEach(cat=>{totalChapters+=cat.chapters.length})
+        }
+    
+        const savings=course.originalPrice-course.price;
+
+        // बदला हुआ HTML: अब onclick हेडर से हटा दिया गया है और कोई .course-content नहीं है।
+        // सब कुछ सीधे कार्ड में दिखेगा।
+        card.innerHTML=`
+            <div class="head">
+                <div>
+                    <h2>${course.name}</h2>
+                    <div class="summary">${course.summary}</div>
+                    <div style="margin-top:8px;font-size:12px;color:#666">📚 ${totalChapters} Chapters | 🎯 ${totalSections} Sections</div>
+                </div>
+                <div class="chip">₹${course.price}</div>
+            </div>
+            <div style="margin-top:12px;padding:10px;background:#f8f9fa;border-radius:8px">
+                <div style="font-size:12px;color:#666">
+                    ✅ Chapter-wise PDF Materials<br>
+                    ✅ Question & Answer Sessions<br>
+                    ✅ Interactive Quizzes with Scores<br>
+                    ✅ Mobile-friendly Learning
+                    ${course.id==='complete'?'<br>✅ All 4 Courses Included<br>✅ Maximum Discount':''}
+                </div>
+            </div>
+            <div class="cat-list" style="margin-top: 10px;"></div>`;
+        
+        const catList=card.querySelector('.cat-list');
+        if(course.id!=='complete'){
+            course.categories.forEach((cat,ci)=>{
+                const c=document.createElement('div');
+                c.className='cat';
+                const safeId=course.id+'_cat_'+ci;
+                
+                // यहाँ category-title पर क्लिक करने से chapters दिखेंगे/छिपेंगे
+                c.innerHTML=`<div class="category-title" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block';">
+                                <strong>${cat.title}</strong>
+                                <small>${cat.chapters.length} lessons ▾</small>
+                             </div>
+                             <div class="chapters" id="${safeId}"></div>`;
+                
+                const chaptersDiv=c.querySelector('.chapters');
+                cat.chapters.forEach(ch=>{chaptersDiv.appendChild(createChapterHTML(course.id,cat,ch,isEnrolled))});
+                catList.appendChild(c)
+            })
+        }
+
+        const actionDiv=document.createElement('div');
+        if(isEnrolled){
+            actionDiv.innerHTML=`<div class="price-row" style="margin-top: 15px;"><div style="color:#28a745;font-weight:bold;font-size:14px">✅ Enrolled & Active</div><button class="enroll" style="background:#28a745" disabled>Access Content</button></div>`
+        }else{
+            actionDiv.innerHTML=`<div class="price-row" style="margin-top: 15px;"><div class="price">₹${course.price} <small style="text-decoration:line-through;color:#aaa;margin-left:8px">₹${course.originalPrice}</small><div style="font-size:11px;color:#28a745;margin-top:2px">💰 Save ₹${savings}</div></div><button class="enroll" onclick="initiatePayment('${course.id}','${course.name}',${course.price})">🛒 Enroll Now</button></div><div style="text-align:center;margin-top:8px;font-size:11px;color:#666">💳 Secure Payment | 📱 Instant Access</div>`
+        }
+
+        // actionDiv को सीधे कार्ड में जोड़ा गया
+        card.appendChild(actionDiv);
+        container.appendChild(card)
+    })
+}
+
+function initiatePayment(courseId, courseName, price) {
+    if (!currentUser) {
+        showMessage('Please login first');
+        showAuthModal();
+        return;
+    }
+    document.getElementById('paymentTitle').textContent = 'Payment for ' + courseName;
+    document.getElementById('paymentAmount').textContent = '₹' + price;
+    
+    // UPI लिंक को डायनामिक रूप से अपडेट करें
+    const upiLink = document.getElementById('upiPayLink');
+    if (upiLink) {
+        upiLink.href = `upi://pay?pa=7992300522@ybl&pn=Sajan%20Sir&am=${price}&cu=INR`;
+    }
+
+    document.getElementById('paymentModal').style.display = 'flex';
+    window.pendingPayment = { courseId, courseName, price };
+}
+
+function closePaymentModal(){document.getElementById('paymentModal').style.display='none'}
+
+async function confirmPayment() {
+    if (!window.pendingPayment || !currentUser) return;
+    const { courseId, courseName, price } = window.pendingPayment;
+    showLoading();
+    try {
+        const { data: existingPurchase, error: existingError } = await _supabase.from('purchases').select('id').eq('user_id', currentUser.uid).eq('course_id', courseId).eq('status', 'pending_verification').limit(1);
+        if (existingError) throw existingError;
+        if (existingPurchase && existingPurchase.length > 0) {
+            showMessage('Your request for this course is already pending approval.');
+            return;
+        }
+        // अब हम ईमेल भी सेव कर रहे हैं
+        await _supabase.from('purchases').insert({
+            user_id: currentUser.uid,
+            user_name: currentUser.name,
+            user_phone: currentUser.phone,
+            user_email: currentUser.email, // ✅ यह नई लाइन है
+            course_id: courseId,
+            course_name: courseName,
+            amount: '₹' + price,
+            status: 'pending_verification'
+        });
+        closePaymentModal();
+        showMessage('Payment request sent! Please send screenshot to WhatsApp: 6299891191. Admin will approve soon.')
+    } catch (error) {
+        console.error(error);
+        showMessage('Failed to send payment request')
+    } finally {
+        hideLoading()
+    }
+}
+
+async function openContent(courseId, category, chapter, type) {
+    if (!currentUser || !currentUser.purchased_courses || !currentUser.purchased_courses.includes(courseId)) {
+        showMessage('Please enroll first');
+        return;
+    }
+    showLoading();
+    try {
+        const { data: contentData, error } = await _supabase.from('content').select('*').eq('course_id', courseId).eq('category', category).eq('chapter', chapter).eq('type', type).limit(1).single();
+        if (error && error.code !== 'PGRST116') throw error;
+        if (contentData) {
+            document.getElementById('contentTitle').textContent = `${chapter} - ${type}`;
+            // यहाँ पर #toolbar=0 जोड़ा गया है
+            document.getElementById('pdfViewer').src = contentData.url + '#toolbar=0';
+            document.getElementById('contentViewer').style.display = 'block'
+        } else {
+            showMessage('Content not uploaded yet')
+        }
+    } catch (error) {
+        console.error(error);
+        showMessage('Failed to load content')
+    } finally {
+        hideLoading()
+    }
+}
+
+function closeContentViewer(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src=''}
+
+async function openQuiz(courseId,category,chapter){
+    if(!currentUser||!currentUser.purchased_courses||!currentUser.purchased_courses.includes(courseId)){showMessage('Please enroll first');return}
+    showLoading();
+    try{
+        const{data:quizData,error}=await _supabase.from('quizzes').select('*').eq('course_id',courseId).eq('category',category).eq('chapter',chapter).limit(1).single();
+        if(error&&error.code!=='PGRST116')throw error;
+        if(quizData){
+            currentQuizData=quizData.questions;
+            currentQuizAnswers={};
+            renderQuiz(chapter);
+            document.getElementById('quizContainer').style.display='block'
+        }else{showMessage('Quiz not available yet')}
+    }catch(error){console.error(error);showMessage('Failed to load quiz')}finally{hideLoading()}
+}
+
+function renderQuiz(chapterName){
+    document.getElementById('quizTitle').textContent='Quiz: '+chapterName;
+    const content=document.getElementById('quizContent');
+    content.innerHTML='';
+    currentQuizData.forEach((q,qIndex)=>{
+        const qDiv=document.createElement('div');
+        qDiv.className='quiz-question';
+        const optionsHtml=q.options.map((option,oIndex)=>`<div class="quiz-option" onclick="selectAnswer(${qIndex},${oIndex})">${String.fromCharCode(65+oIndex)}. ${option}</div>`).join('');
+        qDiv.innerHTML=`<div style="font-weight:bold;margin-bottom:10px">${qIndex+1}. ${q.question}</div><div class="quiz-options">${optionsHtml}</div>`;
+        content.appendChild(qDiv)
+    });
+    document.getElementById('submitQuiz').style.display='block';
+    document.getElementById('quizResult').innerHTML=''
+}
+
+function selectAnswer(questionIndex,optionIndex){
+    currentQuizAnswers[questionIndex]=optionIndex;
+    const questionDiv=document.querySelectorAll('.quiz-question')[questionIndex];
+    const options=questionDiv.querySelectorAll('.quiz-option');
+    options.forEach(opt=>opt.classList.remove('selected'));
+    options[optionIndex].classList.add('selected')
+}
+
+async function submitQuiz(){
+    let correct=0;
+    const total=currentQuizData.length;
+    currentQuizData.forEach((q,index)=>{if(currentQuizAnswers[index]===q.correctAnswer)correct++});
+    const percentage=Math.round((correct/total)*100);
+    document.getElementById('quizResult').innerHTML=`<div class="quiz-score"><h3>Quiz Results</h3><div style="font-size:24px;margin:15px 0">${correct}/${total} (${percentage}%)</div><div style="color:${percentage>=70?'#28a745':'#dc3545'}">${percentage>=70?'🎉 Excellent!':'📚 Keep Practicing!'}</div></div>`;
+    document.getElementById('submitQuiz').style.display='none';
+    if(currentUser){
+        try{await _supabase.from('quiz_results').insert({user_id:currentUser.uid,user_name:currentUser.name,score:correct,total:total,percentage:percentage})}catch(error){console.error(error)}
+    }
+}
+
+function closeQuiz(){document.getElementById('quizContainer').style.display='none';currentQuizData=[];currentQuizAnswers={}}
+
+function loadChapters(){
+    const courseId=document.getElementById('adminCourse').value;
+    const chapterSelect=document.getElementById('adminChapter');
+    chapterSelect.innerHTML='<option value="">Select Chapter</option>';
+    if(courseId){
+        const course=courses.find(c=>c.id===courseId);
+        if(course){
+            course.categories.forEach(cat=>{
+                cat.chapters.forEach(ch=>{
+                    const option=document.createElement('option');
+                    option.value=`${cat.title}|||${ch}`;
+                    option.textContent=`${cat.title} - ${ch}`;
+         
+                   chapterSelect.appendChild(option)
+                })
+            })
+        }
+    }
+}
+
+async function uploadContent(type){
+    if(!isAdmin){showMessage('Admin access required');return}
+    const courseId=document.getElementById('adminCourse').value;
+    const chapterValue=document.getElementById('adminChapter').value;
+    if(!courseId||!chapterValue){showMessage('Select course and chapter');return}
+    const[category,chapter]=chapterValue.split('|||');
+    const fileInput=document.getElementById(type==='explanation'?'explanationPdf':'qaPdf');
+    const file=fileInput.files[0];
+    if(!file){showMessage('Select a PDF file');return}
+    if(file.type!=='application/pdf'){showMessage('Only PDF files allowed');return}
+    if(file.size>10*1024*1024){showMessage('File size must be less than 10MB');return}
+    const progressDiv=document.getElementById(type+'Progress');
+    progressDiv.style.display='block';
+    progressDiv.textContent='Uploading...';
+    try {
+  const filePath = `content/${courseId}/${category}/${chapter}/${type}_${Date.now()}.pdf`;
+
+  // 🔹 Upload
+  const { data, error: uploadError } = await _supabase.storage
+    .from('content-pdfs')
+    .upload(filePath, file);
+
+  if (uploadError) {
+    console.error('Upload failed:', uploadError.message);
+    progressDiv.textContent = '❌ Upload failed: ' + uploadError.message;
+    showMessage('Upload failed: ' + uploadError.message);
+    return; // ❌ आगे मत बढ़ो
+  }
+
+  // 🔹 Get public URL
+  const { data: urlData } = _supabase.storage
+    .from('content-pdfs')
+    .getPublicUrl(filePath);
+  const downloadURL = urlData.publicUrl;
+
+  // 🔹 Insert metadata
+  const { error: insertError } = await _supabase.from('content').insert({
+    course_id: courseId,
+    category,
+    chapter,
+    type,
+    url: downloadURL,
+    file_path: filePath,
+    file_name: file.name,
+    uploaded_by: currentUser.uid
+  });
+
+  if (insertError) {
+    console.error('DB insert failed:', insertError.message);
+    progressDiv.textContent = '❌ Database insert failed: ' + insertError.message;
+    showMessage('Database save failed: ' + insertError.message);
+    return;
+  }
+
+  // ✅ Only if everything succeeded:
+  progressDiv.textContent = '✅ Upload successful!';
+  showMessage('PDF uploaded successfully!');
+  fileInput.value = '';
+  setTimeout(() => progressDiv.style.display = 'none', 3000);
+  loadUploadedContent();
+
+} catch (error) {
+  console.error('Unexpected error:', error);
+  showMessage('Unexpected error: ' + error.message);
+  progressDiv.style.display = 'none';
+}
+}
+
+async function loadUploadedContent(){
+    if(!isAdmin)return;
+    const courseId=document.getElementById('manageContentCourse').value;
+    const contentList=document.getElementById('uploadedContentList');
+    if(!courseId){contentList.innerHTML='<p style="padding:10px;text-align:center;color:#666">Select a course to see content.</p>';return}
+    showLoading();
+    try{
+        const{data:contents,error}=await _supabase.from('content').select('*').eq('course_id',courseId).order('uploaded_at',{ascending:false});
+        if(error)throw error;
+        if(!contents||contents.length===0){
+            contentList.innerHTML='<p style="padding:10px;text-align:center;color:#666">No content uploaded for this course.</p>'
+        }else{
+            contentList.innerHTML='';
+            const groupedContent={};
+            contents.forEach(content=>{
+                const key=content.chapter;
+                if(!groupedContent[key])groupedContent[key]={category:content.category,items:[]};
+                groupedContent[key].items.push(content)
+            });
+            Object.keys(groupedContent).forEach(chapter=>{
+                const group=groupedContent[chapter];
+                const itemDiv=document.createElement('div');
+                itemDiv.style.cssText='background:white;padding:12px;margin-bottom:10px;border-radius:8px;border:1px solid #ddd';
+                let contentHtml=`<div style="font-weight:600;margin-bottom:8px">${chapter}</div><div style="font-size:12px;color:#666;margin-bottom:8px">${group.category}</div>`;
+                group.items.forEach(item=>{
+             
+                    const bgColor=item.type==='explanation'?'#e6f6ff':'#fff1e6';
+                    contentHtml+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;padding:6px;background:${bgColor};border-radius:6px"><span style="font-size:12px">📄 ${item.type}</span><button class="btn-delete" onclick="deleteContent(${item.id},'${item.file_path}','${chapter}')">Delete</button></div>`
+                });
+                itemDiv.innerHTML=contentHtml;
+                contentList.appendChild(itemDiv)
+            })
+        }
+    }catch(error){console.error(error);showMessage('Failed to load content')}finally{hideLoading()}
+}
+
+async function deleteContent(contentId,filePath,chapterName){
+    if(!isAdmin)return;
+    if(!confirm(`Delete content for "${chapterName}"? This cannot be undone.`))return;
+    showLoading();
+    try{
+        if(filePath){
+            const{error:storageError}=await _supabase.storage.from('content-pdfs').remove([filePath]);
+            if(storageError)console.error("Storage Error:",storageError.message)
+        }
+        const{error:dbError}=await _supabase.from('content').delete().eq('id',contentId);
+        if(dbError)throw dbError;
+        showMessage('Content deleted successfully!');
+        loadUploadedContent()
+    }catch(error){console.error(error);showMessage('Failed to delete content')}finally{hideLoading()}
+}
+
+let currentQuizBuilder=[];
+const QUIZ_DRAFT_KEY='quizBuilderDraft';
+function loadQuizDraft(){
+    try{
+        const draft=localStorage.getItem(QUIZ_DRAFT_KEY);
+        if(draft){
+            currentQuizBuilder=JSON.parse(draft);
+            updateQuizPreview()
+        }
+    }catch(e){console.error('Failed to load quiz draft:',e)}
+}
+
+function addQuizQuestion(){
+    const question=document.getElementById('quizQuestion').value.trim();
+    const options=Array.from(document.querySelectorAll('.option-input')).map(input=>input.value.trim());
+    const correctAnswer=parseInt(document.getElementById('correctAnswer').value);
+    if(!question||options.some(opt=>!opt)||isNaN(correctAnswer)){showMessage('Fill all question fields');return}
+    currentQuizBuilder.push({question:question,options:options,correctAnswer:correctAnswer});
+    try{
+        localStorage.setItem(QUIZ_DRAFT_KEY,JSON.stringify(currentQuizBuilder));
+    }catch(e){console.error('Failed to save draft:',e)}
+    document.getElementById('quizQuestion').value='';
+    document.querySelectorAll('.option-input').forEach(input=>input.value='');
+    document.getElementById('correctAnswer').value='';
+    updateQuizPreview()
+}
+
+function updateQuizPreview(){
+    const preview=document.getElementById('quizPreview');
+    if(!preview)return;
+    if(currentQuizBuilder.length===0){preview.innerHTML='<p>No questions added. Your draft will be auto-saved.</p>';return}
+    const questionsHtml=currentQuizBuilder.map((q,index)=>{
+        const optionsHtml=q.options.map((opt,i)=>`<div style="color:${i===q.correctAnswer?'#28a745':'#666'}">${String.fromCharCode(65+i)}. ${opt}</div>`).join('');
+        return`<div style="background:white;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ddd"><strong>${index+1}. ${q.question}</strong><div style="margin-left:20px;margin-top:5px">${optionsHtml}</div><button class="btn-delete" onclick="removeQuestion(${index})" style="margin-top:5px">Remove</button></div>`
+    }).join('');
+    preview.innerHTML=`<h4>Preview (${currentQuizBuilder.length} questions):</h4>${questionsHtml}`
+}
+
+function removeQuestion(index){
+    currentQuizBuilder.splice(index,1);
+    try{
+        localStorage.setItem(QUIZ_DRAFT_KEY,JSON.stringify(currentQuizBuilder));
+    }catch(e){console.error('Failed to save draft:',e)}
+    updateQuizPreview()
+}
+
+async function saveQuiz(){
+    if(!isAdmin){showMessage('Admin access required');return}
+    const courseId=document.getElementById('adminCourse').value;
+    const chapterValue=document.getElementById('adminChapter').value;
+    if(!courseId||!chapterValue){showMessage('Select course and chapter');return}
+    if(currentQuizBuilder.length===0){showMessage('Add at least one question');return}
+    const[category,chapter]=chapterValue.split('|||');
+    showLoading();
+    try{
+        await _supabase.from('quizzes').insert({course_id:courseId,category:category,chapter:chapter,questions:currentQuizBuilder,created_by:currentUser.uid});
+        showMessage(`Quiz saved for "${chapter}"!`);
+        currentQuizBuilder=[];
+        try{
+            localStorage.removeItem(QUIZ_DRAFT_KEY);
+        }catch(e){console.error('Failed to clear draft:',e)}
+        updateQuizPreview()
+    }catch(error){console.error(error);showMessage('Failed to save quiz')}finally{hideLoading()}
+}
+
+async function loadUploadedQuizzes(){
+    if(!isAdmin)return;
+    const courseId=document.getElementById('manageQuizCourse').value;
+    const quizList=document.getElementById('uploadedQuizList');
+    if(!courseId){quizList.innerHTML='<p style="padding:10px;text-align:center;color:#666">Select a course</p>';return}
+    showLoading();
+    try{
+        const{data:quizzes,error}=await _supabase.from('quizzes').select('*').eq('course_id',courseId).order('created_at',{ascending:false});
+        if(error)throw error;
+        if(!quizzes||quizzes.length===0){
+            quizList.innerHTML='<p style="padding:10px;text-align:center;color:#666">No quizzes created</p>'
+        }else{
+            quizList.innerHTML='';
+            quizzes.forEach(quiz=>{
+                const itemDiv=document.createElement('div');
+                itemDiv.className='content-item';
+                itemDiv.innerHTML=`<div class="content-item-info"><div>${quiz.chapter}</div><small>${quiz.category} • ${quiz.questions.length}Q</small></div><div class="content-item-actions"><button class="btn-delete" onclick="deleteQuiz(${quiz.id},'${quiz.chapter}')">Delete</button></div>`;
+                quizList.appendChild(itemDiv)
+            })
+        }
+    }catch(error){console.error(error);showMessage('Failed to load quizzes')}finally{hideLoading()}
+}
+
+async function 
+deleteQuiz(quizId,chapterName){
+    if(!isAdmin)return;
+    if(!confirm(`Delete quiz for "${chapterName}"?`))return;
+    showLoading();
+    try{
+        await _supabase.from('quizzes').delete().eq('id',quizId);
+        showMessage('Quiz deleted!');
+        loadUploadedQuizzes()
+    }catch(error){console.error(error);showMessage('Failed to delete')}finally{hideLoading()}
+}
+
+async function loadStudentList(){
+    if(!isAdmin)return;
+    const studentList=document.getElementById('studentList');
+    studentList.innerHTML='<p>Loading...</p>';
+    try{
+        const{data:users,error}=await _supabase.from('users').select('*').eq('is_admin',false).order('created_at',{ascending:false});
+        if(error)throw error;
+        if(!users||users.length===0){
+            studentList.innerHTML='<h4>Students:</h4><p>No students registered</p>'
+        }else{
+            studentList.innerHTML=`<h4>Students (${users.length}):</h4>`;
+            users.forEach(user=>{
+                const studentDiv=document.createElement('div');
+                studentDiv.style.cssText='background:white;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ddd';
+                const purchasedCourses=user.purchased_courses||[];
+                const courseNames=purchasedCourses.map(cId=>courses.find(c=>c.id===cId)?.name||cId).join(', ')||'None';
+                const createdDate=new Date(user.created_at).toLocaleDateString();
+           
+                studentDiv.innerHTML=`<strong>${user.name}</strong><br><small>📞 ${user.phone} | ✉️ ${user.email}</small><br><small>🎓 Class ${user.student_class}</small><br><small>📚 Courses: ${courseNames}</small><br><small>📅 Registered on: ${createdDate}</small>`;
+                studentList.appendChild(studentDiv)
+            })
+        }
+}catch(error){console.error(error);studentList.innerHTML='<p style="color:red">Failed to load students</p>'}
+}
+
+async function loadPendingPayments() {
+    if (!isAdmin) return;
+    const listDiv = document.getElementById('paymentApprovalList');
+    listDiv.innerHTML = '<p>Loading pending payments...</p>';
+    try {
+        // हम user_email भी सेलेक्ट कर रहे हैं
+        const { data: purchases, error } = await _supabase.from('purchases').select('*').eq('status', 'pending_verification').order('created_at', { ascending: true });
+        if (error) throw error;
+        if (!purchases || purchases.length === 0) {
+            listDiv.innerHTML = '<p style="padding:10px;text-align:center;color:#666">No pending payments found.</p>';
+            return
+        }
+        listDiv.innerHTML = '';
+        purchases.forEach(p => {
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'content-item';
+            // ✅ यहाँ HTML को अपडेट किया गया है ताकि ईमेल भी दिखे
+            itemDiv.innerHTML = `
+                <div class="content-item-info">
+                    <div style="font-weight:600; margin-bottom: 4px;">👤 ${p.user_name}</div>
+                    <div style="font-size:12px; color:#555;">📞 ${p.user_phone}</div>
+                    <div style="font-size:12px; color:#555;">✉️ ${p.user_email || 'N/A'}</div>
+                    <div style="font-size:12px; margin-top: 4px;">📚 Course: <strong>${p.course_name}</strong></div>
+                </div>
+                <div class="content-item-actions">
+                    <button class="btn-approve" onclick="approvePayment(${p.id},'${p.user_id}','${p.course_id}')">Approve</button>
+                </div>`;
+            listDiv.appendChild(itemDiv)
+        })
+    } catch (error) {
+        console.error("Failed to load pending payments:", error);
+        listDiv.innerHTML = '<p style="color:red;">Error loading requests.</p>'
+    }
+}
+
+async function approvePayment(purchaseId, userId, courseId) {
+    if (!isAdmin || !confirm(`Approve course "${courseId}" for user?`)) return;
+    showLoading();
+    try {
+        // We now call the RPC function instead of updating tables directly
+        const { error } = await _supabase
+            .rpc('approve_course_for_user', {
+                p_user_id: userId,
+                p_course_id: courseId,
+                p_purchase_id: purchaseId
+            });
+
+        if (error) {
+            // The error from the function will be more specific
+            throw error;
+        }
+
+        showMessage('Access granted successfully!');
+        loadPendingPayments(); // Refresh the list
+        loadStudentList(); // Refresh student list to show updated course
+    } catch (error) {
+        console.error("Approval failed:", error);
+        // The error message from the RPC function will be shown here
+        showMessage('Error: Could not approve payment. Reason: ' + error.message);
+    } finally {
+        hideLoading();
+    }
+}
+// Initialize when DOM is ready
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initializeApp);
+} else {
+    // DOMContentLoaded already fired
+    initializeApp();
+}
+</script>
+</body>
+</html>
