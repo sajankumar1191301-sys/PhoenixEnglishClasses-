@@ -390,20 +390,20 @@ button:active {
 </div>
 </div>
 <div id="paymentModal" class="modal">
-<div class="modal-content" style="max-width:380px;">
+<div class="modal-content" style="max-width:380px; max-height:90vh; overflow-y:auto;">
 <button class="close-modal" onclick="closePaymentModal()">&times;</button>
-<div class="qr-payment">
+<div class="qr-payment" style="position:relative;">
     <!-- Header with Back Button -->
     <div style="display:flex; align-items:center; margin-bottom:15px; position:relative;">
         <button onclick="closePaymentModal()" 
                 style="position:absolute; left:0; background:#f0f0f0; border:none; padding:8px 12px; border-radius:8px; cursor:pointer; font-size:14px; color:#333; display:flex; align-items:center; gap:5px; transition:all 0.2s;"
                 onmouseover="this.style.background='#e0e0e0'"
                 onmouseout="this.style.background='#f0f0f0'">
-            &larr; Back
+            ← Back
         </button>
         <div style="flex:1; text-align:center;">
             <h3 id="paymentTitle" style="color:#333; margin:0; font-size:18px;">Complete Payment</h3>
-            <p style="font-size:13px; color:#666; margin:5px 0 0 0;">Secure &amp; Instant Access</p>
+            <p style="font-size:13px; color:#666; margin:5px 0 0 0;">Secure & Instant Access</p>
         </div>
     </div>
     
@@ -961,43 +961,46 @@ function downloadQR() {
     try {
         const qrImage = document.getElementById('qrImage');
         
-        // Check if QR image is valid
-        if (!qrImage || !qrImage.src || qrImage.src.includes('data:image')) {
+        if (!qrImage || !qrImage.src) {
             showMessage('❌ QR code not available. Please contact admin.');
             return;
         }
         
-        // Check if it's a broken image
         if (qrImage.naturalWidth === 0) {
             showMessage('❌ QR code failed to load. Please refresh the page.');
             return;
         }
         
-        // Create temporary download link
-        const link = document.createElement('a');
-        link.href = qrImage.src;
-        link.download = 'sajan-sir-payment-qr-' + Date.now() + '.jpeg';
-        link.style.display = 'none';
-        
-        // Add to DOM, click, and remove
-        document.body.appendChild(link);
-        link.click();
-        
-        // Small delay before removing
-        setTimeout(() => {
-            document.body.removeChild(link);
-        }, 100);
-        
-        // Success message
-        showMessage('✅ QR Code downloading... Check your downloads folder.');
-        
-        // Track download (optional analytics)
-        console.log('QR Downloaded at:', new Date().toLocaleString());
+        fetch(qrImage.src)
+            .then(response => response.blob())
+            .then(blob => {
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = 'sajan-sir-payment-qr-' + Date.now() + '.jpeg';
+                link.style.display = 'none';
+                
+                document.body.appendChild(link);
+                link.click();
+                
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    window.URL.revokeObjectURL(url);
+                }, 100);
+                
+                showMessage('✅ QR Code downloaded successfully!');
+            })
+            .catch(error => {
+                console.error('Download error:', error);
+                const link = document.createElement('a');
+                link.href = qrImage.src;
+                link.download = 'sajan-sir-payment-qr.jpeg';
+                link.click();
+                showMessage('✅ Download started!');
+            });
         
     } catch (error) {
         console.error('Download error:', error);
-        
-        // Fallback for mobile devices
         showMessage('📱 Long-press on QR code to save image');
     }
 }
