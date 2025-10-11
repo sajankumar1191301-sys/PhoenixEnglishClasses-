@@ -13,7 +13,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px 0; /* <- यह बदलाव है */
+    padding: 20px 0;
 }
 .phone{width:360px;max-width:95vw;background:linear-gradient(180deg,#fff,#fafafa);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.25);overflow:hidden;position:relative}
 header {
@@ -22,18 +22,15 @@ header {
     padding: 22px 18px;
     border-bottom-left-radius: 22px;
     border-bottom-right-radius: 22px;
-    display: flex; /* यह लाइन जोड़ें */
-    justify-content: space-between; /* यह लाइन जोड़ें */
-    align-items: center; /* यह लाइन जोड़ें */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
-
 header .title {
     display: flex;
     align-items: center;
     gap: 12px;
 }
-
-/* बटन से absolute positioning हटा दें */
 .auth-toggle {
     background: rgba(255, 255, 255, .2);
     border: none;
@@ -42,7 +39,7 @@ header .title {
     border-radius: 20px;
     cursor: pointer;
     font-size: 11px;
-    flex-shrink: 0; /* यह लाइन जोड़ें ताकि बटन छोटा न हो */
+    flex-shrink: 0;
 }
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
 .modal-content{background:#fff;border-radius:12px;padding:24px;width:320px;max-width:90vw;position:relative}
@@ -122,6 +119,73 @@ header .title {
 select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px}
 .error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}
 .error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}
+
+/* ============================================ */
+/* 🎨 ENHANCED PAYMENT MODAL STYLES */
+/* ============================================ */
+
+/* Modal fade-in animation */
+.modal {
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Modal content slide-up animation */
+.modal-content {
+    animation: slideUp 0.3s ease;
+}
+
+@keyframes slideUp {
+    from { 
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to { 
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* QR code hover effect */
+.qr-code {
+    position: relative;
+    overflow: hidden;
+}
+
+.qr-code img {
+    transition: transform 0.3s ease;
+}
+
+.qr-code:hover img {
+    transform: scale(1.05);
+}
+
+/* Button hover effects */
+button {
+    transition: all 0.2s ease !important;
+}
+
+button:active {
+    transform: scale(0.98) !important;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 420px) {
+    .modal-content {
+        max-width: 95vw !important;
+        margin: 10px;
+    }
+}
+
+/* ============================================ */
+/* END OF PAYMENT STYLES */
+/* ============================================ */
+
 </style>
 </head>
 <body>
@@ -326,35 +390,93 @@ select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-bo
 </div>
 </div>
 <div id="paymentModal" class="modal">
-<div class="modal-content">
+<div class="modal-content" style="max-width:380px;">
 <button class="close-modal" onclick="closePaymentModal()">&times;</button>
 <div class="qr-payment">
-    <h3 id="paymentTitle">Payment</h3>
-    <div class="qr-code">
-        <img id="qrImage" src="https://bzblrchnazyybplhguzj.supabase.co/storage/v1/object/public/content-pdfs/WhatsApp%20Image%202025-10-07%20at%2023.00.57.jpeg" style="width:100%;height:100%;object-fit:contain;" alt="QR" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 200 200%22%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 fill=%22%23999%22%3EQR Code%3C/text%3E%3C/svg%3E'">
+    <!-- Header -->
+    <h3 id="paymentTitle" style="color:#333; margin-bottom:10px; font-size:18px;">Complete Payment</h3>
+    <p style="font-size:13px; color:#666; margin-bottom:15px;">Secure & Instant Access</p>
+    
+    <!-- QR Code -->
+    <div class="qr-code" style="margin-bottom:15px;">
+        <img id="qrImage" 
+             src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/content-pdfs/QR%20code.jpeg" 
+             style="width:100%;height:100%;object-fit:contain;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" 
+             alt="Payment QR Code"
+             onerror="this.parentElement.innerHTML='<div style=padding:60px;background:#f8f9fa;border-radius:10px;text-align:center;color:#999>QR Code Loading...</div>'">
     </div>
-    <div class="payment-info">
-        <p><strong>Pay to:</strong> Sajan Sir</p>
-        <p><strong>UPI:</strong> 7992300522@ybl</p>
-        <p><strong>Phone:</strong> 6299891191</p>
-        <p><strong>Amount:</strong> <span id="paymentAmount">₹99</span></p>
-
-        <div style="display:flex; gap:10px; margin-top:15px;">
-            <a href="https://bzblrchnazyybplhguzj.supabase.co/storage/v1/object/public/content-pdfs/WhatsApp%20Image%202025-10-07%20at%2023.00.57.jpeg" 
-               download="sajan-sir-payment-qr.jpeg" 
-               style="flex:1; text-decoration: none; display:block; padding:10px; background:#f0f0f0; color:#333; border-radius:8px; font-size:12px; text-align:center;">
-               📥 Download QR
-            </a>
-            <a href="upi://pay?pa=7992300522@ybl&pn=Sajan%20Sir&am=99&cu=INR"
-               id="upiPayLink"
-               style="flex:1; text-decoration: none; display:block; padding:10px; background:#7b5cff; color:#fff; border-radius:8px; font-size:12px; text-align:center;">
-               📲 Pay with UPI
-            </a>
+    
+    <!-- Payment Details Card -->
+    <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:15px;border-radius:10px;margin-bottom:15px;color:#fff;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;opacity:0.9;">💳 UPI ID</span>
+            <span style="font-weight:600;font-size:14px;" id="upiIdText">7992300522@ybl</span>
         </div>
-
-        <p style="margin-top:15px;font-size:12px">Send screenshot to WhatsApp: <strong>6299891191</strong></p>
-        <button class="btn-primary" onclick="confirmPayment()" style="margin-top:15px">I have paid, Request Access ✓</button>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+            <span style="font-size:13px;opacity:0.9;">👤 Name</span>
+            <span style="font-weight:600;font-size:14px;">Sajan Sir</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-size:13px;opacity:0.9;">💬 WhatsApp</span>
+            <span style="font-weight:600;font-size:14px;">6299891191</span>
+        </div>
     </div>
+    
+    <!-- Amount Display -->
+    <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:20px;border-radius:10px;text-align:center;margin-bottom:15px;">
+        <p style="color:#fff;font-size:14px;opacity:0.9;margin-bottom:5px;">Total Amount</p>
+        <p style="color:#fff;font-size:32px;font-weight:700;margin:0;" id="paymentAmount">₹99</p>
+    </div>
+
+    <!-- Action Buttons -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">
+        <button onclick="downloadQR()" 
+                style="padding:14px;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:#fff;border:none;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(17,153,142,0.3);transition:transform 0.2s;"
+                onmouseover="this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.transform='translateY(0)'">
+            📥 Download QR
+        </button>
+        <button onclick="openUPI()" 
+                style="padding:14px;background:linear-gradient(135deg,#7b5cff 0%,#4ca0ff 100%);color:#fff;border:none;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(123,92,255,0.3);transition:transform 0.2s;"
+                onmouseover="this.style.transform='translateY(-2px)'"
+                onmouseout="this.style.transform='translateY(0)'">
+            📲 Pay Now
+        </button>
+    </div>
+    
+    <button onclick="copyUPI()" 
+            style="width:100%;padding:12px;background:#f8f9fa;color:#333;border:1px solid #ddd;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;margin-bottom:15px;">
+        📋 Copy UPI ID
+    </button>
+
+    <!-- Instructions -->
+    <div style="background:#fff3cd;border-left:4px solid #ffc107;padding:12px;border-radius:6px;font-size:12px;color:#856404;margin-bottom:15px;">
+        <strong>📝 Payment Steps:</strong><br>
+        <div style="margin-top:8px;line-height:1.8;">
+        1️⃣ Pay via QR code or UPI app<br>
+        2️⃣ Take screenshot of payment<br>
+        3️⃣ Send screenshot to WhatsApp<br>
+        4️⃣ Click "Request Access" button
+        </div>
+    </div>
+
+    <!-- WhatsApp Direct Link -->
+    <a href="https://wa.me/916299891191?text=Hello%20Sajan%20Sir,%20I%20have%20completed%20the%20payment.%20Please%20verify." 
+       target="_blank"
+       style="display:block;padding:12px;background:#25d366;color:#fff;text-align:center;border-radius:10px;text-decoration:none;font-weight:600;margin-bottom:15px;font-size:13px;">
+        💬 Send Screenshot on WhatsApp
+    </a>
+
+    <!-- Confirm Payment Button -->
+    <button onclick="confirmPayment()" 
+            style="width:100%;padding:15px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(102,126,234,0.4);">
+        ✅ I have paid, Request Access
+    </button>
+    
+    <p style="text-align:center;font-size:11px;color:#999;margin-top:15px;">
+        🔒 Secure Payment • ⚡ Instant Access
+    </p>
+</div>
 </div>
 </div>
 </div>
@@ -795,54 +917,177 @@ function renderCourses(){
     })
 }
 
+// ============================================
+// 💳 PAYMENT FUNCTIONS - BEST VERSION
+// ============================================
+
 function initiatePayment(courseId, courseName, price) {
     if (!currentUser) {
-        showMessage('Please login first');
+        showMessage('Please login first to proceed');
         showAuthModal();
         return;
     }
-    document.getElementById('paymentTitle').textContent = 'Payment for ' + courseName;
+    
+    // Update modal content
+    document.getElementById('paymentTitle').textContent = courseName;
     document.getElementById('paymentAmount').textContent = '₹' + price;
     
-    // UPI लिंक को डायनामिक रूप से अपडेट करें
-    const upiLink = document.getElementById('upiPayLink');
-    if (upiLink) {
-        upiLink.href = `upi://pay?pa=7992300522@ybl&pn=Sajan%20Sir&am=${price}&cu=INR`;
-    }
-
-    document.getElementById('paymentModal').style.display = 'flex';
+    // Store payment info globally
     window.pendingPayment = { courseId, courseName, price };
+    
+    // Show payment modal
+    document.getElementById('paymentModal').style.display = 'flex';
+    
+    // Log for debugging
+    console.log('Payment initiated:', { courseId, courseName, price });
 }
 
-function closePaymentModal(){document.getElementById('paymentModal').style.display='none'}
+function closePaymentModal() {
+    document.getElementById('paymentModal').style.display = 'none';
+}
 
-async function confirmPayment() {
-    if (!window.pendingPayment || !currentUser) return;
-    const { courseId, courseName, price } = window.pendingPayment;
-    showLoading();
+// ✅ Download QR Code Function
+function downloadQR() {
     try {
-        const { data: existingPurchase, error: existingError } = await _supabase.from('purchases').select('id').eq('user_id', currentUser.uid).eq('course_id', courseId).eq('status', 'pending_verification').limit(1);
-        if (existingError) throw existingError;
-        if (existingPurchase && existingPurchase.length > 0) {
-            showMessage('Your request for this course is already pending approval.');
+        const qrImage = document.getElementById('qrImage');
+        
+        // Check if QR image is valid
+        if (!qrImage || !qrImage.src || qrImage.src.includes('data:image')) {
+            showMessage('❌ QR code not available. Please contact admin.');
             return;
         }
-        // अब हम ईमेल भी सेव कर रहे हैं
-        await _supabase.from('purchases').insert({
-            user_id: currentUser.uid,
-            user_name: currentUser.name,
-            user_phone: currentUser.phone,
-            user_email: currentUser.email, // ✅ यह नई लाइन है
-            course_id: courseId,
-            course_name: courseName,
-            amount: '₹' + price,
-            status: 'pending_verification'
-        });
-        closePaymentModal();
-        showMessage('Payment request sent! Please send screenshot to WhatsApp: 6299891191. Admin will approve soon.')
+        
+        // Check if it's a broken image
+        if (qrImage.naturalWidth === 0) {
+            showMessage('❌ QR code failed to load. Please refresh the page.');
+            return;
+        }
+        
+        // Create temporary download link
+        const link = document.createElement('a');
+        link.href = qrImage.src;
+        link.download = 'sajan-sir-payment-qr-' + Date.now() + '.jpeg';
+        link.style.display = 'none';
+        
+        // Add to DOM, click, and remove
+        document.body.appendChild(link);
+        link.click();
+        
+        // Small delay before removing
+        setTimeout(() => {
+            document.body.removeChild(link);
+        }, 100);
+        
+        // Success message
+        showMessage('✅ QR Code downloading... Check your downloads folder.');
+        
+        // Track download (optional analytics)
+        console.log('QR Downloaded at:', new Date().toLocaleString());
+        
     } catch (error) {
-        console.error(error);
-        showMessage('Failed to send payment request')
+        console.error('Download error:', error);
+        
+        // Fallback for mobile devices
+        showMessage('📱 Long-press on QR code to save image');
+    }
+}
+
+// ✅ Open UPI App Function
+function openUPI() {
+    if (!window.pendingPayment) {
+        showMessage('❌ Payment information not found. Please try again.');
+        return;
+    }
+    
+    const { price, courseName } = window.pendingPayment;
+    
+    // Construct UPI payment URL
+    const upiId = '7992300522@ybl';
+    const name = 'Sajan Sir';
+    const note = encodeURIComponent('Course: ' + courseName);
+    const upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${price}&cu=INR&tn=${note}`;
+    
+    // Try to open UPI app
+    console.log('Opening UPI with URL:', upiUrl);
+    window.location.href = upiUrl;
+    
+    // Show instruction after delay
+    setTimeout(() => {
+        const msg = '💡 Tip: If UPI app didn\'t open:\n' +
+                    '1. Scan QR code manually\n' +
+                    '2. Or copy UPI ID: ' + upiId;
+        showMessage(msg);
+    }, 2500);
+    
+    // Track UPI open attempt
+    console.log('UPI payment initiated:', { price, courseName, timestamp: new Date().toLocaleString() });
+}
+
+// ✅ Copy UPI ID Function
+function copyUPI() {
+    const upiId = '7992300522@ybl';
+    
+    // Modern clipboard API
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(upiId)
+            .then(() => {
+                showMessage('✅ UPI ID copied: ' + upiId + '\nPaste in any UPI app');
+                
+                // Visual feedback
+                const btn = event.target;
+                const originalText = btn.innerHTML;
+                btn.innerHTML = '✅ Copied!';
+                btn.style.background = '#28a745';
+                btn.style.color = '#fff';
+                
+                setTimeout(() => {
+                    btn.innerHTML = originalText;
+                    btn.style.background = '#f8f9fa';
+                    btn.style.color = '#333';
+                }, 2000);
+            })
+            .catch(err => {
+                console.error('Clipboard error:', err);
+                fallbackCopy(upiId);
+            });
+    } else {
+        // Fallback for older browsers
+        fallbackCopy(upiId);
+    }
+}
+
+// Fallback copy method for older browsers
+function fallbackCopy(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.top = '0';
+    textArea.style.left = '0';
+    textArea.style.width = '1px';
+    textArea.style.height = '1px';
+    textArea.style.opacity = '0';
+    
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+    
+    try {
+        const successful = document.execCommand('copy');
+        if (successful) {
+            showMessage('✅ UPI ID copied: ' + text);
+        } else {
+            showMessage('❌ Copy failed. UPI ID: ' + text);
+        }
+    } catch (err) {
+        console.error('Fallback copy error:', err);
+        showMessage('UPI ID: ' + text + '\n(Please copy manually)');
+    }
+    
+    document.body.removeChild(textArea);
+
+// ============================================
+// END OF PAYMENT FUNCTIONS
+// ============================================
     } finally {
         hideLoading()
     }
