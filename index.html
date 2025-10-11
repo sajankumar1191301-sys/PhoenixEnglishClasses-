@@ -1084,15 +1084,42 @@ function fallbackCopy(text) {
     }
     
     document.body.removeChild(textArea);
+}
 
 // ============================================
 // END OF PAYMENT FUNCTIONS
 // ============================================
+
+async function confirmPayment() {
+    if (!window.pendingPayment || !currentUser) return;
+    const { courseId, courseName, price } = window.pendingPayment;
+    showLoading();
+    try {
+        const { data: existingPurchase, error: existingError } = await _supabase.from('purchases').select('id').eq('user_id', currentUser.uid).eq('course_id', courseId).eq('status', 'pending_verification').limit(1);
+        if (existingError) throw existingError;
+        if (existingPurchase && existingPurchase.length > 0) {
+            showMessage('Your request for this course is already pending approval.');
+            return;
+        }
+        await _supabase.from('purchases').insert({
+            user_id: currentUser.uid,
+            user_name: currentUser.name,
+            user_phone: currentUser.phone,
+            user_email: currentUser.email,
+            course_id: courseId,
+            course_name: courseName,
+            amount: '₹' + price,
+            status: 'pending_verification'
+        });
+        closePaymentModal();
+        showMessage('Payment request sent! Please send screenshot to WhatsApp: 6299891191. Admin will approve soon.')
+    } catch (error) {
+        console.error(error);
+        showMessage('Failed to send payment request')
     } finally {
         hideLoading()
     }
 }
-
 async function openContent(courseId, category, chapter, type) {
     if (!currentUser || !currentUser.purchased_courses || !currentUser.purchased_courses.includes(courseId)) {
         showMessage('Please enroll first');
