@@ -838,7 +838,7 @@ function createChapterHTML(courseId,cat,ch,isEnrolled){
     return chapterDiv
 }
 
-function renderCourses(){
+function renderCourses() {
     const container = document.getElementById('coursesContainer');
     if (!container) return;
     container.innerHTML = '';
@@ -853,29 +853,34 @@ function renderCourses(){
         card.className = 'course-card';
 
         // ✅ Enrolled if individually purchased OR via Complete Package
-const hasCompletePackage = currentUser && currentUser.purchased_courses && currentUser.purchased_courses.includes('complete');
-const isEnrolled =
-    currentUser &&
-    currentUser.purchased_courses &&
-    (currentUser.purchased_courses.includes(course.id) || hasCompletePackage);
+        const isEnrolled =
+            currentUser &&
+            currentUser.purchased_courses &&
+            (currentUser.purchased_courses.includes(course.id) || hasCompletePackage);
 
         let totalChapters = 0, totalSections = 0;
+
         if (course.id === 'complete') {
+            // ✅ Complete package ke andar ke 4 courses ka data count
             ['11en', '12en', '11hi', '12hi'].forEach(cId => {
                 let c = courses.find(x => x.id === cId);
                 if (c) {
                     totalSections += c.categories.length;
-                    c.categories.forEach(cat => { totalChapters += cat.chapters.length; });
+                    c.categories.forEach(cat => {
+                        totalChapters += cat.chapters.length;
+                    });
                 }
             });
         } else {
             totalSections = course.categories.length;
-            course.categories.forEach(cat => { totalChapters += cat.chapters.length; });
+            course.categories.forEach(cat => {
+                totalChapters += cat.chapters.length;
+            });
         }
 
         const savings = course.originalPrice - course.price;
 
-        // 🧾 Course card HTML
+        // ✅ Card main structure
         card.innerHTML = `
             <div class="head">
                 <div>
@@ -887,6 +892,7 @@ const isEnrolled =
                 </div>
                 <div class="chip">₹${course.price}</div>
             </div>
+
             <div style="margin-top:12px;padding:10px;background:#f8f9fa;border-radius:8px">
                 <div style="font-size:12px;color:#666">
                     ✅ Chapter-wise PDF Materials<br>
@@ -896,9 +902,11 @@ const isEnrolled =
                     ${course.id === 'complete' ? '<br>✅ All 4 Courses Included<br>✅ Maximum Discount' : ''}
                 </div>
             </div>
+
             <div class="cat-list" style="margin-top:10px;"></div>
         `;
 
+        // ✅ Category and chapter list
         const catList = card.querySelector('.cat-list');
         if (course.id !== 'complete') {
             course.categories.forEach((cat, ci) => {
@@ -907,7 +915,9 @@ const isEnrolled =
                 const safeId = course.id + '_cat_' + ci;
 
                 c.innerHTML = `
-                    <div class="category-title" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block';">
+                    <div class="category-title" 
+                        onclick="this.nextElementSibling.style.display = 
+                        this.nextElementSibling.style.display === 'block' ? 'none' : 'block';">
                         <strong>${cat.title}</strong>
                         <small>${cat.chapters.length} lessons ▾</small>
                     </div>
@@ -918,10 +928,12 @@ const isEnrolled =
                 cat.chapters.forEach(ch => {
                     chaptersDiv.appendChild(createChapterHTML(course.id, cat, ch, isEnrolled));
                 });
+
                 catList.appendChild(c);
             });
         }
 
+        // ✅ Enrollment button or access indicator
         const actionDiv = document.createElement('div');
         if (isEnrolled) {
             actionDiv.innerHTML = `
@@ -929,7 +941,9 @@ const isEnrolled =
                     <div style="color:#28a745;font-weight:bold;font-size:14px">
                         ✅ Enrolled & Active
                     </div>
-                    <button class="enroll" style="background:#28a745" disabled>Access Content</button>
+                    <button class="enroll" style="background:#28a745" disabled>
+                        Access Content
+                    </button>
                 </div>
             `;
         } else {
@@ -937,10 +951,17 @@ const isEnrolled =
                 <div class="price-row" style="margin-top:15px;">
                     <div class="price">
                         ₹${course.price}
-                        <small style="text-decoration:line-through;color:#aaa;margin-left:8px">₹${course.originalPrice}</small>
-                        <div style="font-size:11px;color:#28a745;margin-top:2px">💰 Save ₹${savings}</div>
+                        <small style="text-decoration:line-through;color:#aaa;margin-left:8px">
+                            ₹${course.originalPrice}
+                        </small>
+                        <div style="font-size:11px;color:#28a745;margin-top:2px">
+                            💰 Save ₹${savings}
+                        </div>
                     </div>
-                    <button class="enroll" onclick="initiatePayment('${course.id}','${course.name}',${course.price})">🛒 Enroll Now</button>
+                    <button class="enroll" 
+                        onclick="initiatePayment('${course.id}','${course.name}',${course.price})">
+                        🛒 Enroll Now
+                    </button>
                 </div>
                 <div style="text-align:center;margin-top:8px;font-size:11px;color:#666">
                     💳 Secure Payment | 📱 Instant Access
@@ -952,6 +973,7 @@ const isEnrolled =
         container.appendChild(card);
     });
 }
+
 
 
         const actionDiv=document.createElement('div');
