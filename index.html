@@ -1576,23 +1576,21 @@ async function approvePayment(purchaseId, userId, courseId) {
             }, 300);
         }
 
-        showMessage('âœ… Access granted successfully!');
-        loadStudentList(); // Student list refresh karein
+    showMessage('✅ Access granted successfully!');
+loadStudentList(); // Student list refresh karein
 
-    } catch (error) {
-        console.error("Approval process failed:", error);
-        showMessage('âŒ Error: ' + error.message);
-        
-        // âŒ Agar error aaye to item ko wapas visible karein
-        if (itemDiv) {
-            itemDiv.style.opacity = '1';
-            itemDiv.style.pointerEvents = 'auto';
-        }
-    } finally {
-        hideLoading();
+} catch (error) {
+    console.error("Approval process failed:", error);
+    showMessage('❌ Error: ' + error.message);
+    
+    // ❌ Agar error aaye to item ko wapas visible karein
+    if (itemDiv) {
+        itemDiv.style.opacity = '1';
+        itemDiv.style.pointerEvents = 'auto';
     }
+} finally {
+    hideLoading();
 }
-
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
