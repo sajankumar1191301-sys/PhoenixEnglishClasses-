@@ -1508,7 +1508,7 @@ async function loadPendingPayments() {
 async function approvePayment(purchaseId, userId, courseId) {
     if (!isAdmin || !confirm(`Approve course "${courseId}" for user?`)) return;
     
-    // âœ… Step 0: Pehle us item ko DOM se visually fade-out karein
+    // ✅ Step 0: Pehle us item ko DOM se visually fade-out karein
     const approveButton = event.target;
     const itemDiv = approveButton.closest('.content-item');
     if (itemDiv) {
@@ -1559,7 +1559,7 @@ async function approvePayment(purchaseId, userId, courseId) {
             console.warn('Purchase status update failed:', updatePurchaseError.message);
         }
 
-        // âœ… SUCCESS - Ab item ko DOM se completely remove karein
+        // ✅ SUCCESS - Ab item ko DOM se completely remove karein
         if (itemDiv) {
             itemDiv.style.transition = 'all 0.3s ease';
             itemDiv.style.opacity = '0';
@@ -1571,26 +1571,27 @@ async function approvePayment(purchaseId, userId, courseId) {
                 // Agar koi pending payment nahi bacha to message dikhayein
                 const listDiv = document.getElementById('paymentApprovalList');
                 if (listDiv && listDiv.children.length === 0) {
-                    listDiv.innerHTML = '<p style="padding:10px;text-align:center;color:#666">âœ… No pending payments!</p>';
+                    listDiv.innerHTML = '<p style="padding:10px;text-align:center;color:#666">✅ No pending payments!</p>';
                 }
             }, 300);
         }
 
-    showMessage('✅ Access granted successfully!');
-loadStudentList(); // Student list refresh karein
+        showMessage('✅ Access granted successfully!');
+        loadStudentList(); // Student list refresh karein
 
-} catch (error) {
-    console.error("Approval process failed:", error);
-    showMessage('❌ Error: ' + error.message);
-    
-    // ❌ Agar error aaye to item ko wapas visible karein
-    if (itemDiv) {
-        itemDiv.style.opacity = '1';
-        itemDiv.style.pointerEvents = 'auto';
+    } catch (error) {
+        console.error("Approval process failed:", error);
+        showMessage('❌ Error: ' + error.message);
+        
+        // ❌ Agar error aaye to item ko wapas visible karein
+        if (itemDiv) {
+            itemDiv.style.opacity = '1';
+            itemDiv.style.pointerEvents = 'auto';
+        }
+    } finally {
+        hideLoading();
     }
-} finally {
-    hideLoading();
-}
+} // ✅ yeh closing brace zaroori hai
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
