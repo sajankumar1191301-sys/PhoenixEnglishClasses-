@@ -1134,8 +1134,21 @@ async function openContent(courseId, category, chapter, type) {
         if (error && error.code !== 'PGRST116') throw error;
         if (contentData) {
             document.getElementById('contentTitle').textContent = `${chapter} - ${type}`;
-            // यहाँ पर #toolbar=0 जोड़ा गया है
-            document.getElementById('pdfViewer').src = contentData.url + '#toolbar=0';
+            
+            // ✅ Mobile-friendly PDF viewer with embed method
+            const pdfViewerDiv = document.getElementById('pdfViewer');
+            
+            // Method 1: Using Google Docs Viewer (works best on mobile)
+            const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(contentData.url)}&embedded=true`;
+            
+            // Method 2: Direct iframe with proper headers (fallback)
+            pdfViewerDiv.src = googleViewerUrl;
+            
+            // Alternative: If Google viewer fails, use direct URL
+            pdfViewerDiv.onerror = function() {
+                pdfViewerDiv.src = contentData.url + '#toolbar=0&navpanes=0&scrollbar=0&view=FitH';
+            };
+            
             document.getElementById('contentViewer').style.display = 'block'
         } else {
             showMessage('Content not uploaded yet')
@@ -1147,7 +1160,6 @@ async function openContent(courseId, category, chapter, type) {
         hideLoading()
     }
 }
-
 function closeContentViewer(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src=''}
 
 async function openQuiz(courseId,category,chapter){
