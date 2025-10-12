@@ -1507,9 +1507,18 @@ async function loadPendingPayments() {
 // =========================================================================================
 async function approvePayment(purchaseId, userId, courseId) {
     if (!isAdmin || !confirm(`Approve course "${courseId}" for user?`)) return;
+    
+    // âœ… Step 0: Pehle us item ko DOM se visually fade-out karein
+    const approveButton = event.target;
+    const itemDiv = approveButton.closest('.content-item');
+    if (itemDiv) {
+        itemDiv.style.opacity = '0.5';
+        itemDiv.style.pointerEvents = 'none';
+    }
+    
     showLoading();
     try {
-        // Step 1: Sabse pehle user ka current data (khareede gaye courses) prapt karein
+        // Step 1: User ka current data fetch karein
         const { data: userData, error: userError } = await _supabase
             .from('users')
             .select('purchased_courses')
@@ -1522,17 +1531,15 @@ async function approvePayment(purchaseId, userId, courseId) {
 
         const existingCourses = userData.purchased_courses || [];
 
-        // Step 2: Decide karein ki kaun se naye course add karne hain
-        // Agar 'complete' package hai, to chaaron course IDs add karein
+        // Step 2: Naye courses decide karein
         const coursesToAdd = (courseId === 'complete') 
             ? ['11en', '12en', '11hi', '12hi'] 
             : [courseId];
 
-        // Step 3: Puraane aur naye courses ko milakar ek final list banayein.
-        // Set ka istemal duplicate entries se bachne ke liye kiya gaya hai.
+        // Step 3: Final course list banayein (duplicates se bache)
         const allCourses = [...new Set([...existingCourses, ...coursesToAdd])];
 
-        // Step 4: User ke record ko nayi course list ke saath update karein
+        // Step 4: User record update karein
         const { error: updateUserError } = await _supabase
             .from('users')
             .update({ purchased_courses: allCourses })
@@ -1542,25 +1549,45 @@ async function approvePayment(purchaseId, userId, courseId) {
             throw new Error('Failed to update user courses: ' + updateUserError.message);
         }
 
-        // Step 5: 'purchases' table mein is transaction ka status 'approved' karein
+        // Step 5: Purchase status 'approved' karein
         const { error: updatePurchaseError } = await _supabase
             .from('purchases')
             .update({ status: 'approved' })
             .eq('id', purchaseId);
             
         if (updatePurchaseError) {
-            // Agar yeh fail hota hai, to user ko course access to mil gaya hai, lekin record aadhura hai.
-            // Isko handle karne ke liye advance logic lag sakta hai, abhi ke liye error dikhana behtar hai.
             console.warn('Purchase status update failed:', updatePurchaseError.message);
         }
 
-        showMessage('Access granted successfully!');
-        loadPendingPayments(); // Pending list refresh karein
-        loadStudentList();     // Student list bhi refresh karein
+        // âœ… SUCCESS - Ab item ko DOM se completely remove karein
+        if (itemDiv) {
+            itemDiv.style.transition = 'all 0.3s ease';
+            itemDiv.style.opacity = '0';
+            itemDiv.style.transform = 'translateX(-20px)';
+            
+            setTimeout(() => {
+                itemDiv.remove();
+                
+                // Agar koi pending payment nahi bacha to message dikhayein
+                const listDiv = document.getElementById('paymentApprovalList');
+                if (listDiv && listDiv.children.length === 0) {
+                    listDiv.innerHTML = '<p style="padding:10px;text-align:center;color:#666">âœ… No pending payments!</p>';
+                }
+            }, 300);
+        }
+
+        showMessage('âœ… Access granted successfully!');
+        loadStudentList(); // Student list refresh karein
 
     } catch (error) {
         console.error("Approval process failed:", error);
-        showMessage('Error: Could not approve payment. Reason: ' + error.message);
+        showMessage('âŒ Error: ' + error.message);
+        
+        // âŒ Agar error aaye to item ko wapas visible karein
+        if (itemDiv) {
+            itemDiv.style.opacity = '1';
+            itemDiv.style.pointerEvents = 'auto';
+        }
     } finally {
         hideLoading();
     }
