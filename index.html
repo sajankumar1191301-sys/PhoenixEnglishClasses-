@@ -853,10 +853,11 @@ function renderCourses(){
         card.className = 'course-card';
 
         // ✅ Enrolled if individually purchased OR via Complete Package
-        const isEnrolled =
-            currentUser &&
-            currentUser.purchased_courses &&
-            (currentUser.purchased_courses.includes(course.id) || hasCompletePackage);
+const hasCompletePackage = currentUser && currentUser.purchased_courses && currentUser.purchased_courses.includes('complete');
+const isEnrolled =
+    currentUser &&
+    currentUser.purchased_courses &&
+    (currentUser.purchased_courses.includes(course.id) || hasCompletePackage);
 
         let totalChapters = 0, totalSections = 0;
         if (course.id === 'complete') {
@@ -1437,23 +1438,36 @@ function removeQuestion(index){
     updateQuizPreview()
 }
 
-async function saveQuiz(){
-    if(!isAdmin){showMessage('Admin access required');return}
-    const courseId=document.getElementById('adminCourse').value;
-    const chapterValue=document.getElementById('adminChapter').value;
-    if(!courseId||!chapterValue){showMessage('Select course and chapter');return}
-    if(currentQuizBuilder.length===0){showMessage('Add at least one question');return}
-    const[category,chapter]=chapterValue.split('|||');
+async function saveQuiz() {
+    if (!isAdmin) { showMessage('Admin access required'); return; }
+    const courseId = document.getElementById('adminCourse').value;
+    const chapterValue = document.getElementById('adminChapter').value;
+    if (!courseId || !chapterValue) { showMessage('Select course and chapter'); return; }
+
+    const [category, chapter] = chapterValue.split('|||');
+    if (currentQuizBuilder.length === 0) { showMessage('No questions to save'); return; }
+
     showLoading();
-    try{
-        await _supabase.from('quizzes').insert({course_id:courseId,category:category,chapter:chapter,questions:currentQuizBuilder,created_by:currentUser.uid});
-        showMessage(`Quiz saved for "${chapter}"!`);
-        currentQuizBuilder=[];
-        try{
-            localStorage.removeItem(QUIZ_DRAFT_KEY);
-        }catch(e){console.error('Failed to clear draft:',e)}
-        updateQuizPreview()
-    }catch(error){console.error(error);showMessage('Failed to save quiz')}finally{hideLoading()}
+    try {
+        const { error } = await _supabase.from('quizzes').insert({
+            course_id: courseId,
+            category,
+            chapter,
+            questions: currentQuizBuilder,
+            created_by: currentUser.uid
+        });
+        if (error) throw error;
+
+        localStorage.removeItem(QUIZ_DRAFT_KEY);
+        currentQuizBuilder = [];
+        updateQuizPreview();
+        showMessage('✅ Quiz saved successfully!');
+    } catch (error) {
+        console.error(error);
+        showMessage('❌ Failed to save quiz: ' + error.message);
+    } finally {
+        hideLoading();
+    }
 }
 
 async function loadUploadedQuizzes(){
@@ -1564,7 +1578,7 @@ async function approvePayment(purchaseId, userId, courseId) {
         itemDiv.style.opacity = '0.5';
         itemDiv.style.pointerEvents = 'none';
     }
-    
+
     showLoading();
     try {
         // Step 1: User ka current data fetch karein
@@ -1574,50 +1588,34 @@ async function approvePayment(purchaseId, userId, courseId) {
             .eq('id', userId)
             .single();
 
-        if (userError) {
-            throw new Error('User data fetch failed: ' + userError.message);
-        }
+        if (userError) throw new Error('User data fetch failed: ' + userError.message);
 
         const existingCourses = userData.purchased_courses || [];
-
-        // Step 2: Naye courses decide karein
         const coursesToAdd = (courseId === 'complete') 
             ? ['11en', '12en', '11hi', '12hi'] 
             : [courseId];
 
-        // Step 3: Final course list banayein (duplicates se bache)
         const allCourses = [...new Set([...existingCourses, ...coursesToAdd])];
 
-        // Step 4: User record update karein
         const { error: updateUserError } = await _supabase
             .from('users')
             .update({ purchased_courses: allCourses })
             .eq('id', userId);
+        if (updateUserError) throw new Error('Failed to update user courses: ' + updateUserError.message);
 
-        if (updateUserError) {
-            throw new Error('Failed to update user courses: ' + updateUserError.message);
-        }
-
-        // Step 5: Purchase status 'approved' karein
         const { error: updatePurchaseError } = await _supabase
             .from('purchases')
             .update({ status: 'approved' })
             .eq('id', purchaseId);
-            
-        if (updatePurchaseError) {
-            console.warn('Purchase status update failed:', updatePurchaseError.message);
-        }
+        if (updatePurchaseError) console.warn('Purchase status update failed:', updatePurchaseError.message);
 
         // ✅ SUCCESS - Ab item ko DOM se completely remove karein
         if (itemDiv) {
             itemDiv.style.transition = 'all 0.3s ease';
             itemDiv.style.opacity = '0';
             itemDiv.style.transform = 'translateX(-20px)';
-            
             setTimeout(() => {
                 itemDiv.remove();
-                
-                // Agar koi pending payment nahi bacha to message dikhayein
                 const listDiv = document.getElementById('paymentApprovalList');
                 if (listDiv && listDiv.children.length === 0) {
                     listDiv.innerHTML = '<p style="padding:10px;text-align:center;color:#666">✅ No pending payments!</p>';
@@ -1631,8 +1629,6 @@ async function approvePayment(purchaseId, userId, courseId) {
     } catch (error) {
         console.error("Approval process failed:", error);
         showMessage('❌ Error: ' + error.message);
-        
-        // ❌ Agar error aaye to item ko wapas visible karein
         if (itemDiv) {
             itemDiv.style.opacity = '1';
             itemDiv.style.pointerEvents = 'auto';
@@ -1640,7 +1636,7 @@ async function approvePayment(purchaseId, userId, courseId) {
     } finally {
         hideLoading();
     }
-} // ✅ yeh closing brace zaroori hai
+}
 
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
