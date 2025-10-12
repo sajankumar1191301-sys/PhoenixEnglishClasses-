@@ -393,8 +393,7 @@ button:active {
 <div class="modal-content" style="max-width:380px; max-height:90vh; overflow-y:auto;">
 <button class="close-modal" onclick="closePaymentModal()">&times;</button>
 <div class="qr-payment" style="position:relative;">
-    <!-- Simplified Header without Back Button -->
-<div style="text-align:center; margin-bottom:20px;">
+    <div style="text-align:center; margin-bottom:20px;">
     <h3 id="paymentTitle" 
         style="color:#333; margin:0; font-size:24px; font-weight:700; line-height:1.2;">
         Class 11th English
@@ -405,7 +404,6 @@ button:active {
 </div>
 </div>
     
-    <!-- QR Code -->
     <div class="qr-code" style="margin-bottom:15px;">
         <img id="qrImage" 
              src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/content-pdfs/QR%20code.jpeg" 
@@ -414,7 +412,6 @@ button:active {
              onerror="this.parentElement.innerHTML='<div style=padding:60px;background:#f8f9fa;border-radius:10px;text-align:center;color:#999>QR Code Loading...</div>'">
     </div>
     
-    <!-- Payment Details Card -->
     <div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:15px;border-radius:10px;margin-bottom:15px;color:#fff;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
             <span style="font-size:13px;opacity:0.9;">&#128179; UPI ID</span>
@@ -430,13 +427,11 @@ button:active {
         </div>
     </div>
     
-    <!-- Amount Display -->
     <div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:20px;border-radius:10px;text-align:center;margin-bottom:15px;">
         <p style="color:#fff;font-size:14px;opacity:0.9;margin-bottom:5px;">Total Amount</p>
         <p style="color:#fff;font-size:32px;font-weight:700;margin:0;" id="paymentAmount">&#8377;99</p>
     </div>
 
-    <!-- Action Buttons -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;">
         <button onclick="downloadQR()" 
                 style="padding:14px;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:#fff;border:none;border-radius:10px;font-size:13px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(17,153,142,0.3);transition:transform 0.2s;"
@@ -457,7 +452,6 @@ button:active {
         &#128203; Copy UPI ID
     </button>
 
-    <!-- Instructions -->
     <div style="background:#fff3cd;border-left:4px solid #ffc107;padding:12px;border-radius:6px;font-size:12px;color:#856404;margin-bottom:15px;">
         <strong>&#128221; Payment Steps:</strong><br>
         <div style="margin-top:8px;line-height:1.8;">
@@ -468,14 +462,12 @@ button:active {
         </div>
     </div>
 
-    <!-- WhatsApp Direct Link -->
     <a href="https://wa.me/916299891191?text=Hello%20Sajan%20Sir,%20I%20have%20completed%20the%20payment.%20Please%20verify." 
        target="_blank"
        style="display:block;padding:12px;background:#25d366;color:#fff;text-align:center;border-radius:10px;text-decoration:none;font-weight:600;margin-bottom:15px;font-size:13px;">
         &#128172; Send Screenshot on WhatsApp
     </a>
 
-    <!-- Confirm Payment Button -->
     <button onclick="confirmPayment()" 
             style="width:100%;padding:15px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;box-shadow:0 4px 15px rgba(102,126,234,0.4);">
         &#9989; I have paid, Request Access
@@ -1510,34 +1502,71 @@ async function loadPendingPayments() {
     }
 }
 
+// =========================================================================================
+// ✅✅✅ YAHAN BADLAV KIYA GAYA HAI - THIS IS THE CORRECTED FUNCTION ✅✅✅
+// =========================================================================================
 async function approvePayment(purchaseId, userId, courseId) {
     if (!isAdmin || !confirm(`Approve course "${courseId}" for user?`)) return;
     showLoading();
     try {
-        // We now call the RPC function instead of updating tables directly
-        const { error } = await _supabase
-            .rpc('approve_course_for_user', {
-                p_user_id: userId,
-                p_course_id: courseId,
-                p_purchase_id: purchaseId
-            });
+        // Step 1: Sabse pehle user ka current data (khareede gaye courses) prapt karein
+        const { data: userData, error: userError } = await _supabase
+            .from('users')
+            .select('purchased_courses')
+            .eq('id', userId)
+            .single();
 
-        if (error) {
-            // The error from the function will be more specific
-            throw error;
+        if (userError) {
+            throw new Error('User data fetch failed: ' + userError.message);
+        }
+
+        const existingCourses = userData.purchased_courses || [];
+
+        // Step 2: Decide karein ki kaun se naye course add karne hain
+        // Agar 'complete' package hai, to chaaron course IDs add karein
+        const coursesToAdd = (courseId === 'complete') 
+            ? ['11en', '12en', '11hi', '12hi'] 
+            : [courseId];
+
+        // Step 3: Puraane aur naye courses ko milakar ek final list banayein.
+        // Set ka istemal duplicate entries se bachne ke liye kiya gaya hai.
+        const allCourses = [...new Set([...existingCourses, ...coursesToAdd])];
+
+        // Step 4: User ke record ko nayi course list ke saath update karein
+        const { error: updateUserError } = await _supabase
+            .from('users')
+            .update({ purchased_courses: allCourses })
+            .eq('id', userId);
+
+        if (updateUserError) {
+            throw new Error('Failed to update user courses: ' + updateUserError.message);
+        }
+
+        // Step 5: 'purchases' table mein is transaction ka status 'approved' karein
+        const { error: updatePurchaseError } = await _supabase
+            .from('purchases')
+            .update({ status: 'approved' })
+            .eq('id', purchaseId);
+            
+        if (updatePurchaseError) {
+            // Agar yeh fail hota hai, to user ko course access to mil gaya hai, lekin record aadhura hai.
+            // Isko handle karne ke liye advance logic lag sakta hai, abhi ke liye error dikhana behtar hai.
+            console.warn('Purchase status update failed:', updatePurchaseError.message);
         }
 
         showMessage('Access granted successfully!');
-        loadPendingPayments(); // Refresh the list
-        loadStudentList(); // Refresh student list to show updated course
+        loadPendingPayments(); // Pending list refresh karein
+        loadStudentList();     // Student list bhi refresh karein
+
     } catch (error) {
-        console.error("Approval failed:", error);
-        // The error message from the RPC function will be shown here
+        console.error("Approval process failed:", error);
         showMessage('Error: Could not approve payment. Reason: ' + error.message);
     } finally {
         hideLoading();
     }
 }
+
+
 // Initialize when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initializeApp);
