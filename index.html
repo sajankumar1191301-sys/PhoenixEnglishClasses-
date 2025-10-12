@@ -266,23 +266,63 @@ button:active {
 </div>
 </div>
 </div>
-<header>
-  <div class="title">
-    <img src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg" 
+<header style="background: linear-gradient(90deg, #ff6bb5, #7b5cff); 
+               color: #fff; 
+               padding: 22px 18px; 
+               border-bottom-left-radius: 22px; 
+               border-bottom-right-radius: 22px; 
+               display: flex; 
+               justify-content: space-between; 
+               align-items: center;">
+  
+  <div class="title" style="display:flex; align-items:center; gap:15px;">
+    <!-- 🔥 Phoenix Logo -->
+    <img src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/phoenix_logo.jpeg" 
          alt="Phoenix Logo"
-         style="width:70px;height:70px;border-radius:12px;object-fit:contain;background:rgba(255,255,255,0.15);padding:5px;">
+         style="width:70px; height:70px; border-radius:14px; object-fit:contain; background:rgba(255,255,255,0.15); padding:6px;">
+    
+    <!-- ✨ Title Text -->
     <div>
-      <h1 style="font-size:30px;font-weight:900;line-height:1.1;letter-spacing:0.5px;
-           color:#fff;text-shadow:1px 2px 4px rgba(0,0,0,0.25);">
-  Phoenix English Classes
-</h1>
-<p style="font-size:14px;font-weight:500;opacity:0.95;">
-  Complete Chapter-wise Learning
-</p>
+      <h1 style="
+        font-size:32px;
+        font-weight:1000;
+        line-height:1.1;
+        letter-spacing:0.6px;
+        color:#fff;
+        text-shadow:2px 3px 6px rgba(0,0,0,0.3);
+      ">
+        Phoenix English Classes
+      </h1>
+      <p style="
+        font-size:15px;
+        font-weight:600;
+        color:#fff;
+        opacity:0.95;
+      ">
+        Complete Chapter-wise Learning
+      </p>
     </div>
   </div>
-  <button class="auth-toggle" onclick="showAuthModal()" id="authButton">🔒 Login</button>
+
+  <!-- 🔒 Login / Admin Button -->
+  <button class="auth-toggle" 
+          onclick="showAuthModal()" 
+          id="authButton"
+          style="
+            background: rgba(255,255,255,0.25);
+            border: none;
+            color: #fff;
+            padding: 8px 14px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight:600;
+          ">
+    🔒 Login
+  </button>
+
 </header>
+
 <div class="contact">
 <div class="line"><small>📞 Contact: Sajan Sir</small><small>Professional Teacher</small></div>
 <div>
