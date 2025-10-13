@@ -761,97 +761,87 @@ async function signup(){
         hideLoading()
     }
 }
-// ===========================================================
-// === END: UPDATED SIGNUP FUNCTION ===
-// ===========================================================
-
-
 // ============================================================
-// === START: UPDATED LOGIN FUNCTION WITH FINGERPRINT CHECK ===
+// === FINAL LOGIN FUNCTION (Students locked to 1 device) ===
 // ============================================================
-async function login(){
-    document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none');
-    const email=document.getElementById('loginEmail').value.trim();
-    const password=document.getElementById('loginPassword').value;
-    
-    let hasError=false;
-    if(!validateEmail(email)){
-        showError('loginEmailError','Valid email required');
-        hasError=true;
+async function login() {
+    document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+    const email = document.getElementById('loginEmail').value.trim();
+    const password = document.getElementById('loginPassword').value;
+
+    let hasError = false;
+    if (!validateEmail(email)) {
+        showError('loginEmailError', 'Valid email required');
+        hasError = true;
     }
-    if(!password){
-        showError('loginPasswordError','Password is required');
-        hasError=true;
+    if (!password) {
+        showError('loginPasswordError', 'Password is required');
+        hasError = true;
     }
-    if(hasError)return;
-    
+    if (hasError) return;
+
     showLoading();
     try {
-        // 1. Generate fingerprint of the current device
+        // 1️⃣ डिवाइस का fingerprint बनाना
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         const currentFingerprint = result.visitorId;
 
-        // 2. Authenticate user with email and password
-        const {data, error} = await _supabase.auth.signInWithPassword({
+        // 2️⃣ Supabase से लॉगिन करना
+        const { data, error } = await _supabase.auth.signInWithPassword({
             email: email,
             password: password
         });
         if (error) throw error;
-        
-        // 3. Fetch user profile from 'users' table to check fingerprint
+
+        // 3️⃣ 'users' टेबल से यूज़र का डेटा लाना
         const { data: userProfile, error: profileError } = await _supabase
             .from('users')
             .select('device_fingerprint, is_admin')
             .eq('id', data.user.id)
             .single();
 
-        if (profileError) throw new Error('Could not retrieve user profile to verify device.');
-
-        // 4. Admin users can log in from any device
-        if (userProfile.is_admin) {
-            await checkUserSession();
-            closeModal();
-            return; // Admin login successful, exit function
-        }
-        
+        if (profileError) throw new Error('Could not retrieve user profile.');
         const storedFingerprint = userProfile.device_fingerprint;
 
-        // 5. Compare fingerprints
-        if (storedFingerprint) {
-            // A fingerprint exists, so compare it
-            if (storedFingerprint !== currentFingerprint) {
-                // Mismatch, so deny login and sign out
-                await _supabase.auth.signOut();
-                showMessage('Login failed. This account is locked to another device. Please use your original device.');
-                hideLoading();
-                return; // Stop the login process
-            }
+        // 🧩 अब logic:
+        // अगर user admin है → किसी भी device से login allowed
+        // अगर student है → सिर्फ registered device से login allowed
+        if (userProfile.is_admin) {
+            // Admin के लिए कोई fingerprint check नहीं
+            console.log('Admin login from allowed device');
         } else {
-            // No fingerprint stored, this is the first login. Register this device.
-            const { error: updateError } = await _supabase
-                .from('users')
-                .update({ device_fingerprint: currentFingerprint })
-                .eq('id', data.user.id);
-            
-            if (updateError) throw new Error('Failed to register your device. Please try again.');
-            showMessage('Device registered successfully. You can now access your account.');
+            // Student के लिए strict device check
+            if (storedFingerprint) {
+                if (storedFingerprint !== currentFingerprint) {
+                    // ❌ दूसरा डिवाइस मिला — login ब्लॉक
+                    await _supabase.auth.signOut();
+                    showMessage('❌ Login blocked: यह अकाउंट किसी दूसरे डिवाइस पर पहले से रजिस्टर है। कृपया अपने मूल डिवाइस से ही लॉगिन करें।');
+                    hideLoading();
+                    return;
+                }
+            } else {
+                // पहली बार login → fingerprint सेव करें
+                const { error: updateError } = await _supabase
+                    .from('users')
+                    .update({ device_fingerprint: currentFingerprint })
+                    .eq('id', data.user.id);
+                if (updateError) throw new Error('Failed to register device.');
+                showMessage('✅ Device registered successfully!');
+            }
         }
 
-        // 6. If fingerprints match or it was the first login, proceed
+        // ✅ आगे बढ़ें (login सफल)
         await checkUserSession();
         closeModal();
 
-    } catch(error) {
+    } catch (error) {
         console.error(error);
         showMessage('Login failed: ' + error.message);
         hideLoading();
     }
 }
-// ==========================================================
-// === END: UPDATED LOGIN FUNCTION ===
-// ==========================================================
-
+// ============================================================
 
 async function adminLogin(){
     const email=document.getElementById('adminEmail').value.trim();
