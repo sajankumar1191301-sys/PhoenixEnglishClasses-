@@ -7,40 +7,11 @@
 <title>Phoenix English Classes - Learning Platform</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Noto Sans',sans-serif}
-body {
-    background: linear-gradient(135deg,#f06 0,#c64 45%,#9b4 100%);
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px 0;
-}
+body{background:linear-gradient(135deg,#f06 0,#c64 45%,#9b4 100%);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px 0}
 .phone{width:360px;max-width:95vw;background:linear-gradient(180deg,#fff,#fafafa);border-radius:18px;box-shadow:0 18px 40px rgba(0,0,0,.25);overflow:hidden;position:relative}
-header {
-    background: linear-gradient(90deg, #ff6bb5, #7b5cff);
-    color: #fff;
-    padding: 22px 18px;
-    border-bottom-left-radius: 22px;
-    border-bottom-right-radius: 22px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-header .title {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-.auth-toggle {
-    background: rgba(255, 255, 255, .2);
-    border: none;
-    color: #fff;
-    padding: 8px 12px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 11px;
-    flex-shrink: 0;
-}
+header{background:linear-gradient(90deg,#ff6bb5,#7b5cff);color:#fff;padding:22px 18px;border-bottom-left-radius:22px;border-bottom-right-radius:22px;display:flex;justify-content:space-between;align-items:center}
+header .title{display:flex;align-items:center;gap:12px}
+.auth-toggle{background:rgba(255,255,255,.2);border:none;color:#fff;padding:8px 12px;border-radius:20px;cursor:pointer;font-size:11px;flex-shrink:0}
 .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);z-index:1000;align-items:center;justify-content:center}
 .modal-content{background:#fff;border-radius:12px;padding:24px;width:320px;max-width:90vw;position:relative}
 .modal h3{margin-bottom:16px;color:#333}
@@ -105,9 +76,9 @@ header .title {
 .quiz-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:#fff;z-index:2000;overflow-y:auto}
 .quiz-question{margin-bottom:20px;padding:15px;background:#f8f9fa;border-radius:10px}
 .quiz-options{margin-top:10px}
-.quiz-option{display:block;margin-bottom:8px;padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;cursor:pointer}
+.quiz-option{display:block;margin-bottom:8px;padding:10px;background:#fff;border:1px solid #ddd;border-radius:8px;cursor:pointer;transition:background .2s}
 .quiz-option:hover{background:#e6f6ff}
-.quiz-option.selected{background:#7b5cff;color:#fff}
+.quiz-option.selected{background:#7b5cff;color:#fff;border-color:#7b5cff}
 .quiz-score{text-align:center;padding:20px;font-size:18px;font-weight:700}
 .qr-payment{text-align:center;padding:20px}
 .qr-code{width:200px;height:200px;background:#f0f0f0;margin:20px auto;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;color:#666;overflow:hidden}
@@ -119,73 +90,21 @@ header .title {
 select{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;margin-bottom:10px;font-size:14px}
 .error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}
 .error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}
-
-/* ============================================ */
-/* 🎨 ENHANCED PAYMENT MODAL STYLES */
-/* ============================================ */
-
-/* Modal fade-in animation */
-.modal {
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-/* Modal content slide-up animation */
-.modal-content {
-    animation: slideUp 0.3s ease;
-}
-
-@keyframes slideUp {
-    from { 
-        transform: translateY(50px);
-        opacity: 0;
-    }
-    to { 
-        transform: translateY(0);
-        opacity: 1;
-    }
-}
-
-/* QR code hover effect */
-.qr-code {
-    position: relative;
-    overflow: hidden;
-}
-
-.qr-code img {
-    transition: transform 0.3s ease;
-}
-
-.qr-code:hover img {
-    transform: scale(1.05);
-}
-
-/* Button hover effects */
-button {
-    transition: all 0.2s ease !important;
-}
-
-button:active {
-    transform: scale(0.98) !important;
-}
-
-/* Responsive adjustments for small screens */
-@media (max-width: 420px) {
-    .modal-content {
-        max-width: 95vw !important;
-        margin: 10px;
-    }
-}
-
-/* ============================================ */
-/* END OF PAYMENT STYLES */
-/* ============================================ */
-
+.quiz-submitted .quiz-option{cursor:default}
+.quiz-option.correct{background:#d4edda!important;border-color:#c3e6cb!important;color:#155724!important}
+.quiz-option.incorrect{background:#f8d7da!important;border-color:#f5c6cb!important;color:#721c24!important}
+.quiz-option.correct::after{content:' ✔ (Correct)';font-weight:700;float:right}
+.quiz-option.incorrect::after{content:' ✖ (Your Answer)';font-weight:700;float:right}
+.modal{backdrop-filter:blur(5px);animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.modal-content{animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}
+.qr-code{position:relative;overflow:hidden}
+.qr-code img{transition:transform .3s ease}
+.qr-code:hover img{transform:scale(1.05)}
+button{transition:all .2s ease!important}
+button:active{transform:scale(.98)!important}
+@media (max-width:420px){.modal-content{max-width:95vw!important;margin:10px}}
 </style>
 </head>
 <body>
@@ -200,7 +119,7 @@ button:active {
 <div class="phone">
 <div id="authModal" class="modal">
 <div class="modal-content">
-<button class="close-modal" onclick="closeModal()">&times;</button>
+<button class="close-modal" onclick="history.back()">&times;</button>
 <div id="loginForm">
 <h3>Student Login</h3>
 <div class="form-group">
@@ -418,14 +337,14 @@ button:active {
 <div id="contentViewer" class="content-viewer">
 <div class="content-header">
 <h3 id="contentTitle">Content</h3>
-<button onclick="closeContentViewer()" style="background:0 0;border:none;color:#fff;font-size:18px;cursor:pointer">&times;</button>
+<button onclick="history.back()" style="background:0 0;border:none;color:#fff;font-size:22px;cursor:pointer; padding: 0 10px;">&times;</button>
 </div>
 <div class="content-body"><iframe id="pdfViewer" class="pdf-viewer"></iframe></div>
 </div>
 <div id="quizContainer" class="quiz-container">
 <div class="content-header">
 <h3 id="quizTitle">Quiz</h3>
-<button onclick="closeQuiz()" style="background:0 0;border:none;color:#fff;font-size:18px;cursor:pointer">&times;</button>
+<button onclick="history.back()" style="background:0 0;border:none;color:#fff;font-size:22px;cursor:pointer; padding: 0 10px;">&times;</button>
 </div>
 <div class="content-body">
 <div id="quizContent"></div>
@@ -435,7 +354,7 @@ button:active {
 </div>
 <div id="paymentModal" class="modal">
 <div class="modal-content" style="max-width:380px; max-height:90vh; overflow-y:auto;">
-<button class="close-modal" onclick="closePaymentModal()">&times;</button>
+<button class="close-modal" onclick="history.back()">&times;</button>
 <div class="qr-payment" style="position:relative;">
     <div style="text-align:center; margin-bottom:20px;">
     <h3 id="paymentTitle" 
@@ -565,6 +484,14 @@ function initializeApp() {
             setTimeout(initializeApp, 500);
             return;
         }
+        
+        // Handle mobile back button for closing modals/viewers
+        window.addEventListener('popstate', function(event) {
+            closeModal();
+            closePaymentModal();
+            closeContentViewer();
+            closeQuiz();
+        });
 
         // Configuration
         const CONFIG = {
@@ -677,7 +604,7 @@ async function checkUserSession() {
     }
 }
 
-// Helper functions (same as before)
+// Helper functions
 function showLoading(){document.getElementById('loadingSpinner').style.display='flex'}
 function hideLoading(){document.getElementById('loadingSpinner').style.display='none'}
 function showMessage(m){alert(m)}
@@ -686,16 +613,19 @@ function showError(id,msg){const el=document.getElementById(id);if(el){el.textCo
 function validatePhone(phone){return /^\d{10}$/.test(phone)}
 function validateEmail(email){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)}
 
-function showAuthModal(){document.getElementById('authModal').style.display='flex';showLogin()}
-function closeModal(){document.getElementById('authModal').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
+function showAuthModal(){
+    document.getElementById('authModal').style.display='flex';
+    history.pushState({modal: 'auth'}, 'Login');
+    showLogin();
+}
+function closeModal(){
+    document.getElementById('authModal').style.display='none';
+    document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none');
+}
 function showLogin(){document.getElementById('loginForm').style.display='block';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
 function showSignup(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block';document.getElementById('adminLoginForm').style.display='none';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
 function showAdminLogin(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='block';document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none')}
 
-
-// =============================================================
-// === START: UPDATED SIGNUP FUNCTION WITH FINGERPRINTING ===
-// =============================================================
 async function signup(){
     document.querySelectorAll('.error-msg').forEach(el=>el.style.display='none');
     const name=document.getElementById('signupName').value.trim();
@@ -713,7 +643,6 @@ async function signup(){
     
     showLoading();
     try{
-        // Generate device fingerprint
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         const visitorId = result.visitorId;
@@ -721,7 +650,6 @@ async function signup(){
         const {data:authData, error:authError} = await _supabase.auth.signUp({email:email, password:password});
         if(authError) throw authError;
         
-        // Store user data along with the fingerprint
         const {error:dbError} = await _supabase.from('users').insert({
             id: authData.user.id,
             name: name,
@@ -730,11 +658,10 @@ async function signup(){
             student_class: studentClass,
             purchased_courses: [],
             is_admin: false,
-            device_fingerprint: visitorId // Save the fingerprint
+            device_fingerprint: visitorId
         });
         if(dbError) throw dbError;
 
-        // Manually setting user after signup
         currentUser = {
             uid: authData.user.id, 
             email: authData.user.email, 
@@ -742,13 +669,13 @@ async function signup(){
             phone: phone, 
             student_class: studentClass, 
             purchased_courses: [],
-            device_fingerprint: visitorId // Include fingerprint in current user object
+            device_fingerprint: visitorId
         };
         isAdmin = false;
         updateAuthState();
         renderCourses();
         
-        closeModal();
+        history.back(); // Close modal on success
         showMessage('Registration successful! Welcome '+name)
     } catch(error) {
         console.error(error);
@@ -761,9 +688,7 @@ async function signup(){
         hideLoading()
     }
 }
-// ============================================================
-// === FINAL LOGIN FUNCTION (Students locked to 1 device) ===
-// ============================================================
+
 async function login() {
     document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
     const email = document.getElementById('loginEmail').value.trim();
@@ -782,19 +707,16 @@ async function login() {
 
     showLoading();
     try {
-        // 1️⃣ डिवाइस का fingerprint बनाना
         const fp = await FingerprintJS.load();
         const result = await fp.get();
         const currentFingerprint = result.visitorId;
 
-        // 2️⃣ Supabase से लॉगिन करना
         const { data, error } = await _supabase.auth.signInWithPassword({
             email: email,
             password: password
         });
         if (error) throw error;
 
-        // 3️⃣ 'users' टेबल से यूज़र का डेटा लाना
         const { data: userProfile, error: profileError } = await _supabase
             .from('users')
             .select('device_fingerprint, is_admin')
@@ -804,24 +726,17 @@ async function login() {
         if (profileError) throw new Error('Could not retrieve user profile.');
         const storedFingerprint = userProfile.device_fingerprint;
 
-        // 🧩 अब logic:
-        // अगर user admin है → किसी भी device से login allowed
-        // अगर student है → सिर्फ registered device से login allowed
         if (userProfile.is_admin) {
-            // Admin के लिए कोई fingerprint check नहीं
             console.log('Admin login from allowed device');
         } else {
-            // Student के लिए strict device check
             if (storedFingerprint) {
                 if (storedFingerprint !== currentFingerprint) {
-                    // ❌ दूसरा डिवाइस मिला — login ब्लॉक
                     await _supabase.auth.signOut();
                     showMessage('❌ Login blocked: यह अकाउंट किसी दूसरे डिवाइस पर पहले से रजिस्टर है। कृपया अपने मूल डिवाइस से ही लॉगिन करें।');
                     hideLoading();
                     return;
                 }
             } else {
-                // पहली बार login → fingerprint सेव करें
                 const { error: updateError } = await _supabase
                     .from('users')
                     .update({ device_fingerprint: currentFingerprint })
@@ -831,9 +746,8 @@ async function login() {
             }
         }
 
-        // ✅ आगे बढ़ें (login सफल)
         await checkUserSession();
-        closeModal();
+        history.back(); // Close modal on success
 
     } catch (error) {
         console.error(error);
@@ -841,7 +755,6 @@ async function login() {
         hideLoading();
     }
 }
-// ============================================================
 
 async function adminLogin(){
     const email=document.getElementById('adminEmail').value.trim();
@@ -884,7 +797,7 @@ async function adminLogin(){
             updateAuthState();
             renderCourses();
             
-            closeModal();
+            history.back(); // Close modal on success
             showMessage('Admin login successful! Welcome ' + userDoc.name);
             
             loadStudentList();
@@ -907,9 +820,6 @@ function logout(){
         _supabase.auth.signOut();
     }
 }
-
-// All other functions from this point onwards are the same as your original file.
-// They are included here so you can copy the entire file content.
 
 function updateAuthState(){
     const authButton=document.getElementById('authButton');
@@ -1039,6 +949,7 @@ function initiatePayment(courseId, courseName, price) {
     window.pendingPayment = { courseId, courseName, price };
     
     document.getElementById('paymentModal').style.display = 'flex';
+    history.pushState({modal: 'payment'}, 'Payment');
     
     console.log('Payment initiated:', { courseId, courseName, price });
 }
@@ -1050,17 +961,14 @@ function closePaymentModal() {
 function downloadQR() {
     try {
         const qrImage = document.getElementById('qrImage');
-        
         if (!qrImage || !qrImage.src) {
             showMessage('❌ QR code not available. Please contact admin.');
             return;
         }
-        
         if (qrImage.naturalWidth === 0) {
             showMessage('❌ QR code failed to load. Please refresh the page.');
             return;
         }
-        
         fetch(qrImage.src)
             .then(response => response.blob())
             .then(blob => {
@@ -1069,15 +977,12 @@ function downloadQR() {
                 link.href = url;
                 link.download = 'sajan-sir-payment-qr-' + Date.now() + '.jpeg';
                 link.style.display = 'none';
-                
                 document.body.appendChild(link);
                 link.click();
-                
                 setTimeout(() => {
                     document.body.removeChild(link);
                     window.URL.revokeObjectURL(url);
                 }, 100);
-                
                 showMessage('✅ QR Code downloaded successfully!');
             })
             .catch(error => {
@@ -1088,7 +993,6 @@ function downloadQR() {
                 link.click();
                 showMessage('✅ Download started!');
             });
-        
     } catch (error) {
         console.error('Download error:', error);
         showMessage('📱 Long-press on QR code to save image');
@@ -1100,41 +1004,33 @@ function openUPI() {
         showMessage('❌ Payment information not found. Please try again.');
         return;
     }
-    
     const { price, courseName } = window.pendingPayment;
-    
     const upiId = '7992300522@ybl';
     const name = 'Sajan Sir';
     const note = encodeURIComponent('Course: ' + courseName);
     const upiUrl = `upi://pay?pa=${upiId}&pn=${name}&am=${price}&cu=INR&tn=${note}`;
-    
     console.log('Opening UPI with URL:', upiUrl);
     window.location.href = upiUrl;
-    
     setTimeout(() => {
         const msg = '💡 Tip: If UPI app didn\'t open:\n' +
                     '1. Scan QR code manually\n' +
                     '2. Or copy UPI ID: ' + upiId;
         showMessage(msg);
     }, 2500);
-    
     console.log('UPI payment initiated:', { price, courseName, timestamp: new Date().toLocaleString() });
 }
 
 function copyUPI() {
     const upiId = '7992300522@ybl';
-    
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(upiId)
             .then(() => {
                 showMessage('✅ UPI ID copied: ' + upiId + '\nPaste in any UPI app');
-                
                 const btn = event.target;
                 const originalText = btn.innerHTML;
                 btn.innerHTML = '✅ Copied!';
                 btn.style.background = '#28a745';
                 btn.style.color = '#fff';
-                
                 setTimeout(() => {
                     btn.innerHTML = originalText;
                     btn.style.background = '#f8f9fa';
@@ -1159,11 +1055,9 @@ function fallbackCopy(text) {
     textArea.style.width = '1px';
     textArea.style.height = '1px';
     textArea.style.opacity = '0';
-    
     document.body.appendChild(textArea);
     textArea.focus();
     textArea.select();
-    
     try {
         const successful = document.execCommand('copy');
         if (successful) {
@@ -1175,7 +1069,6 @@ function fallbackCopy(text) {
         console.error('Fallback copy error:', err);
         showMessage('UPI ID: ' + text + '\n(Please copy manually)');
     }
-    
     document.body.removeChild(textArea);
 }
 
@@ -1200,7 +1093,7 @@ async function confirmPayment() {
             amount: '₹' + price,
             status: 'pending_verification'
         });
-        closePaymentModal();
+        history.back(); // Close modal on success
         showMessage('Payment request sent! Please send screenshot to WhatsApp: 6299891191. Admin will approve soon.')
     } catch (error) {
         console.error(error);
@@ -1220,16 +1113,14 @@ async function openContent(courseId, category, chapter, type) {
         if (error && error.code !== 'PGRST116') throw error;
         if (contentData) {
             document.getElementById('contentTitle').textContent = `${chapter} - ${type}`;
-            
             const pdfViewerDiv = document.getElementById('pdfViewer');
             const googleViewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(contentData.url)}&embedded=true`;
             pdfViewerDiv.src = googleViewerUrl;
-            
             pdfViewerDiv.onerror = function() {
                 pdfViewerDiv.src = contentData.url + '#toolbar=0&navpanes=0&scrollbar=0&view=FitH';
             };
-            
             document.getElementById('contentViewer').style.display = 'block'
+            history.pushState({modal: 'content'}, 'Content');
         } else {
             showMessage('Content not uploaded yet')
         }
@@ -1240,7 +1131,10 @@ async function openContent(courseId, category, chapter, type) {
         hideLoading()
     }
 }
-function closeContentViewer(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src=''}
+function closeContentViewer(){
+    document.getElementById('contentViewer').style.display='none';
+    document.getElementById('pdfViewer').src='';
+}
 
 async function openQuiz(courseId,category,chapter){
     if(!currentUser||!currentUser.purchased_courses||!currentUser.purchased_courses.includes(courseId)){showMessage('Please enroll first');return}
@@ -1252,7 +1146,8 @@ async function openQuiz(courseId,category,chapter){
             currentQuizData=quizData.questions;
             currentQuizAnswers={};
             renderQuiz(chapter);
-            document.getElementById('quizContainer').style.display='block'
+            document.getElementById('quizContainer').style.display='block';
+            history.pushState({modal: 'quiz'}, 'Quiz');
         }else{showMessage('Quiz not available yet')}
     }catch(error){console.error(error);showMessage('Failed to load quiz')}finally{hideLoading()}
 }
@@ -1261,6 +1156,7 @@ function renderQuiz(chapterName){
     document.getElementById('quizTitle').textContent='Quiz: '+chapterName;
     const content=document.getElementById('quizContent');
     content.innerHTML='';
+    content.classList.remove('quiz-submitted');
     currentQuizData.forEach((q,qIndex)=>{
         const qDiv=document.createElement('div');
         qDiv.className='quiz-question';
@@ -1273,26 +1169,65 @@ function renderQuiz(chapterName){
 }
 
 function selectAnswer(questionIndex,optionIndex){
-    currentQuizAnswers[questionIndex]=optionIndex;
     const questionDiv=document.querySelectorAll('.quiz-question')[questionIndex];
     const options=questionDiv.querySelectorAll('.quiz-option');
-    options.forEach(opt=>opt.classList.remove('selected'));
-    options[optionIndex].classList.add('selected')
+    const targetOption = options[optionIndex];
+
+    if (document.getElementById('quizContent').classList.contains('quiz-submitted')) return;
+
+    if (targetOption.classList.contains('selected')) {
+        targetOption.classList.remove('selected');
+        delete currentQuizAnswers[questionIndex];
+    } else { 
+        options.forEach(opt=>opt.classList.remove('selected'));
+        targetOption.classList.add('selected');
+        currentQuizAnswers[questionIndex] = optionIndex;
+    }
 }
 
 async function submitQuiz(){
     let correct=0;
     const total=currentQuizData.length;
-    currentQuizData.forEach((q,index)=>{if(currentQuizAnswers[index]===q.correctAnswer)correct++});
-    const percentage=Math.round((correct/total)*100);
+    const questionDivs = document.querySelectorAll('.quiz-question');
+
+    document.getElementById('quizContent').classList.add('quiz-submitted');
+
+    currentQuizData.forEach((q, index) => {
+        const options = questionDivs[index].querySelectorAll('.quiz-option');
+        const correctAnswerIndex = q.correctAnswer;
+        const userAnswerIndex = currentQuizAnswers[index];
+
+        if (options[correctAnswerIndex]) {
+            options[correctAnswerIndex].classList.add('correct');
+        }
+
+        if (userAnswerIndex !== undefined) {
+            if (userAnswerIndex === correctAnswerIndex) {
+                correct++;
+            } else {
+                if (options[userAnswerIndex]) {
+                    options[userAnswerIndex].classList.add('incorrect');
+                }
+            }
+        }
+    });
+
+    const percentage = total > 0 ? Math.round((correct / total) * 100) : 0;
     document.getElementById('quizResult').innerHTML=`<div class="quiz-score"><h3>Quiz Results</h3><div style="font-size:24px;margin:15px 0">${correct}/${total} (${percentage}%)</div><div style="color:${percentage>=70?'#28a745':'#dc3545'}">${percentage>=70?'🎉 Excellent!':'📚 Keep Practicing!'}</div></div>`;
     document.getElementById('submitQuiz').style.display='none';
+
     if(currentUser){
-        try{await _supabase.from('quiz_results').insert({user_id:currentUser.uid,user_name:currentUser.name,score:correct,total:total,percentage:percentage})}catch(error){console.error(error)}
+        try{
+            await _supabase.from('quiz_results').insert({user_id:currentUser.uid,user_name:currentUser.name,score:correct,total:total,percentage:percentage})
+        }catch(error){console.error(error)}
     }
 }
 
-function closeQuiz(){document.getElementById('quizContainer').style.display='none';currentQuizData=[];currentQuizAnswers={}}
+function closeQuiz(){
+    document.getElementById('quizContainer').style.display='none';
+    currentQuizData=[];
+    currentQuizAnswers={};
+}
 
 function loadChapters(){
     const courseId=document.getElementById('adminCourse').value;
