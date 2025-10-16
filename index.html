@@ -1,803 +1,383 @@
 <!doctype html>
-<html lang="en">
+<html lang="hi">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Phoenix English Classes - Cosmic Platform (Final)</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Phoenix English Classes - Complete Chapter-wise Learning for Class 11th & 12th">
+<title>Phoenix English Classes - Cosmic Platform</title>
 <style>
-:root{
-  --accent1:#7b5cff; --accent2:#4ca0ff; --ease:cubic-bezier(0.215,0.61,0.355,1);
-  --glass: rgba(255,255,255,0.04); --glass-strong: rgba(255,255,255,0.06);
-  --dark-bg: #02000a; --text: #eaeaea;
-}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial}
-body{min-height:100vh;background:var(--dark-bg);color:var(--text);display:flex;align-items:center;justify-content:center;overflow:hidden}
+/* --- FONT & BASIC SETUP --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
 
-/* Nebula & canvas */
-#nebula{position:fixed;top:0;left:0;width:150%;height:150%;z-index:-3;background-size:cover;background-position:center;transition:opacity .6s}
-#cosmic-canvas{position:fixed;inset:0;z-index:-2}
-
-/* Phone container */
-.phone{width:390px;height:844px;max-width:98vw;border-radius:40px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.25));box-shadow:0 25px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03);overflow:hidden;display:flex;flex-direction:column}
-header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;border-bottom-left-radius:22px;border-bottom-right-radius:22px;color:#fff}
-.header-inner{display:flex;align-items:center;justify-content:space-between}
-.logo-area{display:flex;gap:10px;align-items:center}
-.logo-area img{width:56px;height:56px;border-radius:12px;object-fit:cover;background:rgba(255,255,255,0.06);padding:6px}
-.header-text h1{font-size:20px;font-weight:900}
-.header-text p{font-size:12px;opacity:0.95;margin-top:4px}
-
-/* Nav tabs */
-.nav-tabs{display:flex;background:rgba(255,255,255,0.02);margin:14px;border-radius:12px;overflow:hidden;padding:4px;border:1px solid rgba(255,255,255,0.03)}
-.nav-tab{flex:1;padding:8px 10px;text-align:center;font-size:13px;font-weight:700;color:rgba(255,255,255,0.7);border-radius:9px;cursor:pointer}
-.nav-tab.active{background:rgba(255,255,255,0.03);box-shadow:0 6px 18px rgba(0,0,0,0.5);color:#fff}
-
-/* content */
-.phone-content{flex:1;overflow-y:auto;padding:12px}
-.course-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));padding:14px;border-radius:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.03)}
-.course-card h2{font-size:16px;font-weight:800}
-.summary{font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px}
-
-/* Animated primary button */
-.btn-primary{
-  display:inline-block;width:100%;padding:12px 14px;border-radius:12px;font-weight:700;font-size:15px;border:none;cursor:pointer;
-  background:linear-gradient(270deg,#6a11cb,#2575fc,#6a11cb);background-size:400% 400%;
-  color:#fff;box-shadow:0 8px 20px rgba(107,78,255,0.18);transition:transform .22s var(--ease),box-shadow .22s var(--ease);
-  animation:gradientFlow 4s ease infinite;
-}
-@keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-.btn-primary:active{transform:scale(0.98)}
-.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:#fff;cursor:pointer}
-
-/* Styled select (glassy) */
-.styled-select-group{display:flex;gap:10px;margin-bottom:12px}
-.styled-select-group select{
-  flex:1;appearance:none;padding:10px 38px 10px 12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);
-  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
-  background-repeat:no-repeat;background-position:right 10px center;transition:box-shadow .2s, transform .2s
-}
-.styled-select-group select:hover{box-shadow:0 0 10px rgba(123,92,255,0.35);transform:translateY(-2px)}
-.styled-select-group select:focus{outline:none;border-color:var(--accent1);box-shadow:0 0 12px rgba(123,92,255,0.6)}
-
-/* modal base */
-.modal{display:none;position:fixed;z-index:2000;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;backdrop-filter:blur(6px)}
-.modal-content{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.04);width:360px;max-width:92vw;max-height:92vh;overflow-y:auto;position:relative}
-.close-modal{position:absolute;right:12px;top:8px;background:rgba(255,255,255,0.06);border-radius:999px;border:none;padding:6px;font-size:18px;color:#fff;cursor:pointer}
-
-/* forms */
-.form-group{margin-bottom:12px}
-.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.95)}
-.form-group input,.form-group select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01);color:#fff;font-size:14px}
-.error-msg{color:#ff7a7a;font-size:13px;margin-top:6px;display:none}
-
-/* content viewer (full-screen) */
-.content-viewer{display:none;position:fixed;inset:0;z-index:4000;background:#000;align-items:center;justify-content:center;padding:0}
-.video-shell{position:relative;width:100%;height:100%;display:flex;flex-direction:column}
-#videoPlayerIframe{width:100%;height:100%;border:0;background:#000}
-.video-controls{
-  position:absolute;left:12px;right:12px;bottom:18px;display:flex;gap:8px;align-items:center;justify-content:center;padding:8px;background:linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45));border-radius:12px;
+:root {
+    --ease-out-cubic: cubic-bezier(0.215, 0.610, 0.355, 1);
+    /* Light Mode */
+    --bg-primary-light: #eef2f9;
+    --bg-secondary-light: rgba(255, 255, 255, 0.6);
+    --text-primary-light: #1c1c1e;
+    --text-secondary-light: #5a6474;
+    --border-light: rgba(0, 0, 0, 0.1);
+    --shadow-light: rgba(45, 55, 75, 0.15);
+    --glow-light: rgba(123, 92, 255, 0.3);
+    /* Dark Mode */
+    --bg-primary-dark: #02000a;
+    --bg-secondary-dark: rgba(18, 12, 38, 0.5);
+    --text-primary-dark: #e5e5e7;
+    --text-secondary-dark: #a0a0b0;
+    --border-dark: rgba(255, 255, 255, 0.15);
+    --shadow-dark: rgba(0, 0, 0, 0.5);
+    --glow-dark: rgba(176, 137, 255, 0.4);
 }
 
-/* custom control buttons */
-.icon-btn{background:rgba(255,255,255,0.06);border:0;padding:8px 12px;border-radius:10px;color:#fff;font-weight:700;cursor:pointer}
-.seek-slider{flex:1;margin:0 8px}
-.time-label{font-size:13px;color:#fff;min-width:54px;text-align:center}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', system-ui, sans-serif; }
 
-/* small helpers */
-.hidden{display:none}
-.small{font-size:12px;color:rgba(255,255,255,0.85)}
+body {
+    background-color: var(--bg-primary-light);
+    color: var(--text-primary-light);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 0;
+    transition: background-color 0.5s var(--ease-out-cubic), color 0.5s var(--ease-out-cubic);
+    overflow: hidden;
+}
+body.dark-mode {
+    background-color: var(--bg-primary-dark);
+    color: var(--text-primary-dark);
+}
 
-/* responsive */
-@media (max-width:420px){.phone{width:100%;height:100vh;border-radius:0}}
+/* --- COSMIC BACKGROUND --- */
+#cosmic-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+#nebula {
+    position: fixed; top: 0; left: 0; width: 150%; height: 150%;
+    background-image: url('https://w.forfun.com/fetch/5d/5d32d32ed3a2b47d3330f63b20af280c.jpeg');
+    background-size: cover; z-index: -3; opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+body.dark-mode #nebula { opacity: 0.3; }
+
+/* --- THEME TOGGLE --- */
+.theme-switch-wrapper{display:flex;align-items:center;position:fixed;top:20px;right:20px;z-index:100} /* --- Move theme switch to top-left on mobile --- */
+@media (max-width: 600px) {
+  .theme-switch-wrapper {
+    left: 20px;
+    right: auto;
+    top: 15px;
+  }
+}
+
+/* --- Header Redesign for Responsive Layout --- */
+header {
+  background: linear-gradient(135deg, #ff6bb5, #7b5cff);
+  padding: 22px 18px;
+  border-bottom-left-radius: 22px;
+  border-bottom-right-radius: 22px;
+  color: #fff;
+}
+body.dark-mode header {
+  background: linear-gradient(135deg, #ff6bf5, #7b5cff);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.logo-area {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-area img {
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  object-fit: contain;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 6px;
+}
+
+.header-text h1 {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: 0.6px;
+  text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.header-text p {
+  font-size: 14px;
+  font-weight: 600;
+  opacity: 0.95;
+}.theme-switch{display:inline-block;height:28px;position:relative;width:50px}.theme-switch input{display:none}.slider{background-color:rgba(0,0,0,0.2);bottom:0;cursor:pointer;left:0;position:absolute;right:0;top:0;transition:.4s;border-radius:28px}.slider:before{background-color:#fff;bottom:4px;content:"";height:20px;left:4px;position:absolute;transition:.4s;width:20px;border-radius:50%}input:checked+.slider{background:#7b5cff}input:checked+.slider:before{transform:translateX(22px)}.slider:after{content:'☀️';position:absolute;left:6px;top:5px;font-size:14px;transition:opacity .4s}input:checked+.slider:after{opacity:0}body.dark-mode .slider:after{content:'🌙'}
+
+/* --- MAIN CONTAINER --- */
+.phone {
+    width: 390px; height: 844px; max-width: 98vw; max-height: 95vh;
+    background: var(--bg-secondary-light);
+    border-radius: 40px; box-shadow: 0 25px 50px -12px var(--shadow-light);
+    overflow: hidden; position: relative; border: 1px solid var(--border-light);
+    backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+    transition: all 0.5s var(--ease-out-cubic); display: flex; flex-direction: column;
+}
+body.dark-mode .phone {
+    background: var(--bg-secondary-dark);
+    border: 1px solid var(--border-dark);
+    box-shadow: 0 0 0 1px var(--border-dark), 0 25px 60px -12px var(--shadow-dark);
+}
+.phone-content { flex-grow: 1; overflow-y: auto; }
+
+/* --- BUTTONS & INTERACTIVE ELEMENTS --- */
+button, .btn {
+    transition: all 0.25s var(--ease-out-cubic); cursor: pointer;
+    position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent; border: none;
+}
+button:hover, .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+button:active, .btn:active { transform: scale(0.98) translateY(-1px); }
+.btn-primary{width:100%;padding:14px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;border-radius:12px;font-size:16px;font-weight:600}
+body.dark-mode .btn-primary{background:linear-gradient(135deg, #a758ff, #6b7bff)}
+.btn-secondary{background:rgba(0,0,0,0.05);color:var(--text-primary-light);margin-top:10px;border:1px solid var(--border-light)}
+body.dark-mode .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text-primary-dark);border:1px solid var(--border-dark)}
+
+/* --- MODALS (AUTH & CUSTOM) --- */
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px);animation:fadeIn .3s ease}
+.modal-content{background:var(--bg-secondary-light);border:1px solid var(--border-light);border-radius:24px;padding:28px;width:350px;max-width:90vw;position:relative;animation:slideUp .4s var(--ease-out-cubic);box-shadow:0 0 0 1px var(--border-light)}
+body.dark-mode .modal-content{background:var(--bg-secondary-dark);border:1px solid var(--border-dark);box-shadow:0 0 0 1px var(--border-dark)}
+.modal h3{margin-bottom:20px;color:var(--text-primary-light);font-size:24px;text-align:center}
+body.dark-mode .modal h3{color:var(--text-primary-dark)}
+.close-modal{position:absolute;top:15px;right:15px;background:rgba(0,0,0,0.08);color:var(--text-primary-light);font-size:28px;cursor:pointer;width:44px;height:44px;border-radius:50%;line-height:44px;text-align:center;transition:all .3s var(--ease-out-cubic)}
+body.dark-mode .close-modal{background:rgba(255,255,255,0.1);color:var(--text-primary-dark)}
+.close-modal:hover{background:rgba(0,0,0,0.15);transform:rotate(180deg) scale(1.1)}
+
+/* --- CUSTOM ALERT/CONFIRM MODAL --- */
+#custom-modal .modal-content { text-align: center; }
+#custom-modal-text { margin: 10px 0 25px; line-height: 1.6; font-size: 15px; color: var(--text-secondary-light); }
+body.dark-mode #custom-modal-text { color: var(--text-secondary-dark); }
+#custom-modal-buttons { display: flex; gap: 10px; }
+#custom-modal-confirm, #custom-modal-cancel, #custom-modal-ok { flex: 1; }
+#custom-modal-cancel { background: rgba(0,0,0,0.1); color: var(--text-primary-light); }
+body.dark-mode #custom-modal-cancel { background: rgba(255,255,255,0.1); color: var(--text-primary-dark); }
+
+/* --- FORMS --- */
+.form-group{margin-bottom:18px}.form-group label{display:block;margin-bottom:6px;font-size:14px;font-weight:600;color:var(--text-secondary-light)}body.dark-mode .form-group label{color:var(--text-secondary-dark)}.form-group input,.form-group select{width:100%;padding:12px;border:1px solid var(--border-light);border-radius:10px;font-size:15px;background:rgba(0,0,0,0.02);color:var(--text-primary-light);transition:all .3s ease}body.dark-mode .form-group input,body.dark-mode .form-group select{border:1px solid var(--border-dark);background:rgba(255,255,255,0.05);color:var(--text-primary-dark)}.form-group input:focus,.form-group select:focus{outline:none;border-color:#7b5cff;box-shadow:0 0 0 3px var(--glow-light)}body.dark-mode .form-group input:focus,body.dark-mode .form-group select:focus{box-shadow:0 0 0 3px var(--glow-dark)}.forgot-password-link{display:block;text-align:right;margin-top:12px;font-size:13px;color:var(--text-secondary-light);cursor:pointer;text-decoration:none}body.dark-mode .forgot-password-link{color:var(--text-secondary-dark)}.forgot-password-link:hover{text-decoration:underline}
+
+/* --- GENERAL APP STYLES --- */
+header{background:linear-gradient(135deg, #ff6bb5, #7b5cff);padding:22px 18px;border-bottom-left-radius:22px;border-bottom-right-radius:22px;color:#fff}
+body.dark-mode header{background:linear-gradient(135deg, #ff6bf5, #7b5cff)}
+.auth-toggle{background:rgba(255,255,255,.2);color:#fff;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600}
+.nav-tabs{display:flex;background:rgba(0,0,0,0.03);margin:14px;border-radius:12px;overflow:hidden;padding:4px;border:1px solid var(--border-light)}body.dark-mode .nav-tabs{background:rgba(255,255,255,0.05);border-color:var(--border-dark)}
+.nav-tab{flex:1;padding:10px 8px;text-align:center;background:0 0;font-size:12px;font-weight:600;color:var(--text-secondary-light);border-radius:9px}body.dark-mode .nav-tab{color:var(--text-secondary-dark)}
+.nav-tab.active{background:var(--bg-secondary-light);color:var(--text-primary-light);box-shadow:0 2px 8px var(--shadow-light)}
+body.dark-mode .nav-tab.active{background:rgba(255,255,255,0.1);color:var(--text-primary-dark);box-shadow:0 2px 8px rgba(0,0,0,0.2)}
+
+.card-wrap{padding:0 18px 18px 18px}
+.course-card{background:var(--bg-secondary-light);border-radius:20px;padding:16px;margin-bottom:16px;box-shadow:0 10px 25px -5px var(--shadow-light);border:1px solid var(--border-light);transition:transform 0.3s var(--ease-out-cubic)}
+body.dark-mode .course-card{background:var(--bg-secondary-dark);box-shadow:0 10px 25px -5px var(--shadow-dark);border:1px solid var(--border-dark)}
+.course-card:hover { transform: translateY(-5px); }
+
+.chip{padding:6px 10px;border-radius:20px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;font-size:12px}
+body.dark-mode .chip{background:linear-gradient(135deg, #a758ff, #6b7bff)}
+
+/* Profile Page */
+#profile { padding: 20px; }
+.profile-card { background: var(--bg-secondary-light); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid var(--border-light); }
+body.dark-mode .profile-card { background: var(--bg-secondary-dark); border: 1px solid var(--border-dark); }
+.profile-card h2 { margin-bottom: 20px; }
+.profile-card p { margin: 8px 0; color: var(--text-secondary-light); }
+body.dark-mode .profile-card p { color: var(--text-secondary-dark); }
+.profile-card strong { color: var(--text-primary-light); }
+body.dark-mode .profile-card strong { color: var(--text-primary-dark); }
+.enrolled-courses h3 { margin-top: 30px; margin-bottom: 15px; }
+
+/* --- REMAINDER OF STYLES (ADAPTED) --- */
+.loading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:3000;align-items:center;justify-content:center;flex-direction:column;color:#fff}.spinner{border:4px solid #f3f3f3;border-top:4px solid #7b5cff;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}.contact{padding:16px;background:linear-gradient(135deg, #0f9b6c, #0dbb67);color:#fff;margin:14px;border-radius:18px;box-shadow:0 6px 18px rgba(13,187,103,.2)}.contact .line{display:flex;justify-content:space-between;align-items:center}.contact small{opacity:.95}.contact>div{display:flex;gap:10px;margin-top:10px}.course-card .head{display:flex;justify-content:space-between;align-items:center}.course-card h2{font-size:16px}.summary{margin-top:10px;font-size:13px;color:var(--text-secondary-light)}body.dark-mode .summary{color:var(--text-secondary-dark)}.course-content{display:none;margin-top:12px}.course-content.show{display:block}.cat{margin-top:12px}.category-title{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.03);border:1px dashed rgba(0,0,0,.03);cursor:pointer}body.dark-mode .category-title{background:rgba(255,255,255,0.05);}.chapters{padding:8px 10px;display:none}.chapter-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin-top:8px;background:var(--bg-primary-light);border:1px solid var(--border-light);flex-direction:column;align-items:flex-start}body.dark-mode .chapter-item{background:var(--bg-primary-dark);border:1px solid var(--border-dark);}.chapter-title{font-size:14px;margin-bottom:6px;width:100%}.chapter-actions{display:flex;gap:8px;flex-wrap:wrap;width:100%}.chapter-actions .btn{padding:8px 10px;border-radius:8px;font-size:11px}.btn.explain{background:#e6f6ff;color:#333}body.dark-mode .btn.explain{background:rgba(100,180,255,0.15);color:#eee}.btn.video{background:#ffe6e6;color:#333}body.dark-mode .btn.video{background:rgba(255,100,100,0.15);color:#eee}.btn.qa{background:#fff1e6;color:#333}body.dark-mode .btn.qa{background:rgba(255,200,100,0.15);color:#eee}.btn.quiz{background:#f3e9ff;color:#333}body.dark-mode .btn.quiz{background:rgba(200,150,255,0.15);color:#eee}.btn:disabled{opacity:.5;cursor:not-allowed}.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}.price{color:#ff2f6d;font-weight:700}.enroll{padding:8px 12px;border-radius:18px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;font-size:12px}body.dark-mode .enroll{background:linear-gradient(135deg, #a758ff, #6b7bff)}.admin-panel{display:none;padding:20px}.admin-section{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .admin-section{background:var(--bg-primary-dark)}.admin-section h3{margin-bottom:10px;}.file-upload{margin-bottom:10px}.file-upload input{margin-bottom:5px;width:100%;font-size:12px}.content-list{margin-top:15px;max-height:300px;overflow-y:auto}.content-item{background:var(--bg-secondary-light);padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-item{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.content-item-info{flex:1}.content-item-actions{display:flex;gap:5px}.btn-delete{background:#dc3545;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.btn-approve{background:#28a745;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.content-viewer,.quiz-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary-light);z-index:2000;overflow-y:auto}body.dark-mode .content-viewer,body.dark-mode .quiz-container{background:var(--bg-primary-dark)}.content-header{background:linear-gradient(135deg, #ff6bb5, #7b5cff);color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-header{background:linear-gradient(135deg, #ff6bf5, #7b5cff)}.content-body{padding:20px}.pdf-viewer,.video-player{width:100%;height:600px;border:1px solid var(--border-light);border-radius:8px}body.dark-mode .pdf-viewer,body.dark-mode .video-player{border:1px solid var(--border-dark)}.quiz-question{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .quiz-question{background:var(--bg-primary-dark)}.quiz-options{margin-top:10px}.quiz-option{display:block;margin-bottom:8px;padding:10px;background:var(--bg-secondary-light);border:1px solid var(--border-light);border-radius:8px;cursor:pointer;transition:background .2s}body.dark-mode .quiz-option{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.quiz-option:hover{background:#e6f6ff}body.dark-mode .quiz-option:hover{background:rgba(100,180,255,0.15)}.quiz-option.selected{background:#7b5cff!important;color:#fff!important;border-color:#7b5cff!important}.quiz-score{text-align:center;padding:20px;font-size:18px;font-weight:700}.tab-content{display:none}.tab-content.active{display:block}.error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}.error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}.quiz-submitted .quiz-option{cursor:default}.quiz-option.correct{background:#d4edda!important;border-color:#c3e6cb!important;color:#155724!important}.quiz-option.incorrect{background:#f8d7da!important;border-color:#f5c6cb!important;color:#721c24!important}.quiz-option.correct::after{content:' ✔';font-weight:700;float:right}.quiz-option.incorrect::after{content:' ✖';font-weight:700;float:right}
+::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:rgba(0,0,0,0.1)}::-webkit-scrollbar-thumb{background:#7b5cff;border-radius:8px}::-webkit-scrollbar-thumb:hover{background:#6b7bff}
 </style>
 </head>
 <body>
 
-<!-- Nebula background (Supabase-hosted image) -->
 <div id="nebula"></div>
 <canvas id="cosmic-canvas"></canvas>
 
-<!-- Auth modal -->
-<div id="authModal" class="modal">
-  <div class="modal-content">
-    <button class="close-modal" onclick="closeModal()">×</button>
-
-    <!-- Login -->
-    <div id="loginForm">
-      <h3 style="text-align:center">Student Login</h3>
-      <div class="form-group"><label>Email</label><input id="loginEmail" type="email" placeholder="Enter your email"><div id="loginEmailError" class="error-msg">Please enter a valid email.</div></div>
-      <div class="form-group"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"><div id="loginPasswordError" class="error-msg">Password is required.</div></div>
-      <div style="display:flex;gap:8px">
-        <button class="btn-primary" onclick="login()">Login</button>
-        <button type="button" class="btn-secondary" onclick="showForgotPassword()">Forgot Password?</button>
-      </div>
-      <div style="margin-top:10px;display:flex;gap:8px">
-        <button class="btn-secondary" onclick="showSignup()">New Student? Register</button>
-        <button class="btn-secondary" onclick="showAdminLogin()">Admin Login</button>
-      </div>
-    </div>
-
-    <!-- Signup -->
-    <div id="signupForm" style="display:none">
-      <h3 style="text-align:center">Student Registration</h3>
-      <div class="form-group"><label>Full Name</label><input id="signupName" placeholder="Full name"><div id="signupNameError" class="error-msg">Name is required</div></div>
-      <div class="form-group"><label>Phone</label><input id="signupPhone" placeholder="10 digit phone" maxlength="10"><div id="signupPhoneError" class="error-msg">Valid phone required</div></div>
-      <div class="form-group"><label>Email</label><input id="signupEmail" type="email" placeholder="Email"><div id="signupEmailError" class="error-msg">Valid email required</div></div>
-      <div class="form-group"><label>Class</label>
-        <select id="signupClass">
-          <option value="">Select Class</option><option value="11">Class 11th</option><option value="12">Class 12th</option>
-        </select>
-        <div id="signupClassError" class="error-msg">Please select a class</div>
-      </div>
-      <div class="form-group"><label>Password</label><input id="signupPassword" type="password" placeholder="Min 6 characters"><div id="signupPasswordError" class="error-msg">Password must be at least 6 characters</div></div>
-      <button class="btn-primary" onclick="signup()">Register</button>
-      <button class="btn-secondary" onclick="showLogin()">Already registered? Login</button>
-    </div>
-
-    <!-- Admin -->
-    <div id="adminLoginForm" style="display:none">
-      <h3 style="text-align:center">Admin Login</h3>
-      <div class="form-group"><label>Admin Email</label><input id="adminEmail" type="email"></div>
-      <div class="form-group"><label>Password</label><input id="adminPassword" type="password"></div>
-      <button class="btn-primary" onclick="adminLogin()">Admin Login</button>
-      <button class="btn-secondary" onclick="showLogin()">Back to Student Login</button>
-    </div>
-
-    <!-- Forgot Password -->
-    <div id="forgotPasswordForm" style="display:none">
-      <h3 style="text-align:center">Reset Password</h3>
-      <p class="small" style="text-align:center;margin-bottom:10px">Enter your registered email to receive a reset link.</p>
-      <div class="form-group"><label>Email</label><input id="resetEmail" type="email" placeholder="Your registered email"><div id="resetEmailError" class="error-msg">Email is required</div></div>
-      <button class="btn-primary" onclick="handleForgotPassword()">Send Reset Link</button>
-      <button class="btn-secondary" onclick="showLogin()">Back to Login</button>
-    </div>
-
-  </div>
+<!-- 🌗 Dark / Light Mode Toggle -->
+<div class="theme-switch-wrapper">
+  <label class="theme-switch" for="checkbox">
+    <input type="checkbox" id="checkbox" />
+    <div class="slider round"></div>
+  </label>
 </div>
 
-<!-- App shell -->
+<div id="errorBanner" class="error-banner"></div>
+<div id="loadingSpinner" class="loading"><div class="spinner"></div><p style="margin-top:15px">Loading...</p></div>
+
+<!-- Custom Alert/Confirm Modal -->
+<div id="custom-modal" class="modal">
+    <div class="modal-content">
+        <h3 id="custom-modal-title">Alert</h3>
+        <p id="custom-modal-text">This is a custom message.</p>
+        <div id="custom-modal-buttons">
+            <button id="custom-modal-cancel" class="btn-primary btn-secondary">Cancel</button>
+            <button id="custom-modal-ok" class="btn-primary">OK</button>
+            <button id="custom-modal-confirm" class="btn-primary">Confirm</button>
+        </div>
+    </div>
+</div>
+
 <div class="phone">
-  <header>
-    <div class="header-inner">
-      <div class="logo-area">
-        <img src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg" alt="logo">
-        <div class="header-text">
-          <h1>Phoenix English Classes</h1>
-          <p>The Complete chapter-wise Learning Platform</p>
-        </div>
-      </div>
-      <div>
-        <button id="authButton" class="btn-secondary" onclick="showAuthModal()">🔒 Login</button>
-      </div>
-    </div>
-  </header>
-
-  <div class="phone-content">
-    <div class="nav-tabs">
-      <div class="nav-tab active" onclick='showTab("courses")'>Courses</div>
-      <div id="profileTab" class="nav-tab" onclick='showTab("profile")' style="display:none">My Profile</div>
-      <div id="adminTab" class="nav-tab" onclick='showTab("admin")' style="display:none">Admin</div>
-    </div>
-
-    <div id="courses" class="tab-content active">
-      <div id="coursesContainer"></div>
-    </div>
-
-    <div id="profile" class="tab-content" style="display:none">
-      <div class="course-card">
-        <h2>Student Profile</h2>
-        <p class="summary"><strong>Name:</strong> <span id="profileName"></span></p>
-        <p class="summary"><strong>Email:</strong> <span id="profileEmail"></span></p>
-        <p class="summary"><strong>Phone:</strong> <span id="profilePhone"></span></p>
-        <p class="summary"><strong>Class:</strong> <span id="profileClass"></span></p>
-        <button class="btn-primary btn-secondary" onclick="showAlert('This feature will be added soon!')">Edit Profile</button>
-      </div>
-    </div>
-
-    <div id="admin" class="tab-content" style="display:none;padding-top:6px">
-      <div class="course-card">
-        <h3>Content Management</h3>
-
-        <div class="styled-select-group">
-          <select id="adminCourse" onchange="loadChapters()">
-            <option value="">Select Course</option>
-            <option value="11en">Class 11 English</option>
-            <option value="12en">Class 12 English</option>
-            <option value="11hi">Class 11 Hindi</option>
-            <option value="12hi">Class 12 Hindi</option>
-          </select>
-
-          <select id="adminChapter">
-            <option value="">Select Chapter</option>
-          </select>
-        </div>
-
-        <div style="margin-top:12px">
-          <h4 style="margin-bottom:8px">Video Lesson (YouTube link)</h4>
-          <input id="videoUrl" placeholder="Paste YouTube URL here" style="width:100%;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:#fff">
-          <button class="btn-primary" style="margin-top:8px;background:#c0392b" onclick='uploadContent("video")'>Upload Video Link</button>
-        </div>
-
-        <div style="margin-top:12px">
-          <h4 style="margin-bottom:8px">Explanation PDF</h4>
-          <input id="explanationPdf" type="file" accept="application/pdf" style="width:100%">
-          <button class="btn-primary" style="margin-top:8px" onclick='uploadContent("explanation")'>Upload PDF</button>
-        </div>
-
-        <div style="margin-top:12px">
-          <h4 style="margin-bottom:8px">Q&A PDF</h4>
-          <input id="qaPdf" type="file" accept="application/pdf" style="width:100%">
-          <button class="btn-primary" style="margin-top:8px" onclick='uploadContent("qa")'>Upload PDF</button>
-        </div>
-
-      </div>
-    </div>
-  </div>
+<div id="authModal" class="modal">
+<div class="modal-content">
+<button class="close-modal" onclick="history.back()">&times;</button>
+<div id="loginForm"><h3>Student Login</h3><div class="form-group"><label>Email</label><input type="email" id="loginEmail" placeholder="Enter your email"><div class="error-msg" id="loginEmailError">Please enter valid email</div></div><div class="form-group"><label>Password</label><input type="password" id="loginPassword" placeholder="Password"><div class="error-msg" id="loginPasswordError">Password is required</div></div><a href="#" class="forgot-password-link" onclick="showForgotPassword()">Forgot Password?</a><button class="btn-primary" onclick="login()" style="margin-top:18px;">Login</button><button class="btn-primary btn-secondary" onclick="showSignup()">New Student? Register</button><button class="btn-primary btn-secondary" onclick="showAdminLogin()">Admin Login</button></div>
+<div id="signupForm" style="display:none"><h3>Student Registration</h3><div class="form-group"><label>Full Name</label><input type="text" id="signupName" placeholder="Full name"><div class="error-msg" id="signupNameError">Name is required</div></div><div class="form-group"><label>Phone Number</label><input type="tel" id="signupPhone" placeholder="10-digit phone" maxlength="10"><div class="error-msg" id="signupPhoneError">Valid 10-digit phone required</div></div><div class="form-group"><label>Email</label><input type="email" id="signupEmail" placeholder="Email" required><div class="error-msg" id="signupEmailError">Valid email required</div></div><div class="form-group"><label>Class</label><select id="signupClass"><option value="">Select Class</option><option value="11">Class 11th</option><option value="12">Class 12th</option></select><div class="error-msg" id="signupClassError">Please select class</div></div><div class="form-group"><label>Password</label><input type="password" id="signupPassword" placeholder="Min 6 characters"><div class="error-msg" id="signupPasswordError">Password must be at least 6 characters</div></div><button class="btn-primary" onclick="signup()">Register</button><button class="btn-primary btn-secondary" onclick="showLogin()">Already registered? Login</button></div>
+<div id="adminLoginForm" style="display:none"><h3>Admin Login</h3><div class="form-group"><label>Admin Email</label><input type="email" id="adminEmail" placeholder="Admin email"></div><div class="form-group"><label>Password</label><input type="password" id="adminPassword" placeholder="Admin password"></div><button class="btn-primary" onclick="adminLogin()">Admin Login</button><button class="btn-primary btn-secondary" onclick="showLogin()">Back to Student Login</button></div>
+<div id="forgotPasswordForm" style="display:none"><h3>Reset Password</h3><p style="font-size:14px; color:var(--text-secondary-light); text-align:center; margin-bottom: 20px;">Apna password reset karne ke liye email address enter karein.</p><div class="form-group"><label>Email</label><input type="email" id="resetEmail" placeholder="Your registered email"><div class="error-msg" id="resetEmailError">Valid email is required</div></div><button class="btn-primary" onclick="handleForgotPassword()">Send Reset Link</button><button class="btn-primary btn-secondary" onclick="showLogin()">Back to Login</button></div>
+</div>
 </div>
 
-<!-- Fullscreen content viewer (video player) -->
-<div id="contentViewer" class="content-viewer">
-  <div class="video-shell" id="videoShell">
-    <div id="videoFrameContainer" style="width:100%;height:100%;position:relative">
-      <iframe id="videoPlayerIframe" allow="autoplay; encrypted-media; fullscreen" src="" ></iframe>
-      <div class="video-controls" id="videoControls" style="display:flex;gap:8px;">
-        <button class="icon-btn" id="btnBack10" title="Back 10s">« 10s</button>
-        <button class="icon-btn" id="btnPlayPause" title="Play/Pause">⏯</button>
-        <button class="icon-btn" id="btnForward10" title="Forward 10s">10s »</button>
-        <input type="range" id="seekSlider" class="seek-slider" min="0" max="100" value="0" step="0.1">
-        <div class="time-label" id="timeLabel">0:00 / 0:00</div>
-        <select id="speedSelect" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;border:1px solid rgba(255,255,255,0.04)">
-          <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option selected value="1">1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2">2x</option>
-        </select>
-        <button class="icon-btn" onclick="closeContentViewer()">Close ✕</button>
+<header>
+  <div class="header-inner">
+    <div class="logo-area">
+      <img
+        src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg"
+        alt="Phoenix Logo"
+      />
+      <div class="header-text">
+        <h1>Phoenix English Classes</h1>
+        <p>The Complete chapter-wise Learning Platform</p>
       </div>
     </div>
+    <button class="auth-toggle" onclick="showAuthModal()" id="authButton">
+      🔒 Login
+    </button>
   </div>
+</header>
+
+<div class="phone-content">
+    <div class="nav-tabs"><button class="nav-tab active" onclick='showTab("courses")'>Courses</button><button class="nav-tab" id="profileTab" onclick='showTab("profile")' style="display:none">My Profile</button><button class="nav-tab" id="adminTab" onclick='showTab("admin")' style="display:none">Admin</button></div>
+    <div id="courses" class="tab-content active"><div class="card-wrap" id="coursesContainer"></div></div>
+    <div id="profile" class="tab-content"><div class="profile-card"><h2>Student Profile</h2><p><strong>Name:</strong> <span id="profileName"></span></p><p><strong>Email:</strong> <span id="profileEmail"></span></p><p><strong>Phone:</strong> <span id="profilePhone"></span></p><p><strong>Class:</strong> <span id="profileClass"></span></p><button class="btn-primary btn-secondary" onclick="showAlert('Yeh feature jald hi aa raha hai!')" style="margin-top: 20px;">Edit Profile</button></div><div class="enrolled-courses card-wrap"><h3>My Enrolled Courses</h3><div id="enrolledCoursesContainer"></div></div></div>
+    <div id="admin" class="tab-content admin-panel"><div class="admin-section"><h3>Dashboard</h3><div id="adminStats" style="display:flex; gap: 10px; text-align: center;"></div></div><div class="admin-section"><h3>Payment Approvals</h3><button class="btn-primary" onclick="loadPendingPayments()" style="margin-bottom:10px">Refresh</button><div id="paymentApprovalList" class="content-list"><p>Refresh karne ke liye click karein.</p></div></div><div class="admin-section"><h3>Content Management</h3><select id="adminCourse" onchange="loadChapters()"><option value="">Course Chunein</option><option value="11en">11th English</option><option value="12en">12th English</option><option value="11hi">11th Hindi</option><option value="12hi">12th Hindi</option></select><select id="adminChapter"><option value="">Chapter Chunein</option></select>
+    <div class="file-upload" style="margin-top:15px; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px;"><h4>Video Lesson</h4><input type="text" id="videoUrl" placeholder="YouTube Video URL yahan paste karein" style="width: 100%; padding: 8px;"><button class="btn-primary" onclick='uploadContent("video")' style="margin-top: 5px; background: #c0392b;">Upload Video Link</button></div>
+    <div class="file-upload" style="margin-top:10px; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px;"><h4>Explanation PDF</h4><input type="file" id="explanationPdf" accept=".pdf"><button class="btn-primary" onclick='uploadContent("explanation")' style="margin-top: 5px;">Upload PDF</button><div id="explanationProgress" class="upload-progress" style="display:none"></div></div>
+    <div class="file-upload" style="margin-top:10px; background: rgba(0,0,0,0.05); padding: 10px; border-radius: 8px;"><h4>Q&A PDF</h4><input type="file" id="qaPdf" accept=".pdf"><button class="btn-primary" onclick='uploadContent("qa")' style="margin-top: 5px;">Upload PDF</button><div id="qaProgress" class="upload-progress" style="display:none"></div></div></div>
+    <div class="admin-section"><h3>Manage Content</h3><select id="manageContentCourse" onchange="loadUploadedContent()"><option value="">Course Chunein</option><option value="11en">11th English</option><option value="12en">12th English</option><option value="11hi">11th Hindi</option><option value="12hi">12th Hindi</option></select><div id="uploadedContentList" class="content-list"></div></div><div class="admin-section"><h3>Quiz Builder</h3><textarea id="quizJsonInput" rows="8" placeholder='[{"question":"...","options":["..."],"correctAnswer":0}, ...]' style="width:100%;margin-bottom:10px;padding:8px;border:1px solid var(--border-light);border-radius:4px;font-family:monospace;font-size:12px;"></textarea><button class="btn-primary" onclick="saveQuizFromJson()">Save Quiz from JSON</button></div><div class="admin-section"><h3>Manage Quizzes</h3><select id="manageQuizCourse" onchange="loadUploadedQuizzes()"><option value="">Course Chunein</option><option value="11en">11th English</option><option value="12en">12th English</option><option value="11hi">11th Hindi</option><option value="12hi">12th Hindi</option></select><div id="uploadedQuizList" class="content-list"></div></div><div class="admin-section"><h3>Student Management</h3><input type="text" id="studentSearch" placeholder="Naam ya email se search karein..." onkeyup="loadStudentList()" style="width: 100%; padding: 8px; margin-bottom: 10px; border-radius: 8px; border: 1px solid var(--border-light);"><div id="studentList"><p>Sabhi students ke liye search box khaali rakhein.</p></div></div></div>
 </div>
 
-<!-- Custom alert modal -->
-<div id="custom-modal" class="modal" style="display:none">
-  <div class="modal-content" style="text-align:center;max-width:420px">
-    <h3 id="custom-modal-title">Notification</h3>
-    <p id="custom-modal-text"></p>
-    <div style="display:flex;gap:8px;justify-content:center;margin-top:12px">
-      <button class="btn-secondary" onclick="closeCustomModal()">Close</button>
-    </div>
-  </div>
+<div id="contentViewer" class="content-viewer"><div class="content-header"><h3 id="contentTitle">Content</h3><button class="close-modal" onclick="history.back()">&times;</button></div><div class="content-body"><iframe id="pdfViewer" class="pdf-viewer"></iframe><div id="videoContainer" style="display:none;"><iframe id="videoPlayer" class="video-player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+<div id="quizContainer" class="quiz-container"><div class="content-header"><h3 id="quizTitle">Quiz</h3><button class="close-modal" onclick="history.back()">&times;</button></div><div class="content-body"><div id="quizContent"></div><button id="submitQuiz" class="btn-primary" onclick="submitQuiz()" style="display:none;margin-top:20px">Submit</button><div id="quizResult" class="quiz-score"></div></div></div>
+<div id="paymentModal" class="modal"><div class="modal-content" style="max-width:380px; max-height:90vh; overflow-y:auto;"><button class="close-modal" onclick="history.back()">&times;</button><div class="qr-payment" style="position:relative;"><div style="text-align:center; margin-bottom:20px;"><h3 id="paymentTitle" style="color:inherit; margin:0; font-size:24px; font-weight:700; line-height:1.2;"></h3><p style="font-size:14px; color:inherit; margin-top:6px; opacity: 0.7;">Secure & Instant Access</p></div></div><div class="qr-code" style="margin-bottom:15px;"><img id="qrImage" src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/content-pdfs/QR%20code.jpeg" style="width:100%;height:100%;object-fit:contain;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" alt="Payment QR Code"></div><div style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);padding:15px;border-radius:10px;margin-bottom:15px;color:#fff;"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:13px;opacity:0.9;">UPI ID</span><span style="font-weight:600;font-size:14px;" id="upiIdText">7992300522@ybl</span></div><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;"><span style="font-size:13px;opacity:0.9;">Name</span><span style="font-weight:600;font-size:14px;">Sajan Sir</span></div><div style="display:flex;justify-content:space-between;align-items:center;"><span style="font-size:13px;opacity:0.9;">WhatsApp</span><span style="font-weight:600;font-size:14px;">6299891191</span></div></div><div style="background:linear-gradient(135deg,#f093fb 0%,#f5576c 100%);padding:20px;border-radius:10px;text-align:center;margin-bottom:15px;"><p style="color:#fff;font-size:14px;opacity:0.9;margin-bottom:5px;">Total Amount</p><p style="color:#fff;font-size:32px;font-weight:700;margin:0;" id="paymentAmount"></p></div><div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:15px;"><button class="btn" onclick="downloadQR()" style="padding:14px;background:linear-gradient(135deg,#11998e 0%,#38ef7d 100%);color:#fff;border-radius:10px;font-size:13px;font-weight:600;">⬇️ Download QR</button><button class="btn" onclick="openUPI()" style="padding:14px;background:linear-gradient(135deg,#7b5cff 0%,#4ca0ff 100%);color:#fff;border-radius:10px;font-size:13px;font-weight:600;"> PAY NOW</button></div><button class="btn" onclick="copyUPI()" style="width:100%;padding:12px;background:var(--bg-primary-light);color:var(--text-primary-light);border:1px solid var(--border-light);border-radius:10px;font-size:13px;font-weight:600;margin-bottom:15px;">COPY UPI ID</button><div style="background:#fff3cd;border-left:4px solid #ffc107;padding:12px;border-radius:6px;font-size:12px;color:#856404;margin-bottom:15px;"><strong>Payment Steps:</strong><br><div style="margin-top:8px;line-height:1.8;">1. Pay via QR or UPI<br>2. Take screenshot<br>3. Send to WhatsApp<br>4. Click "Request Access"</div></div><a href="https://wa.me/916299891191?text=Hello%20Sajan%20Sir,%20I%20have%20completed%20the%20payment.%20Please%20verify." target="_blank" class="btn" style="display:block;padding:12px;background:#25d366;color:#fff;text-align:center;border-radius:10px;text-decoration:none;font-weight:600;margin-bottom:15px;font-size:13px;">Send Screenshot</a><button onclick="confirmPayment()" class="btn-primary" style="width:100%;padding:15px;font-size:14px;font-weight:600;">I have paid, Request Access</button></div></div>
 </div>
 
-<!-- Load libraries (supabase UMD then fingerprint) -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.js"></script>
+<!-- Scripts section with comments -->
+<!-- Yeh Supabase library hai, jo aapke app ke database aur user login ko manage karti hai. Yeh ek vishvasneeya (trusted) service hai. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Yeh FingerprintJS library hai. Yeh ek security feature hai jo account sharing ko rokta hai. Yeh virus nahi hai. -->
 <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
-
 <script>
-/* ============================
-   Config & safe initialization
-   ============================ */
-const CONFIG = {
-  SUPABASE_URL: 'https://dviuwzzjkzodadgbotei.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'
-};
+// --- COSMIC BACKGROUND & THEME SCRIPT (SAFE VISUALS) ---
+document.addEventListener('DOMContentLoaded', () => {
+    const toggleSwitch=document.querySelector('.theme-switch input[type="checkbox"]');
+    const nebula=document.getElementById('nebula');
+    const canvas=document.getElementById('cosmic-canvas');
+    const ctx=canvas.getContext('2d');
+    let stars=[],meteors=[],mouse={x:0,y:0};
 
-// Wait until supabase UMD exposed on window
-function waitForSupabase(timeout = 5000){
-  return new Promise((resolve, reject) => {
-    const start = Date.now();
-    (function check(){
-      if(window.supabase && typeof window.supabase.createClient === 'function'){
-        resolve(window.supabase);
-        return;
-      }
-      if(Date.now() - start > timeout){ reject(new Error('Supabase library not available')); return; }
-      setTimeout(check, 50);
-    })();
-  });
-}
+    function setDarkMode(isDark){document.body.classList.toggle('dark-mode',isDark);localStorage.setItem('theme',isDark?'dark':'light');toggleSwitch.checked=isDark}
+    const currentTheme=localStorage.getItem('theme');
+    setDarkMode(currentTheme===null?true:currentTheme==='dark');
+    toggleSwitch.addEventListener('change',e=>setDarkMode(e.target.checked));
 
-/* Application state */
-let supabase = null;
-let currentUser = null;
-let contentMetadata = {}; // mapping key -> [types]
-let ytTimer = null;
-window._yt_knownCurrent = 0;
-window._yt_knownDuration = 0;
-
-/* Nebula background: use Supabase-hosted nebula image if available; graceful fallback */
-const nebulaUrl = 'https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/nebula-bg.jpeg';
-document.getElementById('nebula').style.backgroundImage = `url('${nebulaUrl}')`;
-document.getElementById('nebula').style.backgroundColor = '#03020a'; // fallback color
-
-/* Simple star canvas */
-(function(){
-  const canvas = document.getElementById('cosmic-canvas');
-  if(!canvas) return;
-  const ctx = canvas.getContext('2d');
-  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
-  resize(); window.addEventListener('resize', resize);
-  const stars = Array.from({length:160}).map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.6+0.2,a:Math.random()}));
-  function draw(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    stars.forEach(s=>{
-      s.x += (Math.random()-0.5)*0.3;
-      s.y += (Math.random()-0.5)*0.3;
-      ctx.beginPath();
-      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-      ctx.fillStyle = `rgba(255,255,255,${0.2 + Math.random()*0.8})`;
-      ctx.fill();
+    function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight}
+    window.addEventListener('resize',resizeCanvas);resizeCanvas();
+    
+    document.body.addEventListener('mousemove', e => {
+        mouse.x = e.clientX;
+        mouse.y = e.clientY;
+        const dx = (mouse.x - window.innerWidth / 2) / (window.innerWidth / 2);
+        const dy = (mouse.y - window.innerHeight / 2) / (window.innerHeight / 2);
+        nebula.style.transform = `translate(${-dx*5}%, ${-dy*5}%)`;
     });
-    requestAnimationFrame(draw);
-  }
-  draw();
-})();
 
-/* ============================
-   UI helpers
-   ============================ */
-function showAlert(msg, title='Notification'){ document.getElementById('custom-modal-title').innerText = title; document.getElementById('custom-modal-text').innerHTML = msg; document.getElementById('custom-modal').style.display = 'flex'; }
-function closeCustomModal(){ document.getElementById('custom-modal').style.display = 'none'; }
-function showAuthModal(){ document.getElementById('authModal').style.display = 'flex'; showLogin(); }
-function closeModal(){ document.getElementById('authModal').style.display = 'none'; document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none'); }
-function showLogin(){ document.getElementById('loginForm').style.display='block'; document.getElementById('signupForm').style.display='none'; document.getElementById('adminLoginForm').style.display='none'; document.getElementById('forgotPasswordForm').style.display='none'; }
-function showSignup(){ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='block'; document.getElementById('adminLoginForm').style.display='none'; document.getElementById('forgotPasswordForm').style.display='none'; }
-function showAdminLogin(){ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='none'; document.getElementById('adminLoginForm').style.display='block'; document.getElementById('forgotPasswordForm').style.display='none'; }
-function showForgotPassword(){ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='none'; document.getElementById('adminLoginForm').style.display='none'; document.getElementById('forgotPasswordForm').style.display='block'; }
+    for(let i=0;i<250;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,z:Math.random()*canvas.width,radius:Math.random()*1.5+0.5,alpha:Math.random(),twinkleSpeed:Math.random()*0.03,twinkleDirection:1})}
+    function draw(){ctx.clearRect(0,0,canvas.width,canvas.height);const center={x:canvas.width/2,y:canvas.height/2};stars.forEach(s=>{s.alpha+=s.twinkleSpeed*s.twinkleDirection;if(s.alpha>1||s.alpha<0.2)s.twinkleDirection*=-1;let perspective=canvas.width/s.z;let x=center.x+(s.x-center.x)*perspective;let y=center.y+(s.y-center.y)*perspective;s.z-=.5;if(s.z<=0)s.z=canvas.width;ctx.beginPath();ctx.arc(x,y,s.radius*perspective,0,Math.PI*2);ctx.fillStyle=`rgba(255,255,255,${s.alpha})`;ctx.fill()});meteors.forEach((m,i)=>{ctx.beginPath();const g=ctx.createLinearGradient(m.x,m.y,m.x-m.length,m.y+m.length);g.addColorStop(0,'rgba(255,255,255,1)');g.addColorStop(1,'rgba(255,255,255,0)');ctx.strokeStyle=g;ctx.lineWidth=m.width;ctx.moveTo(m.x,m.y);ctx.lineTo(m.x-m.length,m.y+m.length);ctx.stroke();m.x+=m.speedX;m.y+=m.speedY;if(m.x<-m.length||m.y>canvas.height+m.length)meteors.splice(i,1)});requestAnimationFrame(draw)}
+    setInterval(()=>{if(meteors.length<5)meteors.push({x:Math.random()*canvas.width+100,y:-100,length:Math.random()*150+80,width:Math.random()*2+1,speedX:-(Math.random()*8+4),speedY:Math.random()*8+4})},1500);
+    draw();
+});
 
-function showTab(name){
-  document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
-  document.getElementById(name).style.display='block';
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>{
-    if(t.textContent.toLowerCase().includes(name)) t.classList.add('active');
-  });
-}
+// --- MAIN APP SCRIPT ---
+// Baaki ka poora JavaScript code aapke app ki functionality ke liye hai. Yeh poori tarah surakshit hai.
 
-/* ============================
-   Sample courses (keeps UI consistent)
-   ============================ */
-const courses = [
-  { id:'11en', name:'Class 11th English', price:99, originalPrice:199, summary:'Complete chapter-wise English course for Class 11th', categories:[{title:'Prose', chapters:['Animals in Prison','Nalanda: Ancient Seat of Learning','A Snake in the Grass']},{title:'Poetry', chapters:['Where the Mind is without Fear','Stopping by Woods on a Snowy Evening']}]},
-  { id:'12en', name:'Class 12th English', price:199, originalPrice:299, summary:'Board exam focused complete English preparation for Class 12th', categories:[{title:'Prose', chapters:['Indian Civilisation and Culture','Bharat is My Home']}]}
-];
+window.addEventListener('error',e=>{console.error('Global error:',e);if(e.message==='Script error.')showErrorBanner('Failed to load scripts. Check internet.')});window.addEventListener('unhandledrejection',e=>{console.error('Unhandled promise rejection:',e.reason);showErrorBanner('An error occurred: '+(e.reason?.message||'Unknown'))});function showErrorBanner(m){const b=document.getElementById('errorBanner');b.textContent='⚠️ '+m;b.style.display='block';setTimeout(()=>{b.style.display='none'},5000)}
 
-/* ============================
-   Rendering courses
-   ============================ */
-function renderCourses(){
-  const container = document.getElementById('coursesContainer');
-  if(!container) return;
-  container.innerHTML = '';
-  courses.forEach(c=>{
-    const card = document.createElement('div'); card.className='course-card';
-    const enrolled = currentUser && (currentUser.purchased_courses || []).includes(c.id);
-    let inner = `<h2>${c.name}</h2><div class="summary">${c.summary}</div><div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.85)">Price: ₹${c.price}</div>`;
-    inner += '<div style="margin-top:10px">';
-    c.categories.forEach(cat=>{
-      inner += `<div style="margin-top:8px"><strong style="display:block">${cat.title}</strong>`;
-      cat.chapters.forEach(ch=>{
-        const key = `${c.id}-${cat.title}-${ch}`;
-        const available = contentMetadata[key] || [];
-        let btns = '';
-        if(available.includes('video')) btns += `<button class="btn-secondary" style="margin-top:6px;margin-right:6px" onclick="openContent('${c.id}','${cat.title}','${ch}','video')">▶ Watch Video</button>`;
-        if(available.includes('explanation')) btns += `<button class="btn-secondary" style="margin-top:6px;margin-right:6px" onclick="openContent('${c.id}','${cat.title}','${ch}','explanation')">📖 Read PDF</button>`;
-        if(available.length===0) btns = '<div class="small" style="margin-top:6px;opacity:0.7">Content coming soon...</div>';
-        inner += `<div style="margin-top:6px">${ch}<div style="margin-top:6px">${btns}</div></div>`;
-      });
-      inner += `</div>`;
-    });
-    inner += '</div>';
-    if(!enrolled) inner += `<div style="margin-top:12px"><button class="btn-primary" onclick="initiatePayment('${c.id}','${c.name}',${c.price})">🛒 Enroll Now</button></div>`;
-    else inner += `<div style="margin-top:12px"><div class="small" style="color:#28a745">✅ Enrolled</div></div>`;
-    card.innerHTML = inner;
-    container.appendChild(card);
-  });
-}
+const customModal=document.getElementById('custom-modal'),customModalTitle=document.getElementById('custom-modal-title'),customModalText=document.getElementById('custom-modal-text'),okBtn=document.getElementById('custom-modal-ok'),confirmBtn=document.getElementById('custom-modal-confirm'),cancelBtn=document.getElementById('custom-modal-cancel');let confirmCallback=null;
+function showAlert(m,t='Notification'){customModalTitle.textContent=t;customModalText.innerHTML=m;okBtn.style.display='block';confirmBtn.style.display='none';cancelBtn.style.display='none';customModal.style.display='flex'}
+function showConfirm(m,c,t='Confirm'){confirmCallback=c;customModalTitle.textContent=t;customModalText.innerHTML=m;okBtn.style.display='none';confirmBtn.style.display='block';cancelBtn.style.display='block';customModal.style.display='flex'}
+okBtn.onclick=()=>customModal.style.display='none';cancelBtn.onclick=()=>customModal.style.display='none';confirmBtn.onclick=()=>{customModal.style.display='none';if(confirmCallback)confirmCallback()};
 
-/* ============================
-   Supabase helpers: fetch metadata
-   ============================ */
-async function fetchContentMetadata(){
-  try{
-    const { data, error } = await supabase.from('content').select('course_id,category,chapter,type');
-    if(error){
-      console.warn('Warning fetching content metadata:', error.message || error);
-      contentMetadata = {};
-      return;
-    }
-    contentMetadata = {};
-    (data || []).forEach(item=>{
-      const key = `${item.course_id}-${item.category}-${item.chapter}`;
-      if(!contentMetadata[key]) contentMetadata[key] = [];
-      if(!contentMetadata[key].includes(item.type)) contentMetadata[key].push(item.type);
-    });
-  }catch(e){
-    console.error('Failed to fetch content metadata:', e);
-    contentMetadata = {};
-  }
-}
+// Globals
+let contentMetadata = {};
 
-/* ============================
-   Upload content (safe)
-   ============================ */
-function extractYouTubeID(url){
-  try{
-    const u = new URL(url);
-    if(u.hostname.includes('youtu.be')) return u.pathname.slice(1);
-    if(u.searchParams.get('v')) return u.searchParams.get('v');
-    const parts = u.pathname.split('/');
-    if(parts.includes('embed')) return parts.pop();
-  }catch(e){
-    const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
-    return m ? m[1] : null;
-  }
-  return null;
-}
+function initializeApp(){if(typeof supabase==='undefined'||typeof FingerprintJS==='undefined'){setTimeout(initializeApp,500);return}
+window.addEventListener('popstate',e=>{closeModal();closePaymentModal();closeContentViewer();closeQuiz()});const CONFIG={SUPABASE_URL:'https://dviuwzzjkzodadgbotei.supabase.co',SUPABASE_ANON_KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'};if(!CONFIG.SUPABASE_URL||CONFIG.SUPABASE_URL==='YOUR_SUPABASE_URL_HERE')throw new Error('Configure Supabase');
+const{createClient}=supabase;window._supabase=createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);window.currentUser=null;window.isAdmin=!1;window.currentQuizData=[];window.currentQuizAnswers={};
+window.courses=[{id:'11en',name:'Class 11th English',price:99,originalPrice:199,summary:'Complete chapter-wise English course for Class 11th with all sections',categories:[{title:'Prose',chapters:['Animals in Prison','Nalanda: Ancient Seat of Learning','A Snake in the Grass','The Rule of the Road','The Scientific Point of View','I Pass the Delhi Test','The Leader of Men','Mother India','National Unity, Nation and Nationalism','Dolly at the Dentist','The Three Vows','Exceptional Role of Newspapers in Development']},{title:'Poetry',chapters:['Where the Mind is without Fear','The Marriage of True Minds','The Chimney Sweeper','Stopping by Woods on a Snowy Evening','The Lamentation of the Old Pensioner','Three Years She Grew','Village Song','Follower','Voice of the Unwanted Girl','South Delhi Murder']},{title:'Story of English',chapters:['How English Began','English Down the Ages','Global English','Future of English','Story of English Poetry']},{title:'Grammar',chapters:['Parts of speech','Noun','Pronoun','Adjective','Verb','Adverb','Preposition','Conjunction','Interjection','Determiners','Question tags']},{title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}]},{id:'12en',name:'Class 12th English',price:199,originalPrice:299,summary:'Board exam focused complete English preparation for Class 12th',categories:[{title:'Prose',chapters:['Indian Civilisation and Culture','Bharat is My Home','A Pinch of Snuff','I Have a Dream','Ideas that have Helped Mankind','The Artist','A Child Born','How Free is the Press','The Earth','India Through a Traveller\'s Eyes','A Marriage Proposal']},{title:'Poetry',chapters:['Sweetest Love I do not Goe','Song of Myself','Now the Leaves are Falling Fast','Ode to Autumn','An Epitaph','The Soldier','Macavity: The Mystery Cat','Fire-Hymn','Snake','My Grandmother\'s House']},{title:'Story of English',chapters:['Old English','Middle English','Modern English','English as a World Language','Story of English Drama','Story of the Novel in English']},{title:'Grammar',chapters:['Voice','Time and Tense','Modal verb','Combination','Transformation','Preposition','Correction of sentences','Article','Spelling test','Subject - verb agreement','Narration','Phrases','Antonyms','Synonyms','Miscellaneous']},{title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}]},{id:'11hi',name:'Class 11th Hindi',price:99,originalPrice:199,summary:'संपूर्ण हिंदी पाठ्यक्रम कक्षा 11 के लिए सभी sections के साथ',categories:[{title:'गद्य खंड',chapters:['पूस की रात','कविता की परख','आंखो देखा गदर','बेजोड़ गायिका : लता मंगेशकर','चलचित्र','मेरी वियतनाम यात्रा','सिक्का बदल गया','उत्तरी स्वप्न परी : हरी क्रांति','एक दीक्षांत भाषण','सूर्य','भोगे हुए दिन','गांव के बच्चों की शिक्षा']},{title:'पद्य खंड',chapters:['विद्यापति के पद','कबीर के पद','मीराबाई के पद','सहजोबाई के पद','भारत-दुर्दशा','अंकार','तोड़ती पत्थर','बहुत दिनों के बाद','गालिब','जगरनाथ','पृथ्वी','मातृभूमि']},{title:'व्याकरण',chapters:['संज्ञा','सर्वनाम','विशेषण','क्रिया','क्रिया विशेषण','समुच्चयबोधक (संयोजक)','विस्मयादिबोधक','अव्यय (निपात)']},{title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}]},{id:'12hi',name:'Class 12th Hindi',price:199,originalPrice:299,summary:'उन्नत स्तर की परीक्षा तैयारी कक्षा 12 हिंदी सभी chapters के साथ',categories:[{title:'गद्य खण्ड',chapters:['बातचीत','उसने कहा था','संपूर्ण क्रांति','अर्धनारीश्वर','रोज','एक लेख और एक पत्र','ओ सदानीरा','सिपाही की मां','प्रगीत और समाज','जूठन','हंसते हुए मेरा अकेलापन','तिरिछ','शिक्षा']},{title:'काव्य खण्ड',chapters:['कड़बक','सूरदास के पद','तुलसीदास के पद','छप्पय','कवित्त','तुम्हें कोलाहल कलह में','पुत्र वियोग','उषा','जन-जन का चेहरा एक','अधिनायक','प्यारे नन्हें बेटे को','हार-जीत','गांव का घर']},{title:'व्याकरण',chapters:['उच्चारण स्थान','संज्ञा','सर्वनाम','विशेषण','मुहावरे','विलोम शब्द','पर्यायवाची शब्द','अनेक शब्दों के लिए एक शब्द','समास','लिंग निर्णय','संधि विच्छेद','उपसर्ग','प्रत्यय','शब्द शुद्धिकरण','वाक्य शुद्धिकरण','कारक','वचन','काल','शब्द','पदबंध']},{title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}]},{id:'complete',name:'Complete Package (All 4 Courses)',price:499,originalPrice:896,summary:'All 4 courses - Class 11th & 12th English + Hindi with max discount',categories:[]}];
+_supabase.auth.onAuthStateChange((e,s)=>{if(e==='SIGNED_OUT'){currentUser=null;isAdmin=!1;updateAuthState();renderCourses();showTab('courses')}});checkUserSession()}
 
-async function uploadContent(type){
-  const courseId = document.getElementById('adminCourse').value;
-  const chapter = document.getElementById('adminChapter').value;
-  if(!courseId || !chapter){ showAlert('Please select course and chapter first.','Error'); return; }
-
-  if(type === 'video'){
-    const url = document.getElementById('videoUrl').value.trim();
-    if(!url){ showAlert('Please paste YouTube URL.','Error'); return; }
-    const vid = extractYouTubeID(url);
-    if(!vid){ showAlert('Invalid YouTube URL.','Error'); return; }
-    const payload = { course_id: courseId, category: chapter.split(' - ')[0] || chapter, chapter: chapter, type: 'video', url: `https://www.youtube.com/watch?v=${vid}`, uploaded_at: new Date().toISOString() };
-    await safeInsertOrUpdateContent(payload);
-  } else if(type === 'explanation' || type === 'qa'){
-    const fileInput = type === 'explanation' ? document.getElementById('explanationPdf') : document.getElementById('qaPdf');
-    const file = fileInput.files && fileInput.files[0];
-    if(!file){ showAlert('Please choose a PDF file.','Error'); return; }
-    try{
-      const fileName = `${courseId}_${chapter.replace(/\s+/g,'_')}_${type}_${Date.now()}.pdf`;
-      const uploadRes = await supabase.storage.from('content-pdfs').upload(fileName, file, { cacheControl: '3600', upsert: true });
-      if(uploadRes.error) throw uploadRes.error;
-      const publicURL = supabase.storage.from('content-pdfs').getPublicUrl(uploadRes.data.path).publicUrl;
-      const payload = { course_id: courseId, category: chapter.split(' - ')[0] || chapter, chapter: chapter, type: (type==='explanation'?'explanation':'qa'), url: publicURL, uploaded_at: new Date().toISOString() };
-      await safeInsertOrUpdateContent(payload);
-    }catch(e){
-      console.error('File upload failed:', e);
-      showAlert('File upload failed: '+(e.message||e),'Error');
-    }
-  }
-}
-
-async function safeInsertOrUpdateContent(payload){
-  try{
-    // try insert
-    const { data, error } = await supabase.from('content').insert(payload).select();
-    if(error){
-      console.warn('Insert error, falling back to update:', error.message || error);
-      const updateRes = await supabase.from('content').update({ url: payload.url, uploaded_at: payload.uploaded_at }).eq('course_id', payload.course_id).eq('category', payload.category).eq('chapter', payload.chapter).eq('type', payload.type);
-      if(updateRes.error) throw updateRes.error;
-      showAlert('Content updated successfully!', 'Success');
-    } else {
-      showAlert('Content uploaded successfully!', 'Success');
-    }
-    await fetchContentMetadata();
-    renderCourses();
-  }catch(e){
-    console.error('safeInsert/update failed:', e);
-    showAlert('Upload failed: ' + (e.message || e) + '<br><br>If you see a DB unique constraint error, run: <code>ALTER TABLE content ADD CONSTRAINT content_unique UNIQUE (course_id, category, chapter, type);</code>','Error');
-  }
-}
-
-/* ============================
-   Open content (video/pdf)
-   ============================ */
-async function openContent(courseId, category, chapter, type){
-  try{
-    const { data, error } = await supabase.from('content').select('url,type').eq('course_id', courseId).eq('category', category).eq('chapter', chapter).eq('type', type).limit(1).single();
-    if(error || !data){ showAlert('Content not found.','Error'); return; }
-    if(type === 'video'){
-      const vid = extractYouTubeID(data.url);
-      if(!vid){ showAlert('Invalid video link stored.','Error'); return; }
-      openVideoPlayerFullScreen(vid, true);
-    } else {
-      const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(data.url)}&embedded=true`;
-      window.open(viewerUrl, '_blank');
-    }
-  }catch(e){
-    console.error('openContent error:', e);
-    showAlert('Failed to load content.','Error');
-  }
-}
-
-/* ============================
-   Fullscreen YouTube Player (IFrame API via postMessage)
-   ============================ */
-function openVideoPlayerFullScreen(videoId, autoplay=true){
-  const viewer = document.getElementById('contentViewer');
-  const iframe = document.getElementById('videoPlayerIframe');
-
-  // Build embed URL
-  const params = new URLSearchParams({
-    enablejsapi: '1',
-    origin: location.origin,
-    playsinline: '1',
-    rel: '0',
-    modestbranding: '1',
-    iv_load_policy: '3',
-    controls: '1',
-    fs: '1',
-    autoplay: autoplay ? '1' : '0'
-  });
-  iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
-
-  viewer.style.display = 'flex';
-
-  // request fullscreen
-  const container = document.getElementById('contentViewer');
-  if(container.requestFullscreen) container.requestFullscreen().catch(()=>{});
-  else if(container.webkitRequestFullscreen) container.webkitRequestFullscreen().catch(()=>{});
-
-  setupVideoControlBindings();
-  startYTStatePoll();
-}
-
-/* postMessage helper */
-function postToYT(command, args){
-  const iframe = document.getElementById('videoPlayerIframe');
-  if(!iframe || !iframe.contentWindow) return;
-  const msg = JSON.stringify({ event:'command', func: command, args: args || [] });
-  iframe.contentWindow.postMessage(msg, '*');
-}
-
-/* control bindings */
-function setupVideoControlBindings(){
-  const playBtn = document.getElementById('btnPlayPause');
-  const backBtn = document.getElementById('btnBack10');
-  const forwardBtn = document.getElementById('btnForward10');
-  const seekSlider = document.getElementById('seekSlider');
-  const speedSelect = document.getElementById('speedSelect');
-
-  playBtn.onclick = function(){
-    // toggle: ask player state is not trivial via our simplified approach; we'll just toggle by sending playVideo
-    postToYT('playVideo');
-  };
-  backBtn.onclick = function(){
-    window.addEventListener('message', handleBackOnce, { once: true });
-    postToYT('getCurrentTime');
-  };
-  function handleBackOnce(ev){
-    try{
-      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-      if(data && data.info && typeof data.info === 'number'){ postToYT('seekTo', [Math.max(0, data.info - 10), true]); }
-    }catch(e){}
-  }
-  forwardBtn.onclick = function(){
-    window.addEventListener('message', handleForwardOnce, { once: true });
-    postToYT('getCurrentTime');
-  };
-  function handleForwardOnce(ev){
-    try{
-      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-      if(data && data.info && typeof data.info === 'number'){ postToYT('seekTo', [data.info + 10, true]); }
-    }catch(e){}
-  }
-
-  let seeking = false;
-  seekSlider.oninput = function(){
-    seeking = true;
-    window.addEventListener('message', handleSeekDurationOnce, { once: true });
-    postToYT('getDuration');
-  };
-  function handleSeekDurationOnce(ev){
-    try{
-      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-      if(data && data.info && typeof data.info === 'number'){
-        const duration = data.info;
-        const target = duration * (parseFloat(seekSlider.value) / 100);
-        postToYT('seekTo', [target, true]);
-      }
-    }catch(e){}
-    seeking = false;
-  }
-
-  speedSelect.onchange = function(){ postToYT('setPlaybackRate', [parseFloat(this.value)]); };
-}
-
-/* Poller to update slider/time using getCurrentTime/getDuration */
-function startYTStatePoll(){
-  if(ytTimer) clearInterval(ytTimer);
-  ytTimer = setInterval(()=>{ postToYT('getCurrentTime'); postToYT('getDuration'); }, 700);
-  window.addEventListener('message', ytMessageHandler);
-}
-function stopYTStatePoll(){
-  if(ytTimer) clearInterval(ytTimer);
-  ytTimer = null;
-  window.removeEventListener('message', ytMessageHandler);
-}
-
-/* message handler from iframe - update known current/duration */
-function ytMessageHandler(e){
-  try{
-    let data = e.data;
-    if(typeof data === 'string'){
-      try{ data = JSON.parse(data); }catch(err){ /* ignore */ }
-    }
-    if(!data) return;
-    if(data.info !== undefined){
-      const info = data.info;
-      // Heuristic: if info is large (> 120) it's probably duration
-      if(info > (window._yt_knownDuration || 0)) window._yt_knownDuration = info;
-      else window._yt_knownCurrent = info;
-    }
-  }catch(err){}
-  // Update UI
-  const slider = document.getElementById('seekSlider');
-  const timeLabel = document.getElementById('timeLabel');
-  const curr = window._yt_knownCurrent || 0;
-  const dur = window._yt_knownDuration || 0;
-  if(dur > 0){
-    const pct = (curr / dur) * 100;
-    if(isFinite(pct)) slider.value = pct;
-  }
-  function fmt(s){ s = Math.max(0, Math.floor(s||0)); const m = Math.floor(s/60); const sec = s%60; return `${m}:${sec.toString().padStart(2,'0')}`; }
-  timeLabel.innerText = `${fmt(curr)} / ${dur > 0 ? fmt(dur) : '0:00'}`;
-}
-
-/* close viewer */
-function closeContentViewer(){
-  const viewer = document.getElementById('contentViewer');
-  viewer.style.display = 'none';
-  const iframe = document.getElementById('videoPlayerIframe');
-  iframe.src = '';
-  stopYTStatePoll();
-  if(document.fullscreenElement) document.exitFullscreen && document.exitFullscreen().catch(()=>{});
-}
-
-/* ============================
-   Authentication & user flows
-   ============================ */
-function validateEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-
-async function signup(){
-  const name = document.getElementById('signupName').value.trim();
-  const phone = document.getElementById('signupPhone').value.trim();
-  const email = document.getElementById('signupEmail').value.trim();
-  const cls = document.getElementById('signupClass').value;
-  const pw = document.getElementById('signupPassword').value;
-  let has=false;
-  if(!name){ document.getElementById('signupNameError').style.display='block'; has=true; } else document.getElementById('signupNameError').style.display='none';
-  if(!/^\d{10}$/.test(phone)){ document.getElementById('signupPhoneError').style.display='block'; has=true; } else document.getElementById('signupPhoneError').style.display='none';
-  if(!validateEmail(email)){ document.getElementById('signupEmailError').style.display='block'; has=true; } else document.getElementById('signupEmailError').style.display='none';
-  if(!cls){ document.getElementById('signupClassError').style.display='block'; has=true; } else document.getElementById('signupClassError').style.display='none';
-  if((pw||'').length < 6){ document.getElementById('signupPasswordError').style.display='block'; has=true; } else document.getElementById('signupPasswordError').style.display='none';
-  if(has) return;
-  try{
-    const fp = await FingerprintJS.load(); const f = await fp.get(); const visitorId = f.visitorId;
-    const { data, error } = await supabase.auth.signUp({ email, password: pw });
-    if(error) throw error;
-    await supabase.from('users').insert({ id: data.user.id, name: name, phone: phone, email: email, student_class: cls, purchased_courses: [], is_admin: false, device_fingerprint: visitorId });
-    currentUser = { id: data.user.id, name, email, phone, student_class: cls, purchased_courses: [] };
-    showAlert('Registration successful! Welcome '+name,'Success');
-    closeModal();
-    renderCourses();
-  }catch(e){
-    console.error(e);
-    showAlert('Registration failed: '+(e.message||e),'Error');
-  }
-}
-
-async function login(){
-  const email = document.getElementById('loginEmail').value.trim();
-  const pw = document.getElementById('loginPassword').value;
-  if(!validateEmail(email)){ document.getElementById('loginEmailError').style.display='block'; return; } else document.getElementById('loginEmailError').style.display='none';
-  if(!pw){ document.getElementById('loginPasswordError').style.display='block'; return; } else document.getElementById('loginPasswordError').style.display='none';
-  try{
-    const fp = await FingerprintJS.load(); const f = await fp.get(); const visitorId = f.visitorId;
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
-    if(error) throw error;
-    const { data: profile, error: perr } = await supabase.from('users').select('*').eq('id', data.user.id).single();
-    if(perr) throw perr;
-    currentUser = profile;
-    document.getElementById('authButton').textContent = (profile.is_admin ? '👨‍💼 '+(profile.name||'Admin') : '👋 '+(profile.name||'User'));
-    showAlert('Login successful!','Success');
-    closeModal();
-    renderCourses();
-  }catch(e){
-    console.error(e);
-    showAlert('Login failed: '+(e.message||e));
-  }
-}
-
-async function adminLogin(){
-  const email = document.getElementById('adminEmail').value.trim();
-  const pw = document.getElementById('adminPassword').value;
-  if(!email||!pw){ showAlert('Fill admin fields'); return; }
-  try{
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
-    if(error) throw error;
-    const { data: profile, error: perr } = await supabase.from('users').select('*').eq('id', data.user.id).single();
-    if(perr) throw perr;
-    if(profile.is_admin){ currentUser = profile; document.getElementById('authButton').textContent = '👨‍💼 '+(profile.name||'Admin'); showAlert('Admin login successful!','Success'); closeModal(); renderCourses(); loadAdminDashboard(); }
-    else { await supabase.auth.signOut(); showAlert('No admin privileges for this account.','Error'); }
-  }catch(e){
-    console.error('Admin login error:', e);
-    showAlert('Admin login failed: '+(e.message||e));
-  }
-}
-
-async function handleForgotPassword(){
-  const email = document.getElementById('resetEmail').value.trim();
-  if(!validateEmail(email)){ document.getElementById('resetEmailError').style.display='block'; return; } else document.getElementById('resetEmailError').style.display='none';
-  try{
-    const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo: window.location.origin });
-    if(error) throw error;
-    showAlert('Password reset link sent. Check your email.','Success');
-    showLogin();
-  }catch(e){
-    console.error(e);
-    showAlert('Failed to send reset link: '+(e.message||e),'Error');
-  }
-}
-
-/* ============================
-   Admin helpers & simple payment placeholder
-   ============================ */
-function loadChapters(){
-  const course = document.getElementById('adminCourse').value;
-  const chapterSelect = document.getElementById('adminChapter');
-  chapterSelect.innerHTML = '<option value="">Select Chapter</option>';
-  if(!course) return;
-  const c = courses.find(x => x.id === course);
-  if(c){
-    c.categories.forEach(cat=>{
-      cat.chapters.forEach(ch=>{
-        const opt = document.createElement('option');
-        opt.value = ch;
-        opt.textContent = ch;
-        chapterSelect.appendChild(opt);
-      });
-    });
-  }
-}
-
-function initiatePayment(courseId, courseName, price){
-  showAlert(`Payment flow not implemented in this demo. Start payment for ${courseName} (₹${price})`,'Payment');
-}
-
-/* ============================
-   Startup: wait for supabase library then initialize
-   ============================ */
-(async function init(){
-  try{
-    await waitForSupabase(7000);
-    supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
-    console.log('Supabase initialized');
-  }catch(e){
-    console.error('Supabase failed to initialize:', e);
-    showAlert('Failed to initialize Supabase library. Check internet or CDN.','Error');
-    // still continue with UI using local mock data
-  }
-
-  // safe startup: try to fetch metadata and render UI
-  try{
-    if(supabase) await fetchContentMetadata();
-    renderCourses();
-    console.log('App initialized and courses rendered');
-  }catch(e){
-    console.error('Startup error:', e);
-    renderCourses();
-  }
-
-  // keep auth state in sync
-  if(supabase){
-    supabase.auth.onAuthStateChange((event, session) => {
-      if(event === 'SIGNED_OUT'){ currentUser = null; document.getElementById('authButton').textContent = '🔒 Login'; renderCourses(); }
-      if(event === 'SIGNED_IN' && session && session.user){
-        (async ()=>{
-          try{
-            const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
-            if(profile){ currentUser = profile; document.getElementById('authButton').textContent = (profile.is_admin ? '👨‍💼 '+profile.name : '👋 '+profile.name); renderCourses(); }
-          }catch(e){ console.warn('Failed to load profile on auth change', e); }
-        })();
-      }
-    });
-  }
-})();
-
+async function fetchContentMetadata(){try{const{data,error}=await _supabase.from('content').select('course_id,category,chapter,type');if(error)throw error;contentMetadata={};data.forEach(item=>{const key=`${item.course_id}-${item.category}-${item.chapter}`;if(!contentMetadata[key])contentMetadata[key]=[];contentMetadata[key].push(item.type)});const{data:quizData,error:quizError}=await _supabase.from('quizzes').select('course_id,category,chapter');if(quizError)throw quizError;quizData.forEach(item=>{const key=`${item.course_id}-${item.category}-${item.chapter}`;if(!contentMetadata[key])contentMetadata[key]=[];if(!contentMetadata[key].includes('quiz'))contentMetadata[key].push('quiz')})}catch(e){console.error("Failed to fetch metadata:",e)}}
+async function checkUserSession(){showLoading();try{await fetchContentMetadata();const{data:{session:s},error:e}=await _supabase.auth.getSession();if(e)throw e;if(s){const{data:u,error:f}=await _supabase.from('users').select('*').eq('id',s.user.id).single();if(f&&f.code!=='PGRST116')throw f;if(u){currentUser={uid:s.user.id,email:s.user.email,...u};isAdmin=u.is_admin||!1;updateAuthState();renderCourses();if(isAdmin){loadAdminDashboard()}}else{await _supabase.auth.signOut();throw new Error("User profile not found, signing out.")}}else{renderCourses()}}catch(g){console.error("Session error:",g);const{data:{session:s}}=await _supabase.auth.getSession();if(s)await _supabase.auth.signOut();currentUser=null;isAdmin=!1;updateAuthState();renderCourses();showAlert("Session error. Please log in again.","Error")}finally{hideLoading()}}
+function showLoading(){document.getElementById('loadingSpinner').style.display='flex'}
+function hideLoading(){document.getElementById('loadingSpinner').style.display='none'}
+function hideError(i){const e=document.getElementById(i);if(e)e.style.display='none'}
+function showError(i,e){const t=document.getElementById(i);if(t){t.textContent=e;t.style.display='block'}}
+function validatePhone(p){return/^\d{10}$/.test(p)}
+function validateEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)}
+function showAuthModal(){document.getElementById('authModal').style.display='flex';history.pushState({modal:'auth'},'Login');showLogin()}
+function closeModal(){document.getElementById('authModal').style.display='none';document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none')}
+function showLogin(){document.getElementById('loginForm').style.display='block';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='none';document.getElementById('forgotPasswordForm').style.display='none'}
+function showSignup(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='block';document.getElementById('adminLoginForm').style.display='none';document.getElementById('forgotPasswordForm').style.display='none'}
+function showAdminLogin(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='block';document.getElementById('forgotPasswordForm').style.display='none'}
+function showForgotPassword(){document.getElementById('loginForm').style.display='none';document.getElementById('signupForm').style.display='none';document.getElementById('adminLoginForm').style.display='none';document.getElementById('forgotPasswordForm').style.display='block'}
+async function handleForgotPassword(){const e=document.getElementById('resetEmail').value.trim();hideError('resetEmailError');if(!validateEmail(e)){showError('resetEmailError','Valid email required');return}showLoading();try{const{error:r}=await _supabase.auth.resetPasswordForEmail(e,{redirectTo:window.location.origin});if(r)throw r;showAlert('Password reset link sent! Check your email.','Success');showLogin()}catch(r){console.error('Password reset error:',r);showAlert('Failed to send reset link: '+r.message,'Error')}finally{hideLoading()}}
+async function signup(){document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none');const n=document.getElementById('signupName').value.trim(),p=document.getElementById('signupPhone').value.trim(),e=document.getElementById('signupEmail').value.trim(),t=document.getElementById('signupClass').value,a=document.getElementById('signupPassword').value;let s=!1;if(!n){showError('signupNameError','Name is required');s=!0}if(!validatePhone(p)){showError('signupPhoneError','Valid 10-digit phone required');s=!0}if(!validateEmail(e)){showError('signupEmailError','Valid email required');s=!0}if(!t){showError('signupClassError','Please select class');s=!0}if(a.length<6){showError('signupPasswordError','Min 6 characters');s=!0}if(s)return;showLoading();try{const f=await FingerprintJS.load(),r=await f.get(),o=r.visitorId;const{data:d,error:i}=await _supabase.auth.signUp({email:e,password:a});if(i)throw i;const{error:u}=await _supabase.from('users').insert({id:d.user.id,name:n,phone:p,email:e,student_class:t,purchased_courses:[],is_admin:!1,device_fingerprint:o});if(u)throw u;currentUser={uid:d.user.id,email:d.user.email,name:n,phone:p,student_class:t,purchased_courses:[],device_fingerprint:o};isAdmin=!1;updateAuthState();renderCourses();history.back();showAlert('Registration successful! Welcome '+n,'Success')}catch(c){console.error(c);showAlert(c.message.includes('duplicate')||c.message.includes('unique')?'This phone or email is already registered':'Registration failed: '+c.message,'Error')}finally{hideLoading()}}
+async function login(){document.querySelectorAll('.error-msg').forEach(e=>e.style.display='none');const e=document.getElementById('loginEmail').value.trim(),p=document.getElementById('loginPassword').value;let s=!1;if(!validateEmail(e)){showError('loginEmailError','Valid email required');s=!0}if(!p){showError('loginPasswordError','Password is required');s=!0}if(s)return;showLoading();try{const f=await FingerprintJS.load(),r=await f.get(),t=r.visitorId;const{data:a,error:d}=await _supabase.auth.signInWithPassword({email:e,password:p});if(d)throw d;const{data:o,error:i}=await _supabase.from('users').select('device_fingerprint, is_admin').eq('id',a.user.id).single();if(i)throw new Error('Could not retrieve user profile.');const n=o.device_fingerprint;if(o.is_admin)console.log('Admin login');else if(n){if(n!==t){await _supabase.auth.signOut();showAlert('Login blocked: This account is registered on another device.','Security Alert');hideLoading();return}}else{const{error:u}=await _supabase.from('users').update({device_fingerprint:t}).eq('id',a.user.id);if(u)throw new Error('Failed to register device.');showAlert('Device registered successfully!','Success')}await checkUserSession();history.back()}catch(c){console.error(c);showAlert('Login failed: '+c.message,'Error');hideLoading()}}
+async function adminLogin(){const e=document.getElementById('adminEmail').value.trim(),p=document.getElementById('adminPassword').value;if(!e||!p){showAlert('Please fill all fields');return}showLoading();try{await _supabase.auth.signOut();const{data:a,error:s}=await _supabase.auth.signInWithPassword({email:e,password:p});if(s)throw s;const{data:r,error:t}=await _supabase.from('users').select('*').eq('id',a.user.id).single();if(t)throw new Error('Could not verify admin status');if(r&&r.is_admin===!0){currentUser={...r};isAdmin=!0;updateAuthState();renderCourses();history.back();showAlert('Admin login successful! Welcome '+r.name);loadAdminDashboard()}else{await _supabase.auth.signOut();showAlert('No admin privileges for this account.')}}catch(d){console.error('Admin login error:',d);showAlert('Admin login failed: '+d.message,'Error')}finally{hideLoading()}}
+function logout(){showConfirm('Kya aap sach mein logout karna chahte hain?',()=>_supabase.auth.signOut(),'Logout')}
+function updateAuthState(){const authBtn=document.getElementById('authButton'),adminTab=document.getElementById('adminTab'),profileTab=document.getElementById('profileTab');if(currentUser){authBtn.textContent=isAdmin?'👨‍💼 Admin':'👋 '+currentUser.name.split(' ')[0];authBtn.onclick=logout;profileTab.style.display='block';if(isAdmin)adminTab.style.display='block';updateProfileView()}else{authBtn.textContent='🔒 Login';authBtn.onclick=showAuthModal;adminTab.style.display='none';profileTab.style.display='none'}}
+function updateProfileView(){if(!currentUser)return;document.getElementById('profileName').textContent=currentUser.name;document.getElementById('profileEmail').textContent=currentUser.email;document.getElementById('profilePhone').textContent=currentUser.phone;document.getElementById('profileClass').textContent=currentUser.student_class;const enrolledContainer=document.getElementById('enrolledCoursesContainer');enrolledContainer.innerHTML='';const enrolled=currentUser.purchased_courses||[];if(enrolled.length>0){enrolled.forEach(cId=>{const course=courses.find(c=>c.id===cId);if(course){const courseDiv=document.createElement('div');courseDiv.className='course-card';courseDiv.innerHTML=`<h2>${course.name}</h2><p class="summary">${course.summary}</p>`;enrolledContainer.appendChild(courseDiv)}})}else{enrolledContainer.innerHTML='<p>Aapne abhi tak koi course nahi liya hai.</p>'}}
+function showTab(t){document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));document.querySelector(`.nav-tab[onclick="showTab('${t}')"]`)?.classList.add('active');document.getElementById(t)?.classList.add('active')}
+function renderCourses(){const container=document.getElementById('coursesContainer');if(!container)return;container.innerHTML='';courses.forEach(c=>{const card=document.createElement('div');card.className='course-card';const isEnrolled=currentUser&&currentUser.purchased_courses?.includes(c.id);let totalChapters=0,totalSections=0;if(c.id==='complete'){['11en','12en','11hi','12hi'].forEach(cId=>{let course=courses.find(x=>x.id===cId);if(course){totalSections+=course.categories.length;course.categories.forEach(cat=>{totalChapters+=cat.chapters.length})}})}else{totalSections=c.categories.length;c.categories.forEach(cat=>{totalChapters+=cat.chapters.length})}const savings=c.originalPrice-c.price;card.innerHTML=` <div class="head"> <div> <h2>${c.name}</h2> <div class="summary">${c.summary}</div> <div style="margin-top:8px;font-size:12px;opacity:0.7">📚 ${totalChapters} Chapters | 🎯 ${totalSections} Sections</div> </div> <div class="chip">₹${c.price}</div> </div> <div style="margin-top:12px;padding:10px;background:rgba(0,0,0,0.03); border-radius:8px; font-size:12px; opacity:0.8"> ✅ PDFs & Videos<br>✅ Q&A Sessions<br>✅ Interactive Quizzes<br>✅ Mobile-friendly Learning ${c.id==='complete'?'<br>✅ All 4 Courses<br>✅ Max Discount':''} </div> <div class="cat-list" style="margin-top: 10px;"></div>`;if(c.id!=='complete'){const catList=card.querySelector('.cat-list');c.categories.forEach((cat,ci)=>{const div=document.createElement('div');div.className='cat';div.innerHTML=`<div class="category-title" onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display === 'block' ? 'none' : 'block';"><strong>${cat.title}</strong><small>${cat.chapters.length} lessons ▾</small></div><div class="chapters"></div>`;const chaptersDiv=div.querySelector('.chapters');cat.chapters.forEach(ch=>{const key=`${c.id}-${cat.title}-${ch}`;const availableContent=contentMetadata[key]||[];const btnDisabled=!isEnrolled?'disabled':'';let buttonsHTML='';if(availableContent.includes('video'))buttonsHTML+=`<button class="btn video" ${btnDisabled} onclick="openContent('${c.id}','${cat.title}','${ch}','video')">▶️ Watch Video</button>`;if(availableContent.includes('explanation'))buttonsHTML+=`<button class="btn explain" ${btnDisabled} onclick="openContent('${c.id}','${cat.title}','${ch}','explanation')">📖 Read PDF</button>`;if(availableContent.includes('qa'))buttonsHTML+=`<button class="btn qa" ${btnDisabled} onclick="openContent('${c.id}','${cat.title}','${ch}','qa')">❓ Q&A</button>`;if(availableContent.includes('quiz')&&!cat.title.toLowerCase().includes('writing')&&!cat.title.includes('लेखन'))buttonsHTML+=`<button class="btn quiz" ${btnDisabled} onclick="openQuiz('${c.id}','${cat.title}','${ch}')">🎯 Quiz</button>`;const chapterDiv=document.createElement('div');chapterDiv.className='chapter-item';chapterDiv.innerHTML=`<div class="chapter-title">${ch}</div><div class="chapter-actions">${buttonsHTML||'<p style="font-size:11px; opacity: 0.6;">Content jald hi aa raha hai...</p>'}</div>`;chaptersDiv.appendChild(chapterDiv)});catList.appendChild(div)})}const actionDiv=document.createElement('div');if(isEnrolled){actionDiv.innerHTML=`<div class="price-row" style="margin-top: 15px;"><div style="color:#28a745;font-weight:bold;font-size:14px">✅ Enrolled</div><button class="enroll" style="background:#28a745" disabled>Access Granted</button></div>`}else{actionDiv.innerHTML=`<div class="price-row" style="margin-top: 15px;"><div class="price">₹${c.price} <small style="text-decoration:line-through;opacity:0.5;margin-left:8px">₹${c.originalPrice}</small><div style="font-size:11px;color:#28a745;margin-top:2px">💰 Save ₹${savings}</div></div><button class="enroll" onclick="initiatePayment('${c.id}','${c.name}',${c.price})">🛒 Enroll Now</button></div>`}card.appendChild(actionDiv);container.appendChild(card)})}
+async function openContent(courseId,category,chapter,type){if(!currentUser||!currentUser.purchased_courses?.includes(courseId)){showAlert('Is content ko dekhne ke liye pehle course lein.');return}showLoading();try{const{data:contentData,error}=await _supabase.from('content').select('url').eq('course_id',courseId).eq('category',category).eq('chapter',chapter).eq('type',type).limit(1).single();if(error||!contentData)throw error||new Error('Content not found');document.getElementById('contentTitle').textContent=`${chapter} - ${type}`;const pdfViewer=document.getElementById('pdfViewer'),videoContainer=document.getElementById('videoContainer'),videoPlayer=document.getElementById('videoPlayer');if(type==='video'){pdfViewer.style.display='none';videoContainer.style.display='block';const videoId=contentData.url.split('v=')[1]?.split('&')[0]||contentData.url.split('/').pop();videoPlayer.src=`https://www.youtube.com/embed/${videoId}`}else{videoContainer.style.display='none';pdfViewer.style.display='block';pdfViewer.src=`https://docs.google.com/viewer?url=${encodeURIComponent(contentData.url)}&embedded=true`}document.getElementById('contentViewer').style.display='block';history.pushState({modal:'content'},'Content')}catch(e){console.error(e);showAlert('Content load nahi ho saka.')}finally{hideLoading()}}
+async function loadAdminDashboard(){if(!isAdmin)return;loadStudentList();loadPendingPayments();const statsDiv=document.getElementById('adminStats');statsDiv.innerHTML='<p>Loading stats...</p>';try{const{count:studentCount,error:scErr}=await _supabase.from('users').select('*',{count:'exact',head:true}).eq('is_admin',false);const{count:pendingCount,error:pcErr}=await _supabase.from('purchases').select('*',{count:'exact',head:true}).eq('status','pending_verification');if(scErr||pcErr)throw(scErr||pcErr);statsDiv.innerHTML=`<div style="flex:1; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 8px;"><h4>${studentCount}</h4><small>Students</small></div><div style="flex:1; padding: 10px; background: rgba(0,0,0,0.05); border-radius: 8px;"><h4>${courses.length}</h4><small>Courses</small></div><div style="flex:1; padding: 10px; background: rgba(255,100,100,0.1); border-radius: 8px;"><h4>${pendingCount}</h4><small>Pending</small></div>`;}catch(e){statsDiv.innerHTML='<p style="color:red">Failed to load stats</p>'}}
+async function approvePayment(purchaseId,userId,courseId){showConfirm(`Kya aap is user ke liye "${courseId}" course approve karna chahte hain?`,async()=>{showLoading();try{const{data:u,error:e}=await _supabase.from('users').select('purchased_courses').eq('id',userId).single();if(e)throw new Error('User fetch failed: '+e.message);const ec=u.purchased_courses||[];const cta=courseId==='complete'?['11en','12en','11hi','12hi']:[courseId];const ac=[...new Set([...ec,...cta])];const{error:f}=await _supabase.from('users').update({purchased_courses:ac}).eq('id',userId);if(f)throw new Error('Failed to update user courses: '+f.message);await _supabase.from('purchases').update({status:'approved'}).eq('id',purchaseId);showAlert('Course access de diya gaya hai!','Success');loadAdminDashboard()}catch(h){console.error("Approval failed:",h);showAlert('Error: '+h.message,'Error')}finally{hideLoading()}},'Approve Payment')}
+// --- MINIFIED JS ---
+function initiatePayment(c,n,p){if(!currentUser){showAlert('Course lene ke liye pehle login karein.');showAuthModal();return}document.getElementById('paymentTitle').textContent=n;document.getElementById('paymentAmount').textContent='₹'+p;window.pendingPayment={courseId:c,courseName:n,price:p};document.getElementById('paymentModal').style.display='flex';history.pushState({modal:'payment'},'Payment')}
+function closePaymentModal(){document.getElementById('paymentModal').style.display='none'}
+function downloadQR(){try{const i=document.getElementById('qrImage');if(!i||!i.src||i.naturalWidth===0){showAlert('QR code available nahi hai.');return}fetch(i.src).then(r=>r.blob()).then(b=>{const u=window.URL.createObjectURL(b),a=document.createElement('a');a.href=u;a.download='sajan-sir-payment-qr.jpeg';document.body.appendChild(a);a.click();document.body.removeChild(a);window.URL.revokeObjectURL(u);showAlert('QR Code download shuru ho gaya hai!')})}catch(e){showAlert('Download nahi kar sake. QR par long-press karke save karein.')}}
+function openUPI(){if(!window.pendingPayment){showAlert('Payment info nahi mili.');return}const{price:p,courseName:c}=window.pendingPayment,u='7992300522@ybl',n='Sajan Sir',t=encodeURIComponent('Course: '+c);window.location.href=`upi://pay?pa=${u}&pn=${n}&am=${p}&cu=INR&tn=${t}`}
+function copyUPI(){const i='7992300522@ybl';navigator.clipboard.writeText(i).then(()=>showAlert('UPI ID copy ho gayi: '+i)).catch(()=>showAlert('Copy nahi kar sake. UPI ID: '+i))}
+async function confirmPayment(){if(!window.pendingPayment||!currentUser)return;const{courseId:c,courseName:n,price:p}=window.pendingPayment;showLoading();try{const{data:d,error:e}=await _supabase.from('purchases').select('id').eq('user_id',currentUser.uid).eq('course_id',c).eq('status','pending_verification').limit(1);if(e)throw e;if(d&&d.length>0){showAlert('Aapki request pehle se hi pending hai.');return}await _supabase.from('purchases').insert({user_id:currentUser.uid,user_name:currentUser.name,user_phone:currentUser.phone,user_email:currentUser.email,course_id:c,course_name:n,amount:'₹'+p,status:'pending_verification'});history.back();showAlert('Payment request bhej di gayi hai! Kripya WhatsApp par screenshot bhejein. Admin jald hi approve karenge.','Request Sent')}catch(f){console.error(f);showAlert('Request nahi bhej sake.')}finally{hideLoading()}}
+function closeContentViewer(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src='';document.getElementById('videoPlayer').src=''}
+async function openQuiz(c,t,h){if(!currentUser||!currentUser.purchased_courses?.includes(c)){showAlert('Pehle course lein.');return}showLoading();try{const{data:d,error:e}=await _supabase.from('quizzes').select('*').eq('course_id',c).eq('category',t).eq('chapter',h).limit(1).single();if(e&&e.code!=='PGRST116')throw e;if(d){currentQuizData=d.questions;currentQuizAnswers={};document.getElementById('quizTitle').textContent='Quiz: '+h;const q=document.getElementById('quizContent');q.innerHTML='';q.classList.remove('quiz-submitted');currentQuizData.forEach((a,i)=>{const d=document.createElement('div');d.className='quiz-question';const o=a.options.map((p,x)=>`<div class="quiz-option" onclick="selectAnswer(${i},${x})">${String.fromCharCode(65+x)}. ${p}</div>`).join('');d.innerHTML=`<div style="font-weight:bold;margin-bottom:10px">${i+1}. ${a.question}</div><div class="quiz-options">${o}</div>`;q.appendChild(d)});document.getElementById('submitQuiz').style.display='block';document.getElementById('quizResult').innerHTML='';document.getElementById('quizContainer').style.display='block';history.pushState({modal:'quiz'},'Quiz')}else{showAlert('Quiz abhi available nahi hai.')}}catch(f){console.error(f);showAlert('Quiz load nahi ho saka.')}finally{hideLoading()}}
+function selectAnswer(q,o){const d=document.querySelectorAll('.quiz-question')[q],s=d.querySelectorAll('.quiz-option'),t=s[o];if(document.getElementById('quizContent').classList.contains('quiz-submitted'))return;if(t.classList.contains('selected')){t.classList.remove('selected');delete currentQuizAnswers[q]}else{s.forEach(e=>e.classList.remove('selected'));t.classList.add('selected');currentQuizAnswers[q]=o}}
+async function submitQuiz(){let c=0;const t=currentQuizData.length,d=document.querySelectorAll('.quiz-question');document.getElementById('quizContent').classList.add('quiz-submitted');currentQuizData.forEach((q,i)=>{const s=d[i].querySelectorAll('.quiz-option'),r=q.correctAnswer,u=currentQuizAnswers[i];if(s[r])s[r].classList.add('correct');if(u!==undefined){if(u===r)c++;else if(s[u])s[u].classList.add('incorrect')}});const p=t>0?Math.round(c/t*100):0;document.getElementById('quizResult').innerHTML=`<div class="quiz-score"><h3>Quiz Results</h3><div style="font-size:24px;margin:15px 0">${c}/${t} (${p}%)</div><div style="color:${p>=70?'#28a745':'#dc3545'}">${p>=70?'🎉 Excellent!':'📚 Keep Practicing!'}</div></div>`;document.getElementById('submitQuiz').style.display='none';if(currentUser)try{await _supabase.from('quiz_results').insert({user_id:currentUser.uid,user_name:currentUser.name,score:c,total:t,percentage:p})}catch(e){console.error(e)}}
+function closeQuiz(){document.getElementById('quizContainer').style.display='none'}
+function loadChapters(){const c=document.getElementById('adminCourse').value,s=document.getElementById('adminChapter');s.innerHTML='<option value="">Chapter Chunein</option>';if(c){const o=courses.find(x=>x.id===c);if(o)o.categories.forEach(a=>a.chapters.forEach(h=>{const p=document.createElement('option');p.value=`${a.title}|||${h}`;p.textContent=`${a.title} - ${h}`;s.appendChild(p)}))}}
+async function uploadContent(t){if(!isAdmin)return;const c=document.getElementById('adminCourse').value,v=document.getElementById('adminChapter').value;if(!c||!v){showAlert('Course aur chapter chunein');return}const[a,h]=v.split('|||');let url,filePath=null,fileName,pD;if(t==='video'){const u=document.getElementById('videoUrl').value.trim();if(!u){showAlert('Video URL enter karein.');return}if(!u.includes('youtube.com')&&!u.includes('youtu.be')){showAlert('Kripya valid YouTube URL enter karein.');return}url=u;fileName=u}else{const fI=document.getElementById(t==='explanation'?'explanationPdf':'qaPdf'),f=fI.files[0];pD=document.getElementById(t+'Progress');if(!f){showAlert('PDF file chunein');return}if(f.size>10*1024*1024){showAlert('File ka size 10MB se kam hona chahiye');return}pD.style.display='block';pD.textContent='Uploading...';filePath=`content/${c}/${a}/${h}/${t}_${Date.now()}.pdf`;const{error:e}=await _supabase.storage.from('content-pdfs').upload(filePath,f);if(e){showAlert('Upload fail ho gaya: '+e.message);pD.style.display='none';return}const{data:d}=_supabase.storage.from('content-pdfs').getPublicUrl(filePath);url=d.publicUrl;fileName=f.name;fI.value=''}try{const{error:i}=await _supabase.from('content').upsert({course_id:c,category:a,chapter:h,type:t,url:url,file_path:filePath,file_name:fileName,uploaded_by:currentUser.uid},{onConflict:'course_id,category,chapter,type'});if(i)throw i;showAlert('Content safaltapoorvak upload ho gaya!');if(t==='video')document.getElementById('videoUrl').value='';if(pD){pD.textContent='✅ Upload successful!';setTimeout(()=>pD.style.display='none',3e3)}await fetchContentMetadata();renderCourses()}catch(e){console.error('Upload error:',e);showAlert('Upload fail ho gaya: '+e.message);if(pD)pD.style.display='none'}}
+async function loadUploadedContent(){if(!isAdmin)return;const c=document.getElementById('manageContentCourse').value,l=document.getElementById('uploadedContentList');if(!c){l.innerHTML='<p>Course chunein</p>';return}showLoading();try{const{data:d,error:e}=await _supabase.from('content').select('*').eq('course_id',c).order('created_at',{ascending:!1});if(e)throw e;if(!d||d.length===0)l.innerHTML='<p>Is course ke liye koi content nahi hai.</p>';else{l.innerHTML='';const g={};d.forEach(c=>{const k=c.chapter;if(!g[k])g[k]={category:c.category,items:[]};g[k].items.push(c)});Object.keys(g).forEach(k=>{const t=g[k],i=document.createElement('div');i.style.cssText='background:var(--bg-secondary-light);padding:12px;margin-bottom:10px;border-radius:8px;border:1px solid var(--border-light)';let h=`<div style="font-weight:600;margin-bottom:8px">${k}</div><div style="font-size:12px;opacity:0.7;margin-bottom:8px">${t.category}</div>`;t.items.forEach(c=>{const b=c.type==='video'?'#ffe6e6':(c.type==='explanation'?'#e6f6ff':'#fff1e6');h+=`<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;padding:6px;background:${b};border-radius:6px"><span style="font-size:12px">${c.type==='video'?'▶️':'📄'} ${c.type}</span><button class="btn-delete" onclick="deleteContent(${c.id},\`${c.file_path}\`,\`${k}\`)">Delete</button></div>`});i.innerHTML=h;l.appendChild(i)})}}catch(f){console.error(f);showAlert('Content load nahi ho saka')}finally{hideLoading()}}
+function deleteContent(i,p,c){showConfirm(`"${c}" ke is content ko delete karna hai? Yeh wapas nahi aayega.`,async()=>{showLoading();try{if(p&&p!=='null'){const{error:e}=await _supabase.storage.from('content-pdfs').remove([p]);if(e)console.error("Storage Error:",e.message)}const{error:f}=await _supabase.from('content').delete().eq('id',i);if(f)throw f;showAlert('Content delete ho gaya!');await fetchContentMetadata();renderCourses();loadUploadedContent()}catch(g){console.error(g);showAlert('Content delete nahi kar sake')}finally{hideLoading()}},'Confirm Deletion')}
+async function saveQuizFromJson(){if(!isAdmin)return;const c=document.getElementById('adminCourse').value,v=document.getElementById('adminChapter').value,j=document.getElementById('quizJsonInput').value.trim();if(!c||!v){showAlert('Course aur chapter chunein');return}if(!j){showAlert('Quiz JSON data paste karein');return}let q;try{q=JSON.parse(j);if(!Array.isArray(q)||q.length===0)throw new Error('JSON ek non-empty array hona chahiye.');q.forEach((a,i)=>{if(!a.question||!Array.isArray(a.options)||a.options.length===0||typeof a.correctAnswer!=='number')throw new Error(`Question #${i+1} ka format galat hai.`)})}catch(e){showAlert('Invalid JSON: '+e.message);return}showLoading();try{const[a,h]=v.split('|||');await _supabase.from('quizzes').upsert({course_id:c,category:a,chapter:h,questions:q,created_by:currentUser.uid},{onConflict:'course_id,category,chapter'});showAlert(`"${h}" ke liye ${q.length} questions ka quiz save ho gaya!`);document.getElementById('quizJsonInput').value='';await fetchContentMetadata();renderCourses()}catch(e){console.error(e);showAlert('Quiz save nahi kar sake: '+e.message)}finally{hideLoading()}}
+async function loadUploadedQuizzes(){if(!isAdmin)return;const c=document.getElementById('manageQuizCourse').value,l=document.getElementById('uploadedQuizList');if(!c){l.innerHTML='<p>Course chunein</p>';return}showLoading();try{const{data:d,error:e}=await _supabase.from('quizzes').select('*').eq('course_id',c).order('created_at',{ascending:!1});if(e)throw e;if(!d||d.length===0)l.innerHTML='<p>Koi quiz nahi banaya gaya hai</p>';else{l.innerHTML='';d.forEach(q=>{const i=document.createElement('div');i.className='content-item';i.innerHTML=`<div class="content-item-info"><div>${q.chapter}</div><small>${q.category} • ${q.questions.length}Q</small></div><div class="content-item-actions"><button class="btn-delete" onclick="deleteQuiz(${q.id},\`${q.chapter}\`)">Delete</button></div>`;l.appendChild(i)})}}catch(f){console.error(f);showAlert('Quiz load nahi ho saka')}finally{hideLoading()}}
+function deleteQuiz(i,c){showConfirm(`"${c}" ke quiz ko delete karna hai?`,async()=>{showLoading();try{await _supabase.from('quizzes').delete().eq('id',i);showAlert('Quiz delete ho gaya!');await fetchContentMetadata();renderCourses();loadUploadedQuizzes()}catch(e){console.error(e);showAlert('Delete nahi kar sake')}finally{hideLoading()}},'Confirm Deletion')}
+async function loadStudentList(){if(!isAdmin)return;const s=document.getElementById('studentSearch').value.trim().toLowerCase(),l=document.getElementById('studentList');l.innerHTML='<p>Loading...</p>';try{let q=_supabase.from('users').select('*').eq('is_admin',!1).order('created_at',{ascending:!1});if(s)q=q.or(`name.ilike.%${s}%,email.ilike.%${s}%`);const{data:d,error:e}=await q;if(e)throw e;if(!d||d.length===0)l.innerHTML='<h4>Students:</h4><p>Koi student nahi mila.</p>';else{l.innerHTML=`<h4>Students (${d.length}):</h4>`;d.forEach(u=>{const i=document.createElement('div');i.style.cssText='background:var(--bg-secondary-light);padding:10px;margin:10px 0;border-radius:8px;border:1px solid var(--border-light)';const p=u.purchased_courses||[],c=p.map(cId=>courses.find(c=>c.id===cId)?.name||cId).join(', ')||'None',a=new Date(u.created_at).toLocaleDateString();i.innerHTML=`<strong>${u.name}</strong><br><small>📞 ${u.phone} | ✉️ ${u.email}</small><br><small>🎓 Class ${u.student_class}</small><br><small>📚 Courses: ${c}</small><br><small>📅 Registered: ${a}</small><div style="margin-top: 8px; display: flex; gap: 5px;"><button class="btn-delete" onclick="deleteStudent('${u.id}', '${u.name}')">Delete</button></div>`;l.appendChild(i)})}}catch(f){console.error(f);l.innerHTML='<p style="color:red">Students load nahi ho sake</p>'}}
+function deleteStudent(i,n){showConfirm(`Student "${n}" ko hamesha ke liye delete karna hai? Yeh wapas nahi aayega.`,async()=>{showLoading();try{const{error}=await _supabase.from('users').delete().eq('id',i);if(error)throw error;showAlert(`Student "${n}" delete ho gaya.`);loadStudentList()}catch(e){showAlert('Student delete nahi kar sake: '+e.message)}finally{hideLoading()}},'Delete Student')}
+async function loadPendingPayments(){if(!isAdmin)return;const l=document.getElementById('paymentApprovalList');l.innerHTML='<p>Loading...</p>';try{const{data:d,error:e}=await _supabase.from('purchases').select('*').eq('status','pending_verification').order('created_at',{ascending:!0});if(e)throw e;if(!d||d.length===0){l.innerHTML='<p>Koi payment pending nahi hai.</p>';return}l.innerHTML='';d.forEach(p=>{const i=document.createElement('div');i.className='content-item';i.innerHTML=`<div class="content-item-info"><div style="font-weight:600;">👤 ${p.user_name}</div><small>📞 ${p.user_phone}</small><br><small>📚 Course: <strong>${p.course_name}</strong></small></div><div class="content-item-actions"><button class="btn-approve" onclick="approvePayment(${p.id},\`${p.user_id}\`,\`${p.course_id}\`)">Approve</button></div>`;l.appendChild(i)})}catch(f){l.innerHTML='<p style="color:red;">Requests load nahi ho sake.</p>'}}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initializeApp);else initializeApp();
 </script>
 </body>
 </html>
+
+
