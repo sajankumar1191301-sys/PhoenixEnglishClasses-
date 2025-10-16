@@ -3,34 +3,28 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Phoenix English Classes - Cosmic Platform (Updated)</title>
+<title>Phoenix English Classes - Cosmic Platform (Final)</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --accent1: #7b5cff;
-  --accent2: #4ca0ff;
-  --glass-bg: rgba(255,255,255,0.06);
-  --glass-border: rgba(255,255,255,0.08);
-  --dark-bg: #02000a;
-  --light-text: #eaeaea;
-  --ease: cubic-bezier(0.215,0.610,0.355,1);
+  --accent1:#7b5cff; --accent2:#4ca0ff; --ease:cubic-bezier(0.215,0.61,0.355,1);
+  --glass: rgba(255,255,255,0.04); --glass-strong: rgba(255,255,255,0.06);
+  --dark-bg: #02000a; --text: #eaeaea;
 }
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,Arial}
+body{min-height:100vh;background:var(--dark-bg);color:var(--text);display:flex;align-items:center;justify-content:center;overflow:hidden}
 
-/* --- Basic layout & fonts --- */
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,system-ui,-apple-system,'Segoe UI',Roboto,'Helvetica Neue',Arial}
-body{min-height:100vh;background:#02000a;color:var(--light-text);display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden}
-
-/* Nebula & canvas (kept from original style) */
-#nebula{position:fixed;top:0;left:0;width:150%;height:150%;background-image:url('https://w.forfun.com/fetch/5d/5d32d32ed3a2b47d3330f63b20af280c.jpeg');background-size:cover;z-index:-3;opacity:0.35;transform:translate(0,0)}
-#cosmic-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-2}
+/* Nebula & canvas */
+#nebula{position:fixed;top:0;left:0;width:150%;height:150%;z-index:-3;background-size:cover;background-position:center;transition:opacity .6s}
+#cosmic-canvas{position:fixed;inset:0;z-index:-2}
 
 /* Phone container */
-.phone{width:390px;height:844px;max-width:98vw;border-radius:40px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.2));box-shadow:0 20px 60px rgba(0,0,0,0.7);border:1px solid rgba(255,255,255,0.04);overflow:hidden;display:flex;flex-direction:column}
+.phone{width:390px;height:844px;max-width:98vw;border-radius:40px;background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(0,0,0,0.25));box-shadow:0 25px 60px rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.03);overflow:hidden;display:flex;flex-direction:column}
 header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;border-bottom-left-radius:22px;border-bottom-right-radius:22px;color:#fff}
 .header-inner{display:flex;align-items:center;justify-content:space-between}
 .logo-area{display:flex;gap:10px;align-items:center}
 .logo-area img{width:56px;height:56px;border-radius:12px;object-fit:cover;background:rgba(255,255,255,0.06);padding:6px}
-.header-text h1{font-size:20px;font-weight:900;line-height:1}
+.header-text h1{font-size:20px;font-weight:900}
 .header-text p{font-size:12px;opacity:0.95;margin-top:4px}
 
 /* Nav tabs */
@@ -40,9 +34,9 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
 
 /* content */
 .phone-content{flex:1;overflow-y:auto;padding:12px}
-.course-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));padding:14px;border-radius:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.03)}
+.course-card{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.08));padding:14px;border-radius:16px;margin-bottom:14px;border:1px solid rgba(255,255,255,0.03)}
 .course-card h2{font-size:16px;font-weight:800}
-.summary{font-size:13px;color:rgba(255,255,255,0.75);margin-top:6px}
+.summary{font-size:13px;color:rgba(255,255,255,0.85);margin-top:6px}
 
 /* Animated primary button */
 .btn-primary{
@@ -53,23 +47,26 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
 }
 @keyframes gradientFlow{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
 .btn-primary:active{transform:scale(0.98)}
-.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:#fff}
+.btn-secondary{background:transparent;border:1px solid rgba(255,255,255,0.06);padding:10px;border-radius:10px;color:#fff;cursor:pointer}
 
 /* Styled select (glassy) */
 .styled-select-group{display:flex;gap:10px;margin-bottom:12px}
 .styled-select-group select{
-  flex:1;appearance:none;-webkit-appearance:none;padding:10px 38px 10px 12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');background-repeat:no-repeat;background-position:right 10px center;transition:box-shadow .2s, transform .2s}
+  flex:1;appearance:none;padding:10px 38px 10px 12px;border-radius:10px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);color:#fff;font-weight:600;cursor:pointer;backdrop-filter:blur(6px);
+  background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="white" viewBox="0 0 24 24"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat:no-repeat;background-position:right 10px center;transition:box-shadow .2s, transform .2s
+}
 .styled-select-group select:hover{box-shadow:0 0 10px rgba(123,92,255,0.35);transform:translateY(-2px)}
 .styled-select-group select:focus{outline:none;border-color:var(--accent1);box-shadow:0 0 12px rgba(123,92,255,0.6)}
 
 /* modal base */
 .modal{display:none;position:fixed;z-index:2000;inset:0;background:rgba(0,0,0,0.6);align-items:center;justify-content:center;backdrop-filter:blur(6px)}
-.modal-content{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.04);width:360px;max-width:92vw;max-height:92vh;overflow-y:auto}
+.modal-content{background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.2));padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.04);width:360px;max-width:92vw;max-height:92vh;overflow-y:auto;position:relative}
 .close-modal{position:absolute;right:12px;top:8px;background:rgba(255,255,255,0.06);border-radius:999px;border:none;padding:6px;font-size:18px;color:#fff;cursor:pointer}
 
 /* forms */
 .form-group{margin-bottom:12px}
-.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.85)}
+.form-group label{display:block;margin-bottom:6px;font-weight:700;font-size:13px;color:rgba(255,255,255,0.95)}
 .form-group input,.form-group select,textarea{width:100%;padding:10px;border-radius:10px;border:1px solid rgba(255,255,255,0.04);background:rgba(255,255,255,0.01);color:#fff;font-size:14px}
 .error-msg{color:#ff7a7a;font-size:13px;margin-top:6px;display:none}
 
@@ -96,13 +93,15 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
 </head>
 <body>
 
+<!-- Nebula background (Supabase-hosted image) -->
 <div id="nebula"></div>
 <canvas id="cosmic-canvas"></canvas>
 
-<!-- MODALS -->
+<!-- Auth modal -->
 <div id="authModal" class="modal">
-  <div class="modal-content" style="position:relative;">
+  <div class="modal-content">
     <button class="close-modal" onclick="closeModal()">×</button>
+
     <!-- Login -->
     <div id="loginForm">
       <h3 style="text-align:center">Student Login</h3>
@@ -110,7 +109,6 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
       <div class="form-group"><label>Password</label><input id="loginPassword" type="password" placeholder="Password"><div id="loginPasswordError" class="error-msg">Password is required.</div></div>
       <div style="display:flex;gap:8px">
         <button class="btn-primary" onclick="login()">Login</button>
-        <!-- Use a button (type=button) so it will not navigate away -->
         <button type="button" class="btn-secondary" onclick="showForgotPassword()">Forgot Password?</button>
       </div>
       <div style="margin-top:10px;display:flex;gap:8px">
@@ -153,10 +151,11 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
       <button class="btn-primary" onclick="handleForgotPassword()">Send Reset Link</button>
       <button class="btn-secondary" onclick="showLogin()">Back to Login</button>
     </div>
+
   </div>
 </div>
 
-<!-- Main app shell -->
+<!-- App shell -->
 <div class="phone">
   <header>
     <div class="header-inner">
@@ -233,17 +232,14 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
 
       </div>
     </div>
-
   </div>
 </div>
 
 <!-- Fullscreen content viewer (video player) -->
 <div id="contentViewer" class="content-viewer">
   <div class="video-shell" id="videoShell">
-    <!-- IFrame will be injected here -->
     <div id="videoFrameContainer" style="width:100%;height:100%;position:relative">
-      <iframe id="videoPlayerIframe" allow="autoplay; encrypted-media; fullscreen" src="" allowfullscreen></iframe>
-      <!-- Custom overlay controls (in addition to YouTube default controls) -->
+      <iframe id="videoPlayerIframe" allow="autoplay; encrypted-media; fullscreen" src="" ></iframe>
       <div class="video-controls" id="videoControls" style="display:flex;gap:8px;">
         <button class="icon-btn" id="btnBack10" title="Back 10s">« 10s</button>
         <button class="icon-btn" id="btnPlayPause" title="Play/Pause">⏯</button>
@@ -251,8 +247,7 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
         <input type="range" id="seekSlider" class="seek-slider" min="0" max="100" value="0" step="0.1">
         <div class="time-label" id="timeLabel">0:00 / 0:00</div>
         <select id="speedSelect" style="padding:8px;border-radius:8px;background:rgba(255,255,255,0.03);color:#fff;border:1px solid rgba(255,255,255,0.04)">
-          <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option selected value="1">1x</option>
-          <option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2">2x</option>
+          <option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option selected value="1">1x</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="1.75">1.75x</option><option value="2">2x</option>
         </select>
         <button class="icon-btn" onclick="closeContentViewer()">Close ✕</button>
       </div>
@@ -260,7 +255,7 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
   </div>
 </div>
 
-<!-- Alerts/loading -->
+<!-- Custom alert modal -->
 <div id="custom-modal" class="modal" style="display:none">
   <div class="modal-content" style="text-align:center;max-width:420px">
     <h3 id="custom-modal-title">Notification</h3>
@@ -271,41 +266,72 @@ header{background:linear-gradient(135deg,#ff6bb5,var(--accent1));padding:18px;bo
   </div>
 </div>
 
-<!-- Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Load libraries (supabase UMD then fingerprint) -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.43.1/dist/umd/supabase.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+
 <script>
 /* ============================
-   Basic app + theme + canvas
+   Config & safe initialization
    ============================ */
-document.addEventListener('DOMContentLoaded', function(){
-  // simple stars/nebula canvas from original - minimal
+const CONFIG = {
+  SUPABASE_URL: 'https://dviuwzzjkzodadgbotei.supabase.co',
+  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'
+};
+
+// Wait until supabase UMD exposed on window
+function waitForSupabase(timeout = 5000){
+  return new Promise((resolve, reject) => {
+    const start = Date.now();
+    (function check(){
+      if(window.supabase && typeof window.supabase.createClient === 'function'){
+        resolve(window.supabase);
+        return;
+      }
+      if(Date.now() - start > timeout){ reject(new Error('Supabase library not available')); return; }
+      setTimeout(check, 50);
+    })();
+  });
+}
+
+/* Application state */
+let supabase = null;
+let currentUser = null;
+let contentMetadata = {}; // mapping key -> [types]
+let ytTimer = null;
+window._yt_knownCurrent = 0;
+window._yt_knownDuration = 0;
+
+/* Nebula background: use Supabase-hosted nebula image if available; graceful fallback */
+const nebulaUrl = 'https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/nebula-bg.jpeg';
+document.getElementById('nebula').style.backgroundImage = `url('${nebulaUrl}')`;
+document.getElementById('nebula').style.backgroundColor = '#03020a'; // fallback color
+
+/* Simple star canvas */
+(function(){
   const canvas = document.getElementById('cosmic-canvas');
-  if(canvas && canvas.getContext){
-    const ctx = canvas.getContext('2d');
-    function resize(){ canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
-    resize(); window.addEventListener('resize', resize);
-    // simple moving stars
-    const stars = [];
-    for(let i=0;i<150;i++) stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.3,a:Math.random()});
-    function draw(){
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      stars.forEach(s=>{
-        s.x += (Math.random()-0.5)*0.2;
-        s.y += (Math.random()-0.5)*0.2;
-        ctx.beginPath();
-        ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-        ctx.fillStyle = 'rgba(255,255,255,'+(0.4+0.6*Math.random())+')';
-        ctx.fill();
-      });
-      requestAnimationFrame(draw);
-    }
-    draw();
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  function resize(){ canvas.width = innerWidth; canvas.height = innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const stars = Array.from({length:160}).map(()=>({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.6+0.2,a:Math.random()}));
+  function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    stars.forEach(s=>{
+      s.x += (Math.random()-0.5)*0.3;
+      s.y += (Math.random()-0.5)*0.3;
+      ctx.beginPath();
+      ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle = `rgba(255,255,255,${0.2 + Math.random()*0.8})`;
+      ctx.fill();
+    });
+    requestAnimationFrame(draw);
   }
-});
+  draw();
+})();
 
 /* ============================
-   Small helpers & UI helpers
+   UI helpers
    ============================ */
 function showAlert(msg, title='Notification'){ document.getElementById('custom-modal-title').innerText = title; document.getElementById('custom-modal-text').innerHTML = msg; document.getElementById('custom-modal').style.display = 'flex'; }
 function closeCustomModal(){ document.getElementById('custom-modal').style.display = 'none'; }
@@ -316,37 +342,34 @@ function showSignup(){ document.getElementById('loginForm').style.display='none'
 function showAdminLogin(){ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='none'; document.getElementById('adminLoginForm').style.display='block'; document.getElementById('forgotPasswordForm').style.display='none'; }
 function showForgotPassword(){ document.getElementById('loginForm').style.display='none'; document.getElementById('signupForm').style.display='none'; document.getElementById('adminLoginForm').style.display='none'; document.getElementById('forgotPasswordForm').style.display='block'; }
 
-/* ============================
-   Supabase config (keep your keys)
-   ============================ */
-const CONFIG = {
-  SUPABASE_URL: 'https://dviuwzzjkzodadgbotei.supabase.co',
-  SUPABASE_ANON_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'
-};
-const supabase = supabaseJs = supabase.createClient ? supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY) : supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+function showTab(name){
+  document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
+  document.getElementById(name).style.display='block';
+  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t=>{
+    if(t.textContent.toLowerCase().includes(name)) t.classList.add('active');
+  });
+}
 
 /* ============================
-   Minimal mock of courses (keeps UI same)
+   Sample courses (keeps UI consistent)
    ============================ */
 const courses = [
   { id:'11en', name:'Class 11th English', price:99, originalPrice:199, summary:'Complete chapter-wise English course for Class 11th', categories:[{title:'Prose', chapters:['Animals in Prison','Nalanda: Ancient Seat of Learning','A Snake in the Grass']},{title:'Poetry', chapters:['Where the Mind is without Fear','Stopping by Woods on a Snowy Evening']}]},
   { id:'12en', name:'Class 12th English', price:199, originalPrice:299, summary:'Board exam focused complete English preparation for Class 12th', categories:[{title:'Prose', chapters:['Indian Civilisation and Culture','Bharat is My Home']}]}
 ];
 
-/* Simple placeholder for contentMetadata, will be fetched later */
-let contentMetadata = {}; // key -> [types...]
-
 /* ============================
-   Render courses & chapter buttons
+   Rendering courses
    ============================ */
-let currentUser = null;
 function renderCourses(){
   const container = document.getElementById('coursesContainer');
+  if(!container) return;
   container.innerHTML = '';
   courses.forEach(c=>{
     const card = document.createElement('div'); card.className='course-card';
     const enrolled = currentUser && (currentUser.purchased_courses || []).includes(c.id);
-    let inner = `<h2>${c.name}</h2><div class="summary">${c.summary}</div><div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.8)">Price: ₹${c.price}</div>`;
+    let inner = `<h2>${c.name}</h2><div class="summary">${c.summary}</div><div style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.85)">Price: ₹${c.price}</div>`;
     inner += '<div style="margin-top:10px">';
     c.categories.forEach(cat=>{
       inner += `<div style="margin-top:8px"><strong style="display:block">${cat.title}</strong>`;
@@ -370,26 +393,13 @@ function renderCourses(){
 }
 
 /* ============================
-   Fake session check (call your own backend logic)
-   ============================ */
-async function checkUserSession(){
-  // This sample file keeps the original Supabase logic but won't auto sign in.
-  // If you want full auth, keep checkUserSession() and initialization from your original file.
-  // For now just render courses and try to fetch content metadata.
-  await fetchContentMetadata();
-  renderCourses();
-}
-checkUserSession();
-
-/* ============================
-   Fetch content metadata (used to show which items available)
+   Supabase helpers: fetch metadata
    ============================ */
 async function fetchContentMetadata(){
   try{
     const { data, error } = await supabase.from('content').select('course_id,category,chapter,type');
-    if(error && error.message) {
-      console.warn('content metadata fetch warning:', error.message);
-      // still safe to continue
+    if(error){
+      console.warn('Warning fetching content metadata:', error.message || error);
       contentMetadata = {};
       return;
     }
@@ -406,10 +416,23 @@ async function fetchContentMetadata(){
 }
 
 /* ============================
-   Upload content (video/pdf) - safer insert-or-update
+   Upload content (safe)
    ============================ */
+function extractYouTubeID(url){
+  try{
+    const u = new URL(url);
+    if(u.hostname.includes('youtu.be')) return u.pathname.slice(1);
+    if(u.searchParams.get('v')) return u.searchParams.get('v');
+    const parts = u.pathname.split('/');
+    if(parts.includes('embed')) return parts.pop();
+  }catch(e){
+    const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+    return m ? m[1] : null;
+  }
+  return null;
+}
+
 async function uploadContent(type){
-  // type: video | explanation | qa
   const courseId = document.getElementById('adminCourse').value;
   const chapter = document.getElementById('adminChapter').value;
   if(!courseId || !chapter){ showAlert('Please select course and chapter first.','Error'); return; }
@@ -417,91 +440,45 @@ async function uploadContent(type){
   if(type === 'video'){
     const url = document.getElementById('videoUrl').value.trim();
     if(!url){ showAlert('Please paste YouTube URL.','Error'); return; }
-    // extract best possible video id
     const vid = extractYouTubeID(url);
     if(!vid){ showAlert('Invalid YouTube URL.','Error'); return; }
-    const payload = {
-      course_id: courseId,
-      category: chapter.split(' - ')[0] || chapter,
-      chapter: chapter,
-      type: 'video',
-      url: `https://www.youtube.com/watch?v=${vid}`,
-      uploaded_at: new Date().toISOString()
-    };
+    const payload = { course_id: courseId, category: chapter.split(' - ')[0] || chapter, chapter: chapter, type: 'video', url: `https://www.youtube.com/watch?v=${vid}`, uploaded_at: new Date().toISOString() };
     await safeInsertOrUpdateContent(payload);
   } else if(type === 'explanation' || type === 'qa'){
     const fileInput = type === 'explanation' ? document.getElementById('explanationPdf') : document.getElementById('qaPdf');
     const file = fileInput.files && fileInput.files[0];
     if(!file){ showAlert('Please choose a PDF file.','Error'); return; }
-    // We'll upload file to Supabase storage first (content-pdfs), then insert content record with URL
     try{
       const fileName = `${courseId}_${chapter.replace(/\s+/g,'_')}_${type}_${Date.now()}.pdf`;
-      const uploadResult = await supabase.storage.from('content-pdfs').upload(fileName, file, { cacheControl: '3600', upsert: true });
-      if(uploadResult.error) throw uploadResult.error;
-      const publicURL = supabase.storage.from('content-pdfs').getPublicUrl(uploadResult.data.path).publicUrl;
-      const payload = {
-        course_id: courseId,
-        category: chapter.split(' - ')[0] || chapter,
-        chapter: chapter,
-        type: (type==='explanation' ? 'explanation' : 'qa'),
-        url: publicURL,
-        uploaded_at: new Date().toISOString()
-      };
+      const uploadRes = await supabase.storage.from('content-pdfs').upload(fileName, file, { cacheControl: '3600', upsert: true });
+      if(uploadRes.error) throw uploadRes.error;
+      const publicURL = supabase.storage.from('content-pdfs').getPublicUrl(uploadRes.data.path).publicUrl;
+      const payload = { course_id: courseId, category: chapter.split(' - ')[0] || chapter, chapter: chapter, type: (type==='explanation'?'explanation':'qa'), url: publicURL, uploaded_at: new Date().toISOString() };
       await safeInsertOrUpdateContent(payload);
     }catch(e){
-      console.error('File upload error:', e);
+      console.error('File upload failed:', e);
       showAlert('File upload failed: '+(e.message||e),'Error');
     }
   }
 }
 
-/* safer insert or update (avoid relying on ON CONFLICT unique constraint on DB) */
 async function safeInsertOrUpdateContent(payload){
   try{
-    // Try insert
-    const insertRes = await supabase.from('content').insert(payload).select();
-    if(insertRes.error){
-      // If insertion failed due to unique violation, update existing row(s)
-      console.warn('Insert error, trying update:', insertRes.error.message || insertRes.error);
-      // Try update by matching course_id, category, chapter, type
-      const updateRes = await supabase.from('content')
-        .update({ url: payload.url, uploaded_at: payload.uploaded_at })
-        .eq('course_id', payload.course_id)
-        .eq('category', payload.category)
-        .eq('chapter', payload.chapter)
-        .eq('type', payload.type);
-      if(updateRes.error){
-        throw updateRes.error;
-      } else {
-        showAlert('Content updated successfully!', 'Success');
-      }
+    // try insert
+    const { data, error } = await supabase.from('content').insert(payload).select();
+    if(error){
+      console.warn('Insert error, falling back to update:', error.message || error);
+      const updateRes = await supabase.from('content').update({ url: payload.url, uploaded_at: payload.uploaded_at }).eq('course_id', payload.course_id).eq('category', payload.category).eq('chapter', payload.chapter).eq('type', payload.type);
+      if(updateRes.error) throw updateRes.error;
+      showAlert('Content updated successfully!', 'Success');
     } else {
       showAlert('Content uploaded successfully!', 'Success');
     }
-    // refresh metadata & UI
     await fetchContentMetadata();
     renderCourses();
   }catch(e){
-    console.error('safe insert/update failed:', e);
-    // If the DB has some other constraint, inform developer/admin
-    showAlert('Upload failed: ' + (e.message || e) + '<br><br>If you see a database unique constraint error, run: <code>ALTER TABLE content ADD CONSTRAINT content_unique UNIQUE (course_id, category, chapter, type);</code>','Error');
-  }
-}
-
-/* extract youtube id helper */
-function extractYouTubeID(url){
-  // handles multiple url patterns
-  try{
-    const u = new URL(url);
-    if(u.hostname.includes('youtu.be')) return u.pathname.slice(1);
-    if(u.searchParams.get('v')) return u.searchParams.get('v');
-    // embed path maybe /embed/ID
-    const parts = u.pathname.split('/');
-    return parts.includes('embed') ? parts.pop() : null;
-  }catch(e){
-    // fallback with regex
-    const m = url.match(/(?:v=|\/embed\/|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
-    return m ? m[1] : null;
+    console.error('safeInsert/update failed:', e);
+    showAlert('Upload failed: ' + (e.message || e) + '<br><br>If you see a DB unique constraint error, run: <code>ALTER TABLE content ADD CONSTRAINT content_unique UNIQUE (course_id, category, chapter, type);</code>','Error');
   }
 }
 
@@ -509,21 +486,15 @@ function extractYouTubeID(url){
    Open content (video/pdf)
    ============================ */
 async function openContent(courseId, category, chapter, type){
-  // check enrollment: here we simply allow (you can enforce)
-  // find content record
   try{
     const { data, error } = await supabase.from('content').select('url,type').eq('course_id', courseId).eq('category', category).eq('chapter', chapter).eq('type', type).limit(1).single();
-    if(error || !data) { showAlert('Content not found.','Error'); return; }
+    if(error || !data){ showAlert('Content not found.','Error'); return; }
     if(type === 'video'){
-      // Build embed URL with params and enable JS API
-      const url = data.url;
-      const vid = extractYouTubeID(url);
-      if(!vid) { showAlert('Invalid video link stored.','Error'); return; }
-      openVideoPlayerFullScreen(vid, true); // autoplay in fullscreen
+      const vid = extractYouTubeID(data.url);
+      if(!vid){ showAlert('Invalid video link stored.','Error'); return; }
+      openVideoPlayerFullScreen(vid, true);
     } else {
-      // PDF: open in content viewer (use Google docs viewer for embedding)
       const viewerUrl = `https://docs.google.com/viewer?url=${encodeURIComponent(data.url)}&embedded=true`;
-      // We'll open viewer in new tab for better mobile behavior
       window.open(viewerUrl, '_blank');
     }
   }catch(e){
@@ -533,15 +504,13 @@ async function openContent(courseId, category, chapter, type){
 }
 
 /* ============================
-   Fullscreen YouTube Player
+   Fullscreen YouTube Player (IFrame API via postMessage)
    ============================ */
-/* We'll use postMessage-friendly iframe (YouTube IFrame API) to control playback. */
-let ytPlayer = null;
-let ytTimer = null;
 function openVideoPlayerFullScreen(videoId, autoplay=true){
   const viewer = document.getElementById('contentViewer');
   const iframe = document.getElementById('videoPlayerIframe');
-  // Build embed URL with recommended params
+
+  // Build embed URL
   const params = new URLSearchParams({
     enablejsapi: '1',
     origin: location.origin,
@@ -551,211 +520,138 @@ function openVideoPlayerFullScreen(videoId, autoplay=true){
     iv_load_policy: '3',
     controls: '1',
     fs: '1',
-    // 'autoplay' param triggers autoplay only when allowed by browser; we'll call play via API
     autoplay: autoplay ? '1' : '0'
   });
   iframe.src = `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
-  // show viewer, request fullscreen on container for immersive experience
+
   viewer.style.display = 'flex';
 
-  // attempt fullscreen on container to get immersive playback (some browsers require user gesture; this is triggered by clicking a chapter button)
+  // request fullscreen
   const container = document.getElementById('contentViewer');
   if(container.requestFullscreen) container.requestFullscreen().catch(()=>{});
   else if(container.webkitRequestFullscreen) container.webkitRequestFullscreen().catch(()=>{});
-  else if(container.msRequestFullscreen) container.msRequestFullscreen().catch(()=>{});
 
-  // ensure we can control the iframe after it loads - set up message-based control using YT API
-  // remove any old ytPlayer listeners
-  if(ytTimer) { clearInterval(ytTimer); ytTimer = null; }
-
-  // initialize event listeners for controls (they use postMessage to the iframe)
   setupVideoControlBindings();
-  // start a small poll to update the seek slider from iframe via postMessage getCurrentTime through YT iframe API
   startYTStatePoll();
 }
 
-/* postMessage helpers for basic commands via YT IFrame API */
-function postToYT(commandName, args){
+/* postMessage helper */
+function postToYT(command, args){
   const iframe = document.getElementById('videoPlayerIframe');
   if(!iframe || !iframe.contentWindow) return;
-  const message = JSON.stringify({ event: 'command', func: commandName, args: args || [] });
-  iframe.contentWindow.postMessage(message, '*');
+  const msg = JSON.stringify({ event:'command', func: command, args: args || [] });
+  iframe.contentWindow.postMessage(msg, '*');
 }
 
-/* control binding */
+/* control bindings */
 function setupVideoControlBindings(){
   const playBtn = document.getElementById('btnPlayPause');
   const backBtn = document.getElementById('btnBack10');
   const forwardBtn = document.getElementById('btnForward10');
   const seekSlider = document.getElementById('seekSlider');
-  const timeLabel = document.getElementById('timeLabel');
   const speedSelect = document.getElementById('speedSelect');
 
-  // Play/Pause
-  playBtn.onclick = async function(){
-    postToYT('getPlayerState'); // request state — we'll toggle via playVideo/pauseVideo
-    // For simplicity we will just send playVideo command (YT will toggle appropriately)
+  playBtn.onclick = function(){
+    // toggle: ask player state is not trivial via our simplified approach; we'll just toggle by sending playVideo
     postToYT('playVideo');
   };
-  // Back 10s
   backBtn.onclick = function(){
-    postToYT('getCurrentTime');
-    // We'll use a short delayed strategy: request time and then seek to time-10
-    window.addEventListener('message', handleTempTimeBack, { once:true });
+    window.addEventListener('message', handleBackOnce, { once: true });
     postToYT('getCurrentTime');
   };
-  function handleTempTimeBack(ev){
+  function handleBackOnce(ev){
     try{
-      const d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-      if(d && d.info && typeof d.info === 'number'){
-        const t = Math.max(0, d.info - 10);
-        postToYT('seekTo',[t, true]);
-      }
+      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+      if(data && data.info && typeof data.info === 'number'){ postToYT('seekTo', [Math.max(0, data.info - 10), true]); }
     }catch(e){}
   }
-  // Forward 10s
   forwardBtn.onclick = function(){
-    window.addEventListener('message', handleTempTimeForward, { once:true });
+    window.addEventListener('message', handleForwardOnce, { once: true });
     postToYT('getCurrentTime');
   };
-  function handleTempTimeForward(ev){
+  function handleForwardOnce(ev){
     try{
-      const d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-      if(d && d.info && typeof d.info === 'number'){
-        const t = d.info + 10;
-        postToYT('seekTo',[t, true]);
-      }
+      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+      if(data && data.info && typeof data.info === 'number'){ postToYT('seekTo', [data.info + 10, true]); }
     }catch(e){}
   }
 
-  // Seek slider: when user changes value, seek
   let seeking = false;
   seekSlider.oninput = function(){
     seeking = true;
-    const pct = parseFloat(this.value);
-    // We'll get duration and then compute target when we have it via a short poll message
-    window.addEventListener('message', handleTempDurationSeek, { once:true });
+    window.addEventListener('message', handleSeekDurationOnce, { once: true });
     postToYT('getDuration');
-    function handleTempDurationSeek(ev){
-      try{
-        const d = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
-        if(d && d.info && typeof d.info === 'number'){
-          const duration = d.info;
-          const target = duration * (pct/100);
-          postToYT('seekTo',[target,true]);
-        }
-      }catch(e){}
-      seeking = false;
-    }
   };
+  function handleSeekDurationOnce(ev){
+    try{
+      const data = typeof ev.data === 'string' ? JSON.parse(ev.data) : ev.data;
+      if(data && data.info && typeof data.info === 'number'){
+        const duration = data.info;
+        const target = duration * (parseFloat(seekSlider.value) / 100);
+        postToYT('seekTo', [target, true]);
+      }
+    }catch(e){}
+    seeking = false;
+  }
 
-  // Speed select
-  speedSelect.onchange = function(){
-    const rate = parseFloat(this.value);
-    postToYT('setPlaybackRate', [rate]);
-  };
-
-  // update label via the poller (see startYTStatePoll())
+  speedSelect.onchange = function(){ postToYT('setPlaybackRate', [parseFloat(this.value)]); };
 }
 
-/* start poll to update slider/time using getCurrentTime/getDuration via postMessage polling */
+/* Poller to update slider/time using getCurrentTime/getDuration */
 function startYTStatePoll(){
-  const slider = document.getElementById('seekSlider');
-  const timeLabel = document.getElementById('timeLabel');
-
   if(ytTimer) clearInterval(ytTimer);
-  ytTimer = setInterval(async ()=>{
-    // ask iframe for current time and duration
-    postToYT('getCurrentTime');
-    postToYT('getDuration');
-    // We handle the responses in the message event below
-  }, 700);
-
-  // listen for messages from iframe
+  ytTimer = setInterval(()=>{ postToYT('getCurrentTime'); postToYT('getDuration'); }, 700);
   window.addEventListener('message', ytMessageHandler);
 }
-
-/* yt message handler to parse YT API responses */
-function ytMessageHandler(e){
-  // The iframe posts messages as JSON strings; YT forwards method results under e.data
-  // Example patterns are not strictly documented here; we'll handle common ones:
-  try{
-    let data = e.data;
-    if(typeof data === 'string'){
-      try{ data = JSON.parse(data); } catch(err){ /* not JSON — ignore */ }
-    }
-    if(!data) return;
-    // YT sometimes replies with { event: 'infoDelivery', info: ... } or { info: ... }
-    if(data && data.info !== undefined){
-      // info might be currentTime or duration depending on last command; we must infer via structure
-      // If info is integer/float and between 0 and 1e6, we can use heuristics.
-      const info = data.info;
-      // If last message was duration (likely large), update duration.
-      // We'll store lastDuration locally if > 1 minute or > current known time.
-      // Simpler: update slider proportionally when both currentTime and duration obtained in close succession.
-      // We'll manage two temp vars:
-      window._yt_lastInfo = window._yt_lastInfo || {};
-      if(info >= 0){
-        // Determine if message includes 'duration' or 'current' by comparisons:
-        const dur = window._yt_knownDuration || 0;
-        if(info > dur){ window._yt_knownDuration = info; } else {
-          window._yt_knownCurrent = info;
-        }
-      }
-    }
-    // If message contains an 'event' that includes infoDelivery with a methodName, parse that (some YT versions):
-    if(data && data.event === 'infoDelivery' && data.info && data.info.length){
-      // ignore complex shapes
-    }
-  }catch(err){
-    // ignore parse failures
-  }
-
-  // Update UI if we have both knownDuration and knownCurrent
-  const slider = document.getElementById('seekSlider');
-  const timeLabel = document.getElementById('timeLabel');
-  const curr = window._yt_knownCurrent || 0;
-  const dur = window._yt_knownDuration || 0;
-  if(dur > 0){
-    const pct = (curr / dur) * 100;
-    if(!isNaN(pct) && isFinite(pct)) slider.value = pct;
-  }
-  // update time label
-  function fmt(s){ s = Math.max(0, Math.floor(s||0)); const m = Math.floor(s/60); const sec = s%60; return `${m}:${sec.toString().padStart(2,'0')}`; }
-  timeLabel.innerText = `${fmt(curr)} / ${dur > 0 ? fmt(dur) : '0:00'}`;
-}
-
-/* stop poll when closing */
 function stopYTStatePoll(){
   if(ytTimer) clearInterval(ytTimer);
   ytTimer = null;
   window.removeEventListener('message', ytMessageHandler);
 }
 
+/* message handler from iframe - update known current/duration */
+function ytMessageHandler(e){
+  try{
+    let data = e.data;
+    if(typeof data === 'string'){
+      try{ data = JSON.parse(data); }catch(err){ /* ignore */ }
+    }
+    if(!data) return;
+    if(data.info !== undefined){
+      const info = data.info;
+      // Heuristic: if info is large (> 120) it's probably duration
+      if(info > (window._yt_knownDuration || 0)) window._yt_knownDuration = info;
+      else window._yt_knownCurrent = info;
+    }
+  }catch(err){}
+  // Update UI
+  const slider = document.getElementById('seekSlider');
+  const timeLabel = document.getElementById('timeLabel');
+  const curr = window._yt_knownCurrent || 0;
+  const dur = window._yt_knownDuration || 0;
+  if(dur > 0){
+    const pct = (curr / dur) * 100;
+    if(isFinite(pct)) slider.value = pct;
+  }
+  function fmt(s){ s = Math.max(0, Math.floor(s||0)); const m = Math.floor(s/60); const sec = s%60; return `${m}:${sec.toString().padStart(2,'0')}`; }
+  timeLabel.innerText = `${fmt(curr)} / ${dur > 0 ? fmt(dur) : '0:00'}`;
+}
+
 /* close viewer */
 function closeContentViewer(){
   const viewer = document.getElementById('contentViewer');
   viewer.style.display = 'none';
-  // stop playback by clearing src and stopping poll
   const iframe = document.getElementById('videoPlayerIframe');
   iframe.src = '';
   stopYTStatePoll();
-  // exit fullscreen if active
   if(document.fullscreenElement) document.exitFullscreen && document.exitFullscreen().catch(()=>{});
 }
 
 /* ============================
-   Auth / signup / login / forgot password (minimal)
+   Authentication & user flows
    ============================ */
 function validateEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-function showTab(name){
-  document.querySelectorAll('.tab-content').forEach(c=>c.style.display='none');
-  document.getElementById(name).style.display='block';
-  document.querySelectorAll('.nav-tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.nav-tab').forEach(t=>{ if(t.getAttribute('onclick') && t.getAttribute('onclick').includes(name)) t.classList.add('active'); });
-}
 
-/* Signup/login/forgot simplified: adapt to your original logic */
 async function signup(){
   const name = document.getElementById('signupName').value.trim();
   const phone = document.getElementById('signupPhone').value.trim();
@@ -770,12 +666,9 @@ async function signup(){
   if((pw||'').length < 6){ document.getElementById('signupPasswordError').style.display='block'; has=true; } else document.getElementById('signupPasswordError').style.display='none';
   if(has) return;
   try{
-    const finger = await FingerprintJS.load();
-    const f = await finger.get();
-    const visitorId = f.visitorId;
+    const fp = await FingerprintJS.load(); const f = await fp.get(); const visitorId = f.visitorId;
     const { data, error } = await supabase.auth.signUp({ email, password: pw });
     if(error) throw error;
-    // create profile
     await supabase.from('users').insert({ id: data.user.id, name: name, phone: phone, email: email, student_class: cls, purchased_courses: [], is_admin: false, device_fingerprint: visitorId });
     currentUser = { id: data.user.id, name, email, phone, student_class: cls, purchased_courses: [] };
     showAlert('Registration successful! Welcome '+name,'Success');
@@ -783,7 +676,7 @@ async function signup(){
     renderCourses();
   }catch(e){
     console.error(e);
-    showAlert('Registration failed: '+(e.message || e),'Error');
+    showAlert('Registration failed: '+(e.message||e),'Error');
   }
 }
 
@@ -793,19 +686,36 @@ async function login(){
   if(!validateEmail(email)){ document.getElementById('loginEmailError').style.display='block'; return; } else document.getElementById('loginEmailError').style.display='none';
   if(!pw){ document.getElementById('loginPasswordError').style.display='block'; return; } else document.getElementById('loginPasswordError').style.display='none';
   try{
-    const finger = await FingerprintJS.load(); const f = await finger.get(); const visitorId = f.visitorId;
+    const fp = await FingerprintJS.load(); const f = await fp.get(); const visitorId = f.visitorId;
     const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
     if(error) throw error;
-    // fetch profile
     const { data: profile, error: perr } = await supabase.from('users').select('*').eq('id', data.user.id).single();
     if(perr) throw perr;
     currentUser = profile;
+    document.getElementById('authButton').textContent = (profile.is_admin ? '👨‍💼 '+(profile.name||'Admin') : '👋 '+(profile.name||'User'));
     showAlert('Login successful!','Success');
     closeModal();
     renderCourses();
   }catch(e){
     console.error(e);
     showAlert('Login failed: '+(e.message||e));
+  }
+}
+
+async function adminLogin(){
+  const email = document.getElementById('adminEmail').value.trim();
+  const pw = document.getElementById('adminPassword').value;
+  if(!email||!pw){ showAlert('Fill admin fields'); return; }
+  try{
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password: pw });
+    if(error) throw error;
+    const { data: profile, error: perr } = await supabase.from('users').select('*').eq('id', data.user.id).single();
+    if(perr) throw perr;
+    if(profile.is_admin){ currentUser = profile; document.getElementById('authButton').textContent = '👨‍💼 '+(profile.name||'Admin'); showAlert('Admin login successful!','Success'); closeModal(); renderCourses(); loadAdminDashboard(); }
+    else { await supabase.auth.signOut(); showAlert('No admin privileges for this account.','Error'); }
+  }catch(e){
+    console.error('Admin login error:', e);
+    showAlert('Admin login failed: '+(e.message||e));
   }
 }
 
@@ -823,7 +733,9 @@ async function handleForgotPassword(){
   }
 }
 
-/* Admin: load chapters for a course (simple example) */
+/* ============================
+   Admin helpers & simple payment placeholder
+   ============================ */
 function loadChapters(){
   const course = document.getElementById('adminCourse').value;
   const chapterSelect = document.getElementById('adminChapter');
@@ -835,22 +747,57 @@ function loadChapters(){
       cat.chapters.forEach(ch=>{
         const opt = document.createElement('option');
         opt.value = ch;
-        opt.textContent = `${ch}`;
+        opt.textContent = ch;
         chapterSelect.appendChild(opt);
       });
     });
   }
 }
 
-/* Payment placeholder */
 function initiatePayment(courseId, courseName, price){
   showAlert(`Payment flow not implemented in this demo. Start payment for ${courseName} (₹${price})`,'Payment');
 }
 
-/* small init */
-document.addEventListener('DOMContentLoaded', () => {
-  renderCourses();
-});
+/* ============================
+   Startup: wait for supabase library then initialize
+   ============================ */
+(async function init(){
+  try{
+    await waitForSupabase(7000);
+    supabase = window.supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+    console.log('Supabase initialized');
+  }catch(e){
+    console.error('Supabase failed to initialize:', e);
+    showAlert('Failed to initialize Supabase library. Check internet or CDN.','Error');
+    // still continue with UI using local mock data
+  }
+
+  // safe startup: try to fetch metadata and render UI
+  try{
+    if(supabase) await fetchContentMetadata();
+    renderCourses();
+    console.log('App initialized and courses rendered');
+  }catch(e){
+    console.error('Startup error:', e);
+    renderCourses();
+  }
+
+  // keep auth state in sync
+  if(supabase){
+    supabase.auth.onAuthStateChange((event, session) => {
+      if(event === 'SIGNED_OUT'){ currentUser = null; document.getElementById('authButton').textContent = '🔒 Login'; renderCourses(); }
+      if(event === 'SIGNED_IN' && session && session.user){
+        (async ()=>{
+          try{
+            const { data: profile } = await supabase.from('users').select('*').eq('id', session.user.id).single();
+            if(profile){ currentUser = profile; document.getElementById('authButton').textContent = (profile.is_admin ? '👨‍💼 '+profile.name : '👋 '+profile.name); renderCourses(); }
+          }catch(e){ console.warn('Failed to load profile on auth change', e); }
+        })();
+      }
+    });
+  }
+})();
+
 </script>
 </body>
 </html>
