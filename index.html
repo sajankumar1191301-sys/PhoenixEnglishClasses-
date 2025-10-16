@@ -298,22 +298,17 @@ button:active{transform:scale(.98)!important}
 <div id="uploadedContentList" class="content-list"></div>
 </div>
 <div class="admin-section">
-<h3>Quiz Builder</h3>
-<input type="text" id="quizQuestion" placeholder="Question" style="width:100%;margin-bottom:10px;padding:8px;border:1px solid #ddd;border-radius:4px">
-<input type="text" class="option-input" placeholder="Option A" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
-<input type="text" class="option-input" placeholder="Option B" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
-<input type="text" class="option-input" placeholder="Option C" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
-<input type="text" class="option-input" placeholder="Option D" style="width:100%;margin-bottom:5px;padding:6px;border:1px solid #ddd;border-radius:4px">
-<select id="correctAnswer" style="width:100%;margin-bottom:10px;padding:6px">
-<option value="">Correct Answer</option>
-<option value="0">Option A</option>
-<option value="1">Option B</option>
-<option value="2">Option C</option>
-<option value="3">Option D</option>
-</select>
-<button class="btn-primary" onclick="addQuizQuestion()">Add Question</button>
-<div id="quizPreview" style="margin-top:15px"><p>No questions added. Your draft will be auto-saved.</p></div>
-<button class="btn-primary" onclick="saveQuiz()" style="margin-top:10px">Save Quiz to Chapter</button>
+<h3>Quiz Builder (Bulk Upload)</h3>
+<p style="font-size:12px; color:#666; margin-bottom:10px;">
+    नीचे दिए गए बॉक्स में क्विज़ के सभी प्रश्नों को JSON फॉर्मेट में पेस्ट करें।
+</p>
+<textarea id="quizJsonInput" 
+          rows="10" 
+          placeholder='[{"question":"...","options":["..."],"correctAnswer":0}, ...]'
+          style="width:100%;margin-bottom:10px;padding:8px;border:1px solid #ddd;border-radius:4px;font-family:monospace;font-size:12px;"></textarea>
+<button class="btn-primary" onclick="saveQuizFromJson()" style="margin-top:10px">
+    Save Quiz from JSON
+</button>
 </div>
 <div class="admin-section">
 <h3>Manage Quizzes</h3>
@@ -580,7 +575,6 @@ async function checkUserSession() {
                 if (isAdmin) {
                     loadStudentList();
                     loadPendingPayments();
-                    loadQuizDraft();
                 }
             } else {
                  throw new Error('User profile not found in database.');
@@ -802,7 +796,6 @@ async function adminLogin(){
             
             loadStudentList();
             loadPendingPayments();
-            loadQuizDraft();
         }
         else{
             await _supabase.auth.signOut();
@@ -1365,70 +1358,69 @@ async function deleteContent(contentId,filePath,chapterName){
     }catch(error){console.error(error);showMessage('Failed to delete content')}finally{hideLoading()}
 }
 
-let currentQuizBuilder=[];
-const QUIZ_DRAFT_KEY='quizBuilderDraft';
-function loadQuizDraft(){
-    try{
-        const draft=localStorage.getItem(QUIZ_DRAFT_KEY);
-        if(draft){
-            currentQuizBuilder=JSON.parse(draft);
-            updateQuizPreview()
+// === NEW QUIZ BUILDER JAVASCRIPT START ===
+async function saveQuizFromJson() {
+    if (!isAdmin) { showMessage('Admin access required'); return; }
+    
+    const courseId = document.getElementById('adminCourse').value;
+    const chapterValue = document.getElementById('adminChapter').value;
+    const jsonInput = document.getElementById('quizJsonInput').value.trim();
+
+    if (!courseId || !chapterValue) {
+        showMessage('Please select course and chapter');
+        return;
+    }
+    if (!jsonInput) {
+        showMessage('Please paste the quiz JSON data in the text box');
+        return;
+    }
+
+    let questionsData;
+    try {
+        // Step 1: Parse the JSON string into a JavaScript array
+        questionsData = JSON.parse(jsonInput);
+        
+        // Step 2: Validate the format of the data
+        if (!Array.isArray(questionsData) || questionsData.length === 0) {
+            throw new Error('JSON must be a non-empty array.');
         }
-    }catch(e){console.error('Failed to load quiz draft:',e)}
-}
+        // Validate each question object in the array
+        questionsData.forEach((q, i) => {
+            if (!q.question || !Array.isArray(q.options) || q.options.length === 0 || typeof q.correctAnswer !== 'number') {
+                throw new Error(`Invalid format for question #${i + 1}.`);
+            }
+        });
 
-function addQuizQuestion(){
-    const question=document.getElementById('quizQuestion').value.trim();
-    const options=Array.from(document.querySelectorAll('.option-input')).map(input=>input.value.trim());
-    const correctAnswer=parseInt(document.getElementById('correctAnswer').value);
-    if(!question||options.some(opt=>!opt)||isNaN(correctAnswer)){showMessage('Fill all question fields');return}
-    currentQuizBuilder.push({question:question,options:options,correctAnswer:correctAnswer});
-    try{
-        localStorage.setItem(QUIZ_DRAFT_KEY,JSON.stringify(currentQuizBuilder));
-    }catch(e){console.error('Failed to save draft:',e)}
-    document.getElementById('quizQuestion').value='';
-    document.querySelectorAll('.option-input').forEach(input=>input.value='');
-    document.getElementById('correctAnswer').value='';
-    updateQuizPreview()
-}
+    } catch (error) {
+        // Show an error if JSON is invalid
+        showMessage('Invalid JSON format: ' + error.message);
+        return;
+    }
 
-function updateQuizPreview(){
-    const preview=document.getElementById('quizPreview');
-    if(!preview)return;
-    if(currentQuizBuilder.length===0){preview.innerHTML='<p>No questions added. Your draft will be auto-saved.</p>';return}
-    const questionsHtml=currentQuizBuilder.map((q,index)=>{
-        const optionsHtml=q.options.map((opt,i)=>`<div style="color:${i===q.correctAnswer?'#28a745':'#666'}">${String.fromCharCode(65+i)}. ${opt}</div>`).join('');
-        return`<div style="background:white;padding:10px;margin:10px 0;border-radius:8px;border:1px solid #ddd"><strong>${index+1}. ${q.question}</strong><div style="margin-left:20px;margin-top:5px">${optionsHtml}</div><button class="btn-delete" onclick="removeQuestion(${index})" style="margin-top:5px">Remove</button></div>`
-    }).join('');
-    preview.innerHTML=`<h4>Preview (${currentQuizBuilder.length} questions):</h4>${questionsHtml}`
-}
-
-function removeQuestion(index){
-    currentQuizBuilder.splice(index,1);
-    try{
-        localStorage.setItem(QUIZ_DRAFT_KEY,JSON.stringify(currentQuizBuilder));
-    }catch(e){console.error('Failed to save draft:',e)}
-    updateQuizPreview()
-}
-
-async function saveQuiz(){
-    if(!isAdmin){showMessage('Admin access required');return}
-    const courseId=document.getElementById('adminCourse').value;
-    const chapterValue=document.getElementById('adminChapter').value;
-    if(!courseId||!chapterValue){showMessage('Select course and chapter');return}
-    if(currentQuizBuilder.length===0){showMessage('Add at least one question');return}
-    const[category,chapter]=chapterValue.split('|||');
     showLoading();
-    try{
-        await _supabase.from('quizzes').insert({course_id:courseId,category:category,chapter:chapter,questions:currentQuizBuilder,created_by:currentUser.uid});
-        showMessage(`Quiz saved for "${chapter}"!`);
-        currentQuizBuilder=[];
-        try{
-            localStorage.removeItem(QUIZ_DRAFT_KEY);
-        }catch(e){console.error('Failed to clear draft:',e)}
-        updateQuizPreview()
-    }catch(error){console.error(error);showMessage('Failed to save quiz')}finally{hideLoading()}
+    try {
+        const [category, chapter] = chapterValue.split('|||');
+        
+        // Step 3: Insert the validated data directly into the database
+        await _supabase.from('quizzes').insert({
+            course_id: courseId,
+            category: category,
+            chapter: chapter,
+            questions: questionsData, // Parsed data from JSON
+            created_by: currentUser.uid
+        });
+        
+        showMessage(`✅ Quiz with ${questionsData.length} questions saved successfully for "${chapter}"!`);
+        document.getElementById('quizJsonInput').value = ''; // Clear textarea on success
+    
+    } catch (error) {
+        console.error(error);
+        showMessage('Failed to save quiz: ' + error.message);
+    } finally {
+        hideLoading();
+    }
 }
+// === NEW QUIZ BUILDER JAVASCRIPT END ===
 
 async function loadUploadedQuizzes(){
     if(!isAdmin)return;
@@ -1453,8 +1445,7 @@ async function loadUploadedQuizzes(){
     }catch(error){console.error(error);showMessage('Failed to load quizzes')}finally{hideLoading()}
 }
 
-async function 
-deleteQuiz(quizId,chapterName){
+async function deleteQuiz(quizId,chapterName){
     if(!isAdmin)return;
     if(!confirm(`Delete quiz for "${chapterName}"?`))return;
     showLoading();
