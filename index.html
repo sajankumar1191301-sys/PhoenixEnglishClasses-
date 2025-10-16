@@ -50,10 +50,17 @@ body.dark-mode {
 /* --- COSMIC BACKGROUND --- */
 #cosmic-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
 #nebula {
-    position: fixed; top: 0; left: 0; width: 150%; height: 150%;
-    background-image: url('https://w.forfun.com/fetch/5d/5d32d32ed3a2b47d3330f63b20af280c.jpeg');
-    background-size: cover; z-index: -3; opacity: 0;
-    transition: opacity 1s ease-in-out;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 150%;
+  height: 150%;
+  background-image: url('https://images.unsplash.com/photo-1604079625998-9b429c2f63fa?w=2000&q=80&auto=format&fit=crop');
+  background-size: cover;
+  background-position: center;
+  z-index: -3;
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
 }
 body.dark-mode #nebula { opacity: 0.3; }
 
@@ -274,9 +281,8 @@ body.dark-mode .profile-card strong { color: var(--text-primary-dark); }
 
 <!-- Scripts section with comments -->
 <!-- Yeh Supabase library hai, jo aapke app ke database aur user login ko manage karti hai. Yeh ek vishvasneeya (trusted) service hai. -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<!-- Yeh FingerprintJS library hai. Yeh ek security feature hai jo account sharing ko rokta hai. Yeh virus nahi hai. -->
-<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js" defer></script>
 <script>
 // --- COSMIC BACKGROUND & THEME SCRIPT (SAFE VISUALS) ---
 document.addEventListener('DOMContentLoaded', () => {
