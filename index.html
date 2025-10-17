@@ -257,6 +257,79 @@ body.dark-mode .profile-card strong { color: var(--text-primary-dark); }
 #minimizeBtn:hover, #maximizeBtn:hover {
   background: rgba(255,255,255,0.4);
 }
+
+/* --- SMOOTH YOUTUBE-STYLE MINI PLAYER (RESPONSIVE) --- */
+.fullscreen-video, .minimized-video {
+  transition: all 0.4s ease-in-out;
+}
+
+.fullscreen-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  z-index: 5000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0;
+  box-shadow: none;
+  opacity: 1;
+}
+
+.fullscreen-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.minimized-video {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  width: 320px;
+  height: 180px;
+  background: black;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+  overflow: hidden;
+  z-index: 5000;
+  opacity: 0.95;
+}
+
+.minimized-video iframe {
+  width: 100%;
+  height: 100%;
+  border: none;
+  border-radius: 12px;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 600px) {
+  .minimized-video {
+    width: 220px;
+    height: 124px;
+    bottom: 12px;
+    right: 12px;
+  }
+  #minimizeBtn, #maximizeBtn {
+    top: 10px;
+    right: 10px;
+    font-size: 16px;
+    padding: 6px 10px;
+  }
+}
+
+/* Smooth button transitions */
+#minimizeBtn, #maximizeBtn {
+  transition: background 0.3s, transform 0.2s;
+}
+
+#minimizeBtn:hover, #maximizeBtn:hover {
+  transform: scale(1.05);
+}
 </style>
 </head>
 <body>
@@ -373,7 +446,7 @@ okBtn.onclick=()=>customModal.style.display='none';cancelBtn.onclick=()=>customM
 let contentMetadata = {};
 
 function initializeApp(){if(typeof supabase==='undefined'||typeof FingerprintJS==='undefined'){setTimeout(initializeApp,500);return}
-window.addEventListener('popstate',e=>{closeModal();closePaymentModal();closeContentViewer();closeQuiz()});const CONFIG={SUPABASE_URL:'https://dviuwzzjkzodadgbotei.supabase.co',SUPABASE_ANON_KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'};if(!CONFIG.SUPABASE_URL||CONFIG.SUPABASE_URL==='YOUR_SUPABASE_URL_HERE')throw new Error('Configure Supabase');
+window.addEventListener('popstate',e=>{closeModal();closePaymentModal();closeContentViewer_OLD();closeQuiz()});const CONFIG={SUPABASE_URL:'https://dviuwzzjkzodadgbotei.supabase.co',SUPABASE_ANON_KEY:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImR2aXV3enpqa3pvZGFkZ2JvdGVpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjAwMjgwNDYsImV4cCI6MjA3NTYwNDA0Nn0.0OMnqJM166pcuZZw0E-5gl-ZY-6gO-RuoEX7hvxDF40'};if(!CONFIG.SUPABASE_URL||CONFIG.SUPABASE_URL==='YOUR_SUPABASE_URL_HERE')throw new Error('Configure Supabase');
 const{createClient}=supabase;window._supabase=createClient(CONFIG.SUPABASE_URL,CONFIG.SUPABASE_ANON_KEY);window.currentUser=null;window.isAdmin=!1;window.currentQuizData=[];window.currentQuizAnswers={};
 window.courses=[{id:'11en',name:'Class 11th English',price:99,originalPrice:199,summary:'Complete chapter-wise English course for Class 11th with all sections',categories:[{title:'Prose',chapters:['Animals in Prison','Nalanda: Ancient Seat of Learning','A Snake in the Grass','The Rule of the Road','The Scientific Point of View','I Pass the Delhi Test','The Leader of Men','Mother India','National Unity, Nation and Nationalism','Dolly at the Dentist','The Three Vows','Exceptional Role of Newspapers in Development']},{title:'Poetry',chapters:['Where the Mind is without Fear','The Marriage of True Minds','The Chimney Sweeper','Stopping by Woods on a Snowy Evening','The Lamentation of the Old Pensioner','Three Years She Grew','Village Song','Follower','Voice of the Unwanted Girl','South Delhi Murder']},{title:'Story of English',chapters:['How English Began','English Down the Ages','Global English','Future of English','Story of English Poetry']},{title:'Grammar',chapters:['Parts of speech','Noun','Pronoun','Adjective','Verb','Adverb','Preposition','Conjunction','Interjection','Determiners','Question tags']},{title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}]},{id:'12en',name:'Class 12th English',price:199,originalPrice:299,summary:'Board exam focused complete English preparation for Class 12th',categories:[{title:'Prose',chapters:['Indian Civilisation and Culture','Bharat is My Home','A Pinch of Snuff','I Have a Dream','Ideas that have Helped Mankind','The Artist','A Child Born','How Free is the Press','The Earth','India Through a Traveller\'s Eyes','A Marriage Proposal']},{title:'Poetry',chapters:['Sweetest Love I do not Goe','Song of Myself','Now the Leaves are Falling Fast','Ode to Autumn','An Epitaph','The Soldier','Macavity: The Mystery Cat','Fire-Hymn','Snake','My Grandmother\'s House']},{title:'Story of English',chapters:['Old English','Middle English','Modern English','English as a World Language','Story of English Drama','Story of the Novel in English']},{title:'Grammar',chapters:['Voice','Time and Tense','Modal verb','Combination','Transformation','Preposition','Correction of sentences','Article','Spelling test','Subject - verb agreement','Narration','Phrases','Antonyms','Synonyms','Miscellaneous']},{title:'Writing',chapters:['Essay','Letter / Application','Translation','Comprehension (passage)','Precis writing']}]},{id:'11hi',name:'Class 11th Hindi',price:99,originalPrice:199,summary:'संपूर्ण हिंदी पाठ्यक्रम कक्षा 11 के लिए सभी sections के साथ',categories:[{title:'गद्य खंड',chapters:['पूस की रात','कविता की परख','आंखो देखा गदर','बेजोड़ गायिका : लता मंगेशकर','चलचित्र','मेरी वियतनाम यात्रा','सिक्का बदल गया','उत्तरी स्वप्न परी : हरी क्रांति','एक दीक्षांत भाषण','सूर्य','भोगे हुए दिन','गांव के बच्चों की शिक्षा']},{title:'पद्य खंड',chapters:['विद्यापति के पद','कबीर के पद','मीराबाई के पद','सहजोबाई के पद','भारत-दुर्दशा','अंकार','तोड़ती पत्थर','बहुत दिनों के बाद','गालिब','जगरनाथ','पृथ्वी','मातृभूमि']},{title:'व्याकरण',chapters:['संज्ञा','सर्वनाम','विशेषण','क्रिया','क्रिया विशेषण','समुच्चयबोधक (संयोजक)','विस्मयादिबोधक','अव्यय (निपात)']},{title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}]},{id:'12hi',name:'Class 12th Hindi',price:199,originalPrice:299,summary:'उन्नत स्तर की परीक्षा तैयारी कक्षा 12 हिंदी सभी chapters के साथ',categories:[{title:'गद्य खण्ड',chapters:['बातचीत','उसने कहा था','संपूर्ण क्रांति','अर्धनारीश्वर','रोज','एक लेख और एक पत्र','ओ सदानीरा','सिपाही की मां','प्रगीत और समाज','जूठन','हंसते हुए मेरा अकेलापन','तिरिछ','शिक्षा']},{title:'काव्य खण्ड',chapters:['कड़बक','सूरदास के पद','तुलसीदास के पद','छप्पय','कवित्त','तुम्हें कोलाहल कलह में','पुत्र वियोग','उषा','जन-जन का चेहरा एक','अधिनायक','प्यारे नन्हें बेटे को','हार-जीत','गांव का घर']},{title:'व्याकरण',chapters:['उच्चारण स्थान','संज्ञा','सर्वनाम','विशेषण','मुहावरे','विलोम शब्द','पर्यायवाची शब्द','अनेक शब्दों के लिए एक शब्द','समास','लिंग निर्णय','संधि विच्छेद','उपसर्ग','प्रत्यय','शब्द शुद्धिकरण','वाक्य शुद्धिकरण','कारक','वचन','काल','शब्द','पदबंध']},{title:'लेखन',chapters:['निबंध','आवेदन एवं पत्र लेखन','संक्षेपण']}]},{id:'complete',name:'Complete Package (All 4 Courses)',price:499,originalPrice:896,summary:'All 4 courses - Class 11th & 12th English + Hindi with max discount',categories:[]}];
 _supabase.auth.onAuthStateChange((e,s)=>{if(e==='SIGNED_OUT'){currentUser=null;isAdmin=!1;updateAuthState();renderCourses();showTab('courses')}});checkUserSession()}
@@ -411,7 +484,7 @@ function downloadQR(){try{const i=document.getElementById('qrImage');if(!i||!i.s
 function openUPI(){if(!window.pendingPayment){showAlert('Payment info nahi mili.');return}const{price:p,courseName:c}=window.pendingPayment,u='7992300522@ybl',n='Sajan Sir',t=encodeURIComponent('Course: '+c);window.location.href=`upi://pay?pa=${u}&pn=${n}&am=${p}&cu=INR&tn=${t}`}
 function copyUPI(){const i='7992300522@ybl';navigator.clipboard.writeText(i).then(()=>showAlert('UPI ID copy ho gayi: '+i)).catch(()=>showAlert('Copy nahi kar sake. UPI ID: '+i))}
 async function confirmPayment(){if(!window.pendingPayment||!currentUser)return;const{courseId:c,courseName:n,price:p}=window.pendingPayment;showLoading();try{const{data:d,error:e}=await _supabase.from('purchases').select('id').eq('user_id',currentUser.uid).eq('course_id',c).eq('status','pending_verification').limit(1);if(e)throw e;if(d&&d.length>0){showAlert('Aapki request pehle se hi pending hai.');return}await _supabase.from('purchases').insert({user_id:currentUser.uid,user_name:currentUser.name,user_phone:currentUser.phone,user_email:currentUser.email,course_id:c,course_name:n,amount:'₹'+p,status:'pending_verification'});history.back();showAlert('Payment request bhej di gayi hai! Kripya WhatsApp par screenshot bhejein. Admin jald hi approve karenge.','Request Sent')}catch(f){console.error(f);showAlert('Request nahi bhej sake.')}finally{hideLoading()}}
-function closeContentViewer(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src='';document.getElementById('videoPlayer').src=''}
+function closeContentViewer_OLD(){document.getElementById('contentViewer').style.display='none';document.getElementById('pdfViewer').src='';document.getElementById('videoPlayer').src=''}
 async function openQuiz(c,t,h){if(!currentUser||!currentUser.purchased_courses?.includes(c)){showAlert('Pehle course lein.');return}showLoading();try{const{data:d,error:e}=await _supabase.from('quizzes').select('*').eq('course_id',c).eq('category',t).eq('chapter',h).limit(1).single();if(e&&e.code!=='PGRST116')throw e;if(d){currentQuizData=d.questions;currentQuizAnswers={};document.getElementById('quizTitle').textContent='Quiz: '+h;const q=document.getElementById('quizContent');q.innerHTML='';q.classList.remove('quiz-submitted');currentQuizData.forEach((a,i)=>{const d=document.createElement('div');d.className='quiz-question';const o=a.options.map((p,x)=>`<div class="quiz-option" onclick="selectAnswer(${i},${x})">${String.fromCharCode(65+x)}. ${p}</div>`).join('');d.innerHTML=`<div style="font-weight:bold;margin-bottom:10px">${i+1}. ${a.question}</div><div class="quiz-options">${o}</div>`;q.appendChild(d)});document.getElementById('submitQuiz').style.display='block';document.getElementById('quizResult').innerHTML='';document.getElementById('quizContainer').style.display='block';history.pushState({modal:'quiz'},'Quiz')}else{showAlert('Quiz abhi available nahi hai.')}}catch(f){console.error(f);showAlert('Quiz load nahi ho saka.')}finally{hideLoading()}}
 function selectAnswer(q,o){const d=document.querySelectorAll('.quiz-question')[q],s=d.querySelectorAll('.quiz-option'),t=s[o];if(document.getElementById('quizContent').classList.contains('quiz-submitted'))return;if(t.classList.contains('selected')){t.classList.remove('selected');delete currentQuizAnswers[q]}else{s.forEach(e=>e.classList.remove('selected'));t.classList.add('selected');currentQuizAnswers[q]=o}}
 async function submitQuiz(){let c=0;const t=currentQuizData.length,d=document.querySelectorAll('.quiz-question');document.getElementById('quizContent').classList.add('quiz-submitted');currentQuizData.forEach((q,i)=>{const s=d[i].querySelectorAll('.quiz-option'),r=q.correctAnswer,u=currentQuizAnswers[i];if(s[r])s[r].classList.add('correct');if(u!==undefined){if(u===r)c++;else if(s[u])s[u].classList.add('incorrect')}});const p=t>0?Math.round(c/t*100):0;document.getElementById('quizResult').innerHTML=`<div class="quiz-score"><h3>Quiz Results</h3><div style="font-size:24px;margin:15px 0">${c}/${t} (${p}%)</div><div style="color:${p>=70?'#28a745':'#dc3545'}">${p>=70?'🎉 Excellent!':'📚 Keep Practicing!'}</div></div>`;document.getElementById('submitQuiz').style.display='none';if(currentUser)try{await _supabase.from('quiz_results').insert({user_id:currentUser.uid,user_name:currentUser.name,score:c,total:t,percentage:p})}catch(e){console.error(e)}}
@@ -443,7 +516,7 @@ function maximizeVideo() {
   document.getElementById('maximizeBtn').style.display = 'none';
   document.getElementById('minimizeBtn').style.display = 'block';
 }
-function closeContentViewer() {
+function closeContentViewer_OLD() {
   const viewer = document.getElementById('contentViewer');
   viewer.classList.remove('fullscreen-video', 'minimized-video');
   document.getElementById('maximizeBtn').style.display = 'none';
@@ -453,5 +526,102 @@ function closeContentViewer() {
   document.querySelector('.phone-content').style.display = '';
 }
 </script>
-</body>
+<script>
+// --- FIXED VIDEO FULLSCREEN & MINI-PLAYER SYSTEM ---
+function openContent(courseId, category, chapter, type) {
+  if (!currentUser || !currentUser.purchased_courses?.includes(courseId)) {
+    showAlert('Is content ko dekhne ke liye pehle course lein.');
+    return;
+  }
+  showLoading();
+  _supabase.from('content')
+    .select('url')
+    .eq('course_id', courseId)
+    .eq('category', category)
+    .eq('chapter', chapter)
+    .eq('type', type)
+    .limit(1)
+    .single()
+    .then(({ data: contentData, error }) => {
+      if (error || !contentData) throw error || new Error('Content not found');
+
+      document.getElementById('contentTitle').textContent = `${chapter} - ${type}`;
+      const pdfViewer = document.getElementById('pdfViewer');
+      const videoContainer = document.getElementById('videoContainer');
+      const videoPlayer = document.getElementById('videoPlayer');
+      const viewer = document.getElementById('contentViewer');
+
+      if (type === 'video') {
+        pdfViewer.style.display = 'none';
+        videoContainer.style.display = 'block';
+        const videoId = contentData.url.split('v=')[1]?.split('&')[0] || contentData.url.split('/').pop();
+        videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0`;
+
+        // Hide UI elements
+        document.querySelector('header').style.display = 'none';
+        document.querySelector('.nav-tabs').style.display = 'none';
+        document.querySelector('.phone-content').style.display = 'none';
+
+        // Fullscreen mode on
+        viewer.style.display = 'block';
+        viewer.classList.add('fullscreen-video');
+        document.getElementById('minimizeBtn').style.display = 'block';
+      } else {
+        // PDF Mode
+        videoContainer.style.display = 'none';
+        pdfViewer.style.display = 'block';
+        pdfViewer.src = `https://docs.google.com/viewer?url=${encodeURIComponent(contentData.url)}&embedded=true`;
+        viewer.style.display = 'block';
+      }
+
+      history.pushState({ modal: 'content' }, 'Content');
+    })
+    .catch(e => {
+      console.error(e);
+      showAlert('Content load nahi ho saka.');
+    })
+    .finally(() => hideLoading());
+}
+
+function minimizeVideo() {
+  const viewer = document.getElementById('contentViewer');
+  viewer.classList.remove('fullscreen-video');
+  viewer.classList.add('minimized-video');
+  document.getElementById('minimizeBtn').style.display = 'none';
+  document.getElementById('maximizeBtn').style.display = 'block';
+}
+
+function maximizeVideo() {
+  const viewer = document.getElementById('contentViewer');
+  viewer.classList.remove('minimized-video');
+  viewer.classList.add('fullscreen-video');
+  document.getElementById('maximizeBtn').style.display = 'none';
+  document.getElementById('minimizeBtn').style.display = 'block';
+}
+
+function closeContentViewer() {
+  const viewer = document.getElementById('contentViewer');
+  const videoPlayer = document.getElementById('videoPlayer');
+
+  viewer.classList.remove('fullscreen-video', 'minimized-video');
+  viewer.style.display = 'none';
+
+  // Restore UI
+  document.querySelector('header').style.display = '';
+  document.querySelector('.nav-tabs').style.display = '';
+  document.querySelector('.phone-content').style.display = '';
+
+  // Hide buttons
+  document.getElementById('maximizeBtn').style.display = 'none';
+  document.getElementById('minimizeBtn').style.display = 'none';
+
+  // Stop video playback
+  videoPlayer.src = '';
+}
+
+// Fix cross and back navigation
+window.addEventListener('popstate', function () {
+  closeContentViewer();
+});
+</script></body>
 </html>
