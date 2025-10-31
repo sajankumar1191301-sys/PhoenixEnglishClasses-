@@ -34,15 +34,13 @@
 body {
     background-color: var(--bg-primary-light);
     color: var(--text-primary-light);
-    /* min-height: 100vh; */ /* Yeh hamesha 100% viewport height par limit kar raha tha, isliye hata diya. */
-    height: 100%; /* Badlav: Poori height lene ke liye */
-    min-height: 100vh; /* Badlav: Minimum height zaroor rahe */
+    min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 20px 0;
     transition: background-color 0.5s var(--ease-out-cubic), color 0.5s var(--ease-out-cubic);
-    /* overflow: hidden; */ /* Badlav: Isko hata diya jisse desktop par scroll ho sake */
+    overflow: hidden;
 }
 body.dark-mode {
     background-color: var(--bg-primary-dark);
@@ -126,15 +124,10 @@ body.dark-mode header {
 
 /* --- MAIN CONTAINER --- */
 .phone {
-    width: 100%; /* Badlav: Full width ke liye */
-    height: auto; /* Badlav: Content ke hisaab se height badhane ke liye */
-    max-width: 98vw; 
-    max-height: none; /* Badlav: Height limit hatayi, ab desktop par content katega nahi */
-    min-height: 600px; /* Optional: Desktop par ek minimum size banaye rakhega */
+    width: 390px; height: 844px; max-width: 98vw; max-height: 95vh;
     background: var(--bg-secondary-light);
     border-radius: 40px; box-shadow: 0 25px 50px -12px var(--shadow-light);
-    overflow: auto; /* Badlav: Ab content cutne par scrollbar aayega */
-    position: relative; border: 1px solid var(--border-light);
+    overflow: hidden; position: relative; border: 1px solid var(--border-light);
     backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
     transition: all 0.5s var(--ease-out-cubic); display: flex; flex-direction: column;
 }
@@ -158,26 +151,7 @@ body.dark-mode .btn-primary{background:linear-gradient(135deg, #a758ff, #6b7bff)
 body.dark-mode .btn-secondary{background:rgba(255,255,255,0.08);color:var(--text-primary-dark);border:1px solid var(--border-dark)}
 
 /* --- MODALS (AUTH & CUSTOM) --- */
-.modal{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:rgba(0,0,0,.5);
-    z-index:1000;
-    align-items:flex-start; /* ✅ Badlav 1: Content ko upar align karega */
-    justify-content:center;
-    padding-top: 40px; /* ✅ Badlav 2: Upar se 40px ki spacing dega */
-    backdrop-filter:blur(10px);
-    animation:fadeIn .3s ease
-}
-@media (max-width: 600px) {
-    .modal {
-        padding-top: 20px; /* Mobile par upar se 20px spacing */
-    }
-}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:1000;align-items:center;justify-content:center;backdrop-filter:blur(10px);animation:fadeIn .3s ease}
 .modal-content{background:var(--bg-secondary-light);border:1px solid var(--border-light);border-radius:24px;padding:28px;width:350px;max-width:90vw;position:relative;animation:slideUp .4s var(--ease-out-cubic);box-shadow:0 0 0 1px var(--border-light)}
 body.dark-mode .modal-content{background:var(--bg-secondary-dark);border:1px solid var(--border-dark);box-shadow:0 0 0 1px var(--border-dark)}
 .modal h3{margin-bottom:20px;color:var(--text-primary-light);font-size:24px;text-align:center}
@@ -214,16 +188,20 @@ body.dark-mode .course-card{background:var(--bg-secondary-dark);box-shadow:0 10p
 
 .chip{padding:6px 10px;border-radius:20px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;font-size:12px}
 body.dark-mode .chip{background:linear-gradient(135deg, #a758ff, #6b7bff)}
-.loading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:3000;align-items:center;justify-content:center;flex-direction:column;color:#fff}.spinner{border:4px solid #f3f3f3;border-top:4px solid #7b5cff;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideUp{
-  from{
-    transform:translateY(-20px); /* ✅ Upar se halka neeche aane ka effect */
-    opacity:0
-  }
-  to{
-    transform:translateY(0); /* ✅ Final position */
-    opacity:1
-  }
-}.contact{padding:16px;background:linear-gradient(135deg, #0f9b6c, #0dbb67);color:#fff;margin:14px;border-radius:18px;box-shadow:0 6px 18px rgba(13,187,103,.2)}.contact .line{display:flex;justify-content:space-between;align-items:center}.contact small{opacity:.95}.contact>div{display:flex;gap:10px;margin-top:10px}.course-card .head{display:flex;justify-content:space-between;align-items:center}.course-card h2{font-size:16px}.summary{margin-top:10px;font-size:13px;color:var(--text-secondary-light)}body.dark-mode .summary{color:var(--text-secondary-dark)}.course-content{display:none;margin-top:12px}.course-content.show{display:block}.cat{margin-top:12px}.category-title{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.03);border:1px dashed rgba(0,0,0,.03);cursor:pointer}body.dark-mode .category-title{background:rgba(255,255,255,0.05);}.chapters{padding:8px 10px;display:none}.chapter-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin-top:8px;background:var(--bg-primary-light);border:1px solid var(--border-light);flex-direction:column;align-items:flex-start}body.dark-mode .chapter-item{background:var(--bg-primary-dark);border:1px solid var(--border-dark);}.chapter-title{font-size:14px;margin-bottom:6px;width:100%}.chapter-actions{display:flex;gap:8px;flex-wrap:wrap;width:100%}.chapter-actions .btn{padding:8px 10px;border-radius:8px;font-size:11px}.btn.explain{background:#e6f6ff;color:#333}body.dark-mode .btn.explain{background:rgba(100,180,255,0.15);color:#eee}.btn.video{background:#ffe6e6;color:#333}body.dark-mode .btn.video{background:rgba(255,100,100,0.15);color:#eee}.btn.qa{background:#fff1e6;color:#333}body.dark-mode .btn.qa{background:rgba(255,200,100,0.15);color:#eee}.btn.quiz{background:#f3e9ff;color:#333}body.dark-mode .btn.quiz{background:rgba(200,150,255,0.15);color:#eee}.btn:disabled{opacity:.5;cursor:not-allowed}.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}.price{color:#ff2f6d;font-weight:700}.enroll{padding:8px 12px;border-radius:18px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;font-size:12px}body.dark-mode .enroll{background:linear-gradient(135deg, #a758ff, #6b7bff)}.admin-panel{display:none;padding:20px}.admin-section{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .admin-section{background:var(--bg-primary-dark)}.admin-section h3{margin-bottom:10px;}.file-upload{margin-bottom:10px}.file-upload input{margin-bottom:5px;width:100%;font-size:12px}.content-list{margin-top:15px;max-height:300px;overflow-y:auto}.content-item{background:var(--bg-secondary-light);padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-item{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.content-item-info{flex:1}.content-item-actions{display:flex;gap:5px}.btn-delete{background:#dc3545;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.btn-approve{background:#28a745;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.content-viewer,.quiz-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary-light);z-index:2000;overflow-y:auto}body.dark-mode .content-viewer,body.dark-mode .quiz-container{background:var(--bg-primary-dark)}.content-header{background:linear-gradient(135deg, #ff6bb5, #7b5cff);color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-header{background:linear-gradient(135deg, #ff6bf5, #7b5cff)}.content-body{padding:20px}.pdf-viewer,.video-player{width:100%;height:600px;border:1px solid var(--border-light);border-radius:8px}body.dark-mode .pdf-viewer,body.dark-mode .video-player{border:1px solid var(--border-dark)}.quiz-question{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .quiz-question{background:var(--bg-primary-dark)}.quiz-options{margin-top:10px}.quiz-option{display:block;margin-bottom:8px;padding:10px;background:var(--bg-secondary-light);border:1px solid var(--border-light);border-radius:8px;cursor:pointer;transition:background .2s}body.dark-mode .quiz-option{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.quiz-option:hover{background:#e6f6ff}body.dark-mode .quiz-option:hover{background:rgba(100,180,255,0.15)}.quiz-option.selected{background:#7b5cff!important;color:#fff!important;border-color:#7b5cff!important}.quiz-score{text-align:center;padding:20px;font-size:18px;font-weight:700}.tab-content{display:none}.tab-content.active{display:block}.error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}.error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}.quiz-submitted .quiz-option{cursor:default}.quiz-option.correct{background:#d4edda!important;border-color:#c3e6cb!important;color:#155724!important}.quiz-option.incorrect{background:#f8d7da!important;border-color:#f5c6cb!important;color:#721c24!important}.quiz-option.correct::after{content:' ✔';font-weight:700;float:right}.quiz-option.incorrect::after{content:' ✖';font-weight:700;float:right}
+
+/* Profile Page */
+#profile { padding: 20px; }
+.profile-card { background: var(--bg-secondary-light); border-radius: 20px; padding: 20px; text-align: center; border: 1px solid var(--border-light); }
+body.dark-mode .profile-card { background: var(--bg-secondary-dark); border: 1px solid var(--border-dark); }
+.profile-card h2 { margin-bottom: 20px; }
+.profile-card p { margin: 8px 0; color: var(--text-secondary-light); }
+body.dark-mode .profile-card p { color: var(--text-secondary-dark); }
+.profile-card strong { color: var(--text-primary-light); }
+body.dark-mode .profile-card strong { color: var(--text-primary-dark); }
+.enrolled-courses h3 { margin-top: 30px; margin-bottom: 15px; }
+
+/* --- REMAINDER OF STYLES (ADAPTED) --- */
+.loading{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);z-index:3000;align-items:center;justify-content:center;flex-direction:column;color:#fff}.spinner{border:4px solid #f3f3f3;border-top:4px solid #7b5cff;border-radius:50%;width:50px;height:50px;animation:spin 1s linear infinite}@keyframes spin{0%{transform:rotate(0)}100%{transform:rotate(360deg)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}@keyframes slideUp{from{transform:translateY(50px);opacity:0}to{transform:translateY(0);opacity:1}}.contact{padding:16px;background:linear-gradient(135deg, #0f9b6c, #0dbb67);color:#fff;margin:14px;border-radius:18px;box-shadow:0 6px 18px rgba(13,187,103,.2)}.contact .line{display:flex;justify-content:space-between;align-items:center}.contact small{opacity:.95}.contact>div{display:flex;gap:10px;margin-top:10px}.course-card .head{display:flex;justify-content:space-between;align-items:center}.course-card h2{font-size:16px}.summary{margin-top:10px;font-size:13px;color:var(--text-secondary-light)}body.dark-mode .summary{color:var(--text-secondary-dark)}.course-content{display:none;margin-top:12px}.course-content.show{display:block}.cat{margin-top:12px}.category-title{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:rgba(0,0,0,0.03);border:1px dashed rgba(0,0,0,.03);cursor:pointer}body.dark-mode .category-title{background:rgba(255,255,255,0.05);}.chapters{padding:8px 10px;display:none}.chapter-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;margin-top:8px;background:var(--bg-primary-light);border:1px solid var(--border-light);flex-direction:column;align-items:flex-start}body.dark-mode .chapter-item{background:var(--bg-primary-dark);border:1px solid var(--border-dark);}.chapter-title{font-size:14px;margin-bottom:6px;width:100%}.chapter-actions{display:flex;gap:8px;flex-wrap:wrap;width:100%}.chapter-actions .btn{padding:8px 10px;border-radius:8px;font-size:11px}.btn.explain{background:#e6f6ff;color:#333}body.dark-mode .btn.explain{background:rgba(100,180,255,0.15);color:#eee}.btn.video{background:#ffe6e6;color:#333}body.dark-mode .btn.video{background:rgba(255,100,100,0.15);color:#eee}.btn.qa{background:#fff1e6;color:#333}body.dark-mode .btn.qa{background:rgba(255,200,100,0.15);color:#eee}.btn.quiz{background:#f3e9ff;color:#333}body.dark-mode .btn.quiz{background:rgba(200,150,255,0.15);color:#eee}.btn:disabled{opacity:.5;cursor:not-allowed}.price-row{display:flex;align-items:center;justify-content:space-between;margin-top:12px}.price{color:#ff2f6d;font-weight:700}.enroll{padding:8px 12px;border-radius:18px;background:linear-gradient(135deg, #7b5cff, #4ca0ff);color:#fff;font-size:12px}body.dark-mode .enroll{background:linear-gradient(135deg, #a758ff, #6b7bff)}.admin-panel{display:none;padding:20px}.admin-section{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .admin-section{background:var(--bg-primary-dark)}.admin-section h3{margin-bottom:10px;}.file-upload{margin-bottom:10px}.file-upload input{margin-bottom:5px;width:100%;font-size:12px}.content-list{margin-top:15px;max-height:300px;overflow-y:auto}.content-item{background:var(--bg-secondary-light);padding:10px;margin-bottom:8px;border-radius:8px;border:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-item{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.content-item-info{flex:1}.content-item-actions{display:flex;gap:5px}.btn-delete{background:#dc3545;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.btn-approve{background:#28a745;color:#fff;padding:6px 10px;border-radius:6px;font-size:11px}.content-viewer,.quiz-container{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg-primary-light);z-index:2000;overflow-y:auto}body.dark-mode .content-viewer,body.dark-mode .quiz-container{background:var(--bg-primary-dark)}.content-header{background:linear-gradient(135deg, #ff6bb5, #7b5cff);color:#fff;padding:15px;display:flex;justify-content:space-between;align-items:center}body.dark-mode .content-header{background:linear-gradient(135deg, #ff6bf5, #7b5cff)}.content-body{padding:20px}.pdf-viewer,.video-player{width:100%;height:600px;border:1px solid var(--border-light);border-radius:8px}body.dark-mode .pdf-viewer,body.dark-mode .video-player{border:1px solid var(--border-dark)}.quiz-question{margin-bottom:20px;padding:15px;background:var(--bg-primary-light);border-radius:10px}body.dark-mode .quiz-question{background:var(--bg-primary-dark)}.quiz-options{margin-top:10px}.quiz-option{display:block;margin-bottom:8px;padding:10px;background:var(--bg-secondary-light);border:1px solid var(--border-light);border-radius:8px;cursor:pointer;transition:background .2s}body.dark-mode .quiz-option{background:var(--bg-secondary-dark);border:1px solid var(--border-dark)}.quiz-option:hover{background:#e6f6ff}body.dark-mode .quiz-option:hover{background:rgba(100,180,255,0.15)}.quiz-option.selected{background:#7b5cff!important;color:#fff!important;border-color:#7b5cff!important}.quiz-score{text-align:center;padding:20px;font-size:18px;font-weight:700}.tab-content{display:none}.tab-content.active{display:block}.error-msg{color:#dc3545;font-size:12px;margin-top:5px;display:none}.error-banner{background:#dc3545;color:#fff;padding:15px;text-align:center;display:none;position:fixed;top:0;left:0;right:0;z-index:9999}.quiz-submitted .quiz-option{cursor:default}.quiz-option.correct{background:#d4edda!important;border-color:#c3e6cb!important;color:#155724!important}.quiz-option.incorrect{background:#f8d7da!important;border-color:#f5c6cb!important;color:#721c24!important}.quiz-option.correct::after{content:' ✔';font-weight:700;float:right}.quiz-option.incorrect::after{content:' ✖';font-weight:700;float:right}
 ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:rgba(0,0,0,0.1)}::-webkit-scrollbar-thumb{background:#7b5cff;border-radius:8px}::-webkit-scrollbar-thumb:hover{background:#6b7bff}
 </style>
 </head>
@@ -269,7 +247,7 @@ body.dark-mode .chip{background:linear-gradient(135deg, #a758ff, #6b7bff)}
   <div class="header-inner">
     <div class="logo-area">
       <img
-        src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/App%20Icon.jpg"
+        src="https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg"
         alt="Phoenix Logo"
       />
       <div class="header-text">
@@ -395,159 +373,109 @@ async function initiatePayment(c, n, p) {
         showAuthModal();
         return;
     }
-    
     showLoading();
-    
     try {
-        // 1. Create Razorpay Order via Edge Function
+        // 1. 'create-razorpay-order' Edge Function को कॉल करें
         const { data: orderData, error: orderError } = await _supabase.functions.invoke('create-razorpay-order', {
-            body: { 
-                amount: p * 100,
-                currency: 'INR',
-                courseId: c,
-                userId: currentUser.uid,
-                userName: currentUser.name,
-                userEmail: currentUser.email
-            }
-        });
+  body: { 
+    amount: p * 100,
+    courseId: c,
+    userId: currentUser.uid
+  },
+  headers: { "Content-Type": "application/json" } // 🔥 Add this
+});
 
-        if (orderError) {
-            console.error('❌ Order Error:', orderError);
-            throw new Error(orderError.message || 'Order create karne mein error aaya');
-        }
-
+        if (orderError) throw orderError;
         if (!orderData || !orderData.order_id) {
-            console.error('❌ Invalid Response:', orderData);
-            throw new Error(orderData?.error || 'Payment order banane me fail hua');
-        }
+  console.error("Edge Function Response:", orderData);
+  throw new Error(orderData?.error || "Payment order banane me fail hua. Response poora nahi hai.");
+}
 
-        console.log('✅ Order Created Successfully:', orderData);
-
-        // 2. Razorpay Payment Modal Options
+        // 2. Razorpay पेमेंट मोडल के लिए Options तैयार करें
         const options = {
-            key: orderData.key_id,
-            amount: orderData.amount,
+            key: orderData.key_id, // आपका RAZORPAY_KEY_ID (Edge Function से आया)
+            amount: orderData.amount, // कीमत (पैसे में, सर्वर से आया)
             currency: "INR",
             name: "Phoenix English Classes",
             description: `${n} ke liye enroll karein`,
-            image: "https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg",
-            order_id: orderData.order_id,
+            image: "https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg", // आपका लोगो
+            order_id: orderData.order_id, // सर्वर से आया हुआ Order ID
             
-            // 3. Payment Success Handler
+            // 3. Payment सफल होने पर 'handler' फंक्शन चलेगा
             handler: async function (response) {
                 showLoading();
                 try {
-                    console.log('💳 Payment Successful, verifying...');
-                    
-                    // 4. Verify Payment via Edge Function
+                    // 4. 'verify-razorpay-payment' Edge Function को कॉल करें
                     const { data: verifyData, error: verifyError } = await _supabase.functions.invoke('verify-razorpay-payment', {
                         body: {
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_signature: response.razorpay_signature,
-                            courseId: c,
+                            courseId: c, // कोर्स ID ताकि सर्वर को पता चले कौनसा कोर्स देना है
                             userId: currentUser.uid
                         }
                     });
 
-                    if (verifyError) {
-                        console.error('❌ Verification Error:', verifyError);
-                        throw new Error(verifyError.message || 'Payment verification failed');
-                    }
+                    if (verifyError) throw verifyError;
 
-                    if (verifyData && verifyData.status === 'success') {
-                        console.log('✅ Payment Verified Successfully!');
-                        showAlert('🎉 Payment Successful! Ab aap course access kar sakte hain.', 'Success');
+                    if (verifyData.status === 'success') {
+                        showAlert('Payment Successful!', '🎉 Access Granted!');
                         
-                        // 5. Update local user data
-                        const coursesToUpdate = (c === 'complete') 
-                            ? ['11en', '12en', '11hi', '12hi'] 
-                            : [c];
+                        // 5. App के अंदर (locally) यूजर का डेटा अपडेट करें
+                        const coursesToUpdate = (c === 'complete') ? ['11en', '12en', '11hi', '12hi'] : [c];
+                        currentUser.purchased_courses = [...new Set([...(currentUser.purchased_courses || []), ...coursesToUpdate])];
                         
-                        currentUser.purchased_courses = [
-                            ...new Set([
-                                ...(currentUser.purchased_courses || []), 
-                                ...coursesToUpdate
-                            ])
-                        ];
-                        
-                        // 6. Refresh UI to show enrolled courses
+                        // 6. UI को रिफ्रेश करें ताकि "Enrolled" दिखे
                         renderCourses();
                         updateProfileView();
-                        
                     } else {
-                        throw new Error(verifyData?.message || 'Payment verification failed');
+                        throw new Error(verifyData.message || 'Payment verification failed.');
                     }
 
                 } catch (err) {
-                    console.error('❌ Payment Handler Error:', err);
-                    showAlert(
-                        `Payment verify nahi ho saka: ${err.message}. Agar payment successful thi, to admin se contact karein.`, 
-                        'Error'
-                    );
+                    console.error('Verification Error:', err);
+                    showAlert(`Payment Verification Failed. Kripya support se contact karein. Error: ${err.message}`, 'Error');
                 } finally {
                     hideLoading();
                 }
             },
-            
-            // Prefill user details
             prefill: {
                 name: currentUser.name,
                 email: currentUser.email,
                 contact: currentUser.phone
             },
-            
-            // Additional notes
             notes: {
                 course_id: c,
-                user_id: currentUser.uid,
-                course_name: n
+                user_id: currentUser.uid
             },
-            
-            // Theme customization
             theme: {
                 color: "#7b5cff"
             },
-            
-            // Modal close handler
             modal: {
                 ondismiss: function() {
                     hideLoading();
-                    showAlert('Payment cancel kar diya gaya.', 'Cancelled');
+                    showAlert('Payment cancel kar diya gaya.', 'Payment Cancelled');
                 }
             }
         };
         
-        hideLoading();
+        hideLoading(); // Razorpay मोडल दिखाने से ठीक पहले लोडिंग बंद करें
         
-        // 7. Check if Razorpay is loaded
-        if (typeof Razorpay === 'undefined') {
-            throw new Error('Razorpay library load nahi hui. Page refresh karke dobara try karein.');
-        }
-        
-        // 8. Open Razorpay Payment Modal
+        // 7. Razorpay मोडल खोलें
         const rzp = new Razorpay(options);
         
-        // Handle payment failure
         rzp.on('payment.failed', function (response) {
-            console.error('❌ Payment Failed:', response.error);
+            console.error('Payment Failed:', response.error);
             hideLoading();
-            showAlert(
-                `Payment fail ho gaya: ${response.error.description}. Kripya dobara try karein.`, 
-                'Payment Failed'
-            );
+            showAlert(`Payment Fail Ho Gaya: ${response.error.description}. Kripya dubara try karein.`, 'Error');
         });
         
-        // Open the modal
         rzp.open();
 
     } catch (err) {
-        console.error('❌ Payment Initiation Error:', err);
+        console.error('Payment Error:', err);
         hideLoading();
-        showAlert(
-            `Payment shuru nahi kar sake: ${err.message}`, 
-            'Error'
-        );
+        showAlert(`Payment shuru nahi kar sake: ${err.message}`, 'Error');
     }
 }
 
