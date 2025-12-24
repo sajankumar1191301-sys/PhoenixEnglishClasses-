@@ -373,84 +373,93 @@ async function initiatePayment(c, n, p) {
         showAuthModal();
         return;
     }
+    
     showLoading();
+    
     try {
-        // 1. 'create-razorpay-order' Edge Function को कॉल करें
+        // 🔥 FIX 1: JSON.stringify() use karo
+        console.log("📤 Sending payment request:", { amount: p * 100, courseId: c, userId: currentUser.uid });
+        
         const { data: orderData, error: orderError } = await _supabase.functions.invoke('create-razorpay-order', {
-  body: { 
-    amount: p * 100,
-    courseId: c,
-    userId: currentUser.uid
-  },
-  headers: { "Content-Type": "application/json" } // 🔥 Add this
-});
+            body: JSON.stringify({  // ✅ Ye zaroori hai!
+                amount: p * 100,
+                courseId: c,
+                userId: currentUser.uid
+            })
+        });
 
-        if (orderError) throw orderError;
+        console.log("📥 Server response:", orderData);
+
+        if (orderError) {
+            console.error("❌ Order Error:", orderError);
+            throw orderError;
+        }
+        
         if (!orderData || !orderData.order_id) {
-  console.error("Edge Function Response:", orderData);
-  throw new Error(orderData?.error || "Payment order banane me fail hua. Response poora nahi hai.");
-}
+            console.error("❌ Invalid Response:", orderData);
+            throw new Error(orderData?.error || "Payment order create nahi ho saka");
+        }
 
-        // 2. Razorpay पेमेंट मोडल के लिए Options तैयार करें
+        // 2. Razorpay Options
         const options = {
-            key: orderData.key_id, // आपका RAZORPAY_KEY_ID (Edge Function से आया)
-            amount: orderData.amount, // कीमत (पैसे में, सर्वर से आया)
+            key: orderData.key_id,
+            amount: orderData.amount,
             currency: "INR",
             name: "Phoenix English Classes",
             description: `${n} ke liye enroll karein`,
-            image: "https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg", // आपका लोगो
-            order_id: orderData.order_id, // सर्वर से आया हुआ Order ID
+            image: "https://dviuwzzjkzodadgbotei.supabase.co/storage/v1/object/public/assets/WhatsApp%20Image%202025-10-12%20at%2021.58.17%20(1).jpeg",
+            order_id: orderData.order_id,
             
-            // 3. Payment सफल होने पर 'handler' फंक्शन चलेगा
             handler: async function (response) {
                 showLoading();
                 try {
-                    // 4. 'verify-razorpay-payment' Edge Function को कॉल करें
                     const { data: verifyData, error: verifyError } = await _supabase.functions.invoke('verify-razorpay-payment', {
-                        body: {
+                        body: JSON.stringify({  // ✅ Yahan bhi JSON.stringify
                             razorpay_payment_id: response.razorpay_payment_id,
                             razorpay_order_id: response.razorpay_order_id,
                             razorpay_signature: response.razorpay_signature,
-                            courseId: c, // कोर्स ID ताकि सर्वर को पता चले कौनसा कोर्स देना है
+                            courseId: c,
                             userId: currentUser.uid
-                        }
+                        })
                     });
 
                     if (verifyError) throw verifyError;
 
                     if (verifyData.status === 'success') {
-                        showAlert('Payment Successful!', '🎉 Access Granted!');
+                        showAlert('Payment Successful! 🎉', 'Access Granted!');
                         
-                        // 5. App के अंदर (locally) यूजर का डेटा अपडेट करें
                         const coursesToUpdate = (c === 'complete') ? ['11en', '12en', '11hi', '12hi'] : [c];
                         currentUser.purchased_courses = [...new Set([...(currentUser.purchased_courses || []), ...coursesToUpdate])];
                         
-                        // 6. UI को रिफ्रेश करें ताकि "Enrolled" दिखे
                         renderCourses();
                         updateProfileView();
                     } else {
-                        throw new Error(verifyData.message || 'Payment verification failed.');
+                        throw new Error(verifyData.message || 'Payment verification failed');
                     }
 
                 } catch (err) {
-                    console.error('Verification Error:', err);
-                    showAlert(`Payment Verification Failed. Kripya support se contact karein. Error: ${err.message}`, 'Error');
+                    console.error('❌ Verification Error:', err);
+                    showAlert(`Payment verify nahi ho saka: ${err.message}`, 'Error');
                 } finally {
                     hideLoading();
                 }
             },
+            
             prefill: {
                 name: currentUser.name,
                 email: currentUser.email,
                 contact: currentUser.phone
             },
+            
             notes: {
                 course_id: c,
                 user_id: currentUser.uid
             },
+            
             theme: {
                 color: "#7b5cff"
             },
+            
             modal: {
                 ondismiss: function() {
                     hideLoading();
@@ -459,23 +468,22 @@ async function initiatePayment(c, n, p) {
             }
         };
         
-        hideLoading(); // Razorpay मोडल दिखाने से ठीक पहले लोडिंग बंद करें
+        hideLoading();
         
-        // 7. Razorpay मोडल खोलें
         const rzp = new Razorpay(options);
         
         rzp.on('payment.failed', function (response) {
-            console.error('Payment Failed:', response.error);
+            console.error('❌ Payment Failed:', response.error);
             hideLoading();
-            showAlert(`Payment Fail Ho Gaya: ${response.error.description}. Kripya dubara try karein.`, 'Error');
+            showAlert(`Payment fail: ${response.error.description}`, 'Error');
         });
         
         rzp.open();
 
     } catch (err) {
-        console.error('Payment Error:', err);
+        console.error('❌ Payment Error:', err);
         hideLoading();
-        showAlert(`Payment shuru nahi kar sake: ${err.message}`, 'Error');
+        showAlert(`Payment start nahi ho saka: ${err.message}`, 'Error');
     }
 }
 
